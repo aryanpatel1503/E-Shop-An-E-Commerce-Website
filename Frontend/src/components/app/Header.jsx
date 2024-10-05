@@ -2,10 +2,23 @@ import React from "react";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Tooltip } from "@material-tailwind/react";
+import {
+  Button,
+  IconButton,
+  Input,
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+  Option,
+  Select,
+  Tooltip,
+} from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
+  const [value, setValue] = React.useState("all");
+
   const navLinkStyle = ({ isActive, isPending, isTransitioning }) => {
     return {
       fontWeight: isActive ? "bold" : "",
@@ -24,53 +37,83 @@ const Header = () => {
           E-Shop
         </NavLink>
 
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          <NavLink
-            to="/"
-            style={navLinkStyle}
-            className="mr-5 hover:text-gray-900"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/product"
-            style={navLinkStyle}
-            className="mr-5 hover:text-gray-900"
-          >
-            Product
-          </NavLink>
-          <NavLink
-            to="/contact"
-            style={navLinkStyle}
-            className="mr-5 hover:text-gray-900"
-          >
-            Contact
-          </NavLink>
-          <NavLink
-            to="/about"
-            style={navLinkStyle}
-            className="mr-5 hover:text-gray-900"
-          >
-            About
-          </NavLink>
-        </nav>
+        <div className="relative flex md:ml-auto md:mr-auto">
+          <div className=" flex w-full max-w-[26rem] border border-blue-gray-200 rounded-md">
+            <Select
+              variant="outlined"
+              label=""
+              value={value}
+              onChange={(val) => setValue(val)}
+              className="border-none"
+              labelProps={{
+                className: "hidden",
+              }}
+            >
+              <Option value="all">All Categories</Option>
+              <Option value="laptop">Laptop</Option>
+              <Option value="mobile">Mobile</Option>
+            </Select>
 
-        <Tooltip content="Log in">
-          <button className="inline-flex items-center  border-0 py-1 px-3 focus:outline-none  rounded text-base mt-4 md:mt-0">
-            <PersonOutlineIcon />
-          </button>
-        </Tooltip>
-        <Tooltip content="Search">
-          <button className="inline-flex items-center  border-0 py-1 px-3 focus:outline-none  rounded text-base mt-4 md:mt-0">
-            <SearchOutlinedIcon />
-          </button>
-        </Tooltip>
-        <Tooltip content="Cart">
-          <button className="inline-flex items-center  border-0 py-1 px-3 focus:outline-none  rounded text-base mt-4 md:mt-0">
-            <ShoppingBagOutlinedIcon />
-          </button>
-        </Tooltip>
+            <Input
+              type="text"
+              placeholder="Search for products"
+              className="!border !border-blue-gray-200 border-none bg-white text-gray-900 placeholder:text-gray-500 placeholder:opacity-100 "
+              labelProps={{
+                className: "hidden",
+              }}
+            />
+          </div>
+          <Button className="flex items-center gap-1 bg-[#5093f7] py-1">
+            <SearchOutlinedIcon fontSize="small" />
+            Search
+          </Button>
+        </div>
+
+        <div className="">
+          <IconButton className="rounded-full bg-[#f7f7f7] hover:bg-[#5093f7] hover:text-white">
+            <PersonOutlineIcon
+              className="hover:text-white"
+              sx={{ color: "#22262A" }}
+            />
+          </IconButton>
+          <IconButton className="rounded-full bg-[#f7f7f7] hover:bg-[#5093f7] hover:text-white mx-3">
+            <ShoppingBagOutlinedIcon
+              className="hover:text-white"
+              sx={{ color: "#22262A" }}
+            />
+          </IconButton>
+        </div>
       </div>
+      <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+        <NavLink
+          to="/"
+          style={navLinkStyle}
+          className="mr-5 hover:text-gray-900"
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/product"
+          style={navLinkStyle}
+          className="mr-5 hover:text-gray-900"
+        >
+          Product
+        </NavLink>
+        <NavLink
+          to="/contact"
+          style={navLinkStyle}
+          className="mr-5 hover:text-gray-900"
+        >
+          Contact
+        </NavLink>
+        <NavLink
+          to="/about"
+          style={navLinkStyle}
+          className="mr-5 hover:text-gray-900"
+        >
+          About
+        </NavLink>
+      </nav>
     </header>
   );
 };
