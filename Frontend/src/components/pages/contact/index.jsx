@@ -17,10 +17,15 @@ const Contact = () => {
     },
   });
 
+  const onSubmitData = (values) => {
+    console.log(values);
+  };
+
+  const onSubmitError = () => {};
+
   return (
     <Layout>
-      <div>Contact</div>
-      <div className="flex my-5">
+      <div className="flex my-14">
         <div className="w-5/12"></div>
         <div className="w-7/12">
           <h3 className="text-2xl font-medium">Get In Touch</h3>
@@ -34,6 +39,7 @@ const Contact = () => {
               <Controller
                 control={control}
                 name="name"
+                rules={{ required: "Name is required" }}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     size="lg"
@@ -47,6 +53,13 @@ const Contact = () => {
               <Controller
                 control={control}
                 name="email"
+                rules={{
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: "Enter a valid email address",
+                  },
+                }}
                 render={({ field: { onChange, value } }) => (
                   <Input
                     type="email"
@@ -61,6 +74,7 @@ const Contact = () => {
             <Controller
               control={control}
               name="subject"
+              rules={{ required: "Subject is required" }}
               render={({ field: { onChange, value } }) => (
                 <Input
                   size="lg"
@@ -74,6 +88,7 @@ const Contact = () => {
             <Controller
               control={control}
               name="message"
+              rules={{ required: "Message is required" }}
               render={({ field: { onChange, value } }) => (
                 <Textarea
                   size="lg"
@@ -84,7 +99,12 @@ const Contact = () => {
                 />
               )}
             />
-            <Button variant="filled" className="bg-[#F7931E]">
+            <Button
+              variant="filled"
+              className="bg-[#F7931E]"
+              type="submit"
+              onClick={() => handleSubmit(onSubmitData, onSubmitError)()}
+            >
               Submit Now
             </Button>
           </div>

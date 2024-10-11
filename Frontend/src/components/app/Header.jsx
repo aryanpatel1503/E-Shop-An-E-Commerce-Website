@@ -14,10 +14,11 @@ import {
   Select,
   Tooltip,
 } from "@material-tailwind/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [value, setValue] = React.useState("all");
+  const navigate = useNavigate();
 
   const navLinkStyle = ({ isActive, isPending, isTransitioning }) => {
     return {
@@ -76,7 +77,10 @@ const Header = () => {
               sx={{ color: "#22262A" }}
             />
           </IconButton>
-          <IconButton className="rounded-full bg-[#f7f7f7] hover:bg-[#5093f7] hover:text-white mx-3">
+          <IconButton
+            className="rounded-full bg-[#f7f7f7] hover:bg-[#5093f7] hover:text-white mx-3"
+            onClick={() => navigate("/cart")}
+          >
             <ShoppingBagOutlinedIcon
               className="hover:text-white"
               sx={{ color: "#22262A" }}

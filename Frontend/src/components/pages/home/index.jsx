@@ -17,8 +17,14 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import AttributionIcon from "@mui/icons-material/Attribution";
+import ProudctCard from "../../app/ProudctCard";
+import { useNavigate } from "react-router-dom";
+import { addToCart } from "../../redux/cartSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
+  const naviagate = useNavigate();
+  const dispatch = useDispatch();
   const heroData = [
     {
       title: "Spark Your Saving on Electronics",
@@ -57,21 +63,32 @@ const Home = () => {
 
   const recommendData = [
     {
+      product_id: "1",
+      product_title: "Mobile",
       imgUrl: "",
       title: "Mobile",
       price: "999",
+      product_price: "999",
+      product_img:
+        "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
     },
     {
+      product_id: "2",
+      product_title: "Laptop",
       imgUrl: "",
       title: "Laptop",
       price: "999",
     },
     {
+      product_id: "3",
+      product_title: "Keyboard",
       imgUrl: "",
       title: "Keyboard",
       price: "999",
     },
     {
+      product_id: "4",
+      product_title: "Mouse",
       imgUrl: "",
       title: "Mouse",
       price: "999",
@@ -128,6 +145,7 @@ const Home = () => {
       </Card>
     );
   };
+
   const RecommendComponent = ({ item }) => {
     return (
       <Card className="w-full max-w-[26rem] shadow-lg">
@@ -155,7 +173,10 @@ const Home = () => {
           <Button
             variant="outlined"
             size="md"
-            className="text-[#F7931E] border-[#F7931E]	"
+            className="text-[#F7931E] border-[#F7931E]"
+            onClick={() => {
+              addItem(item);
+            }}
           >
             Add To Cart
           </Button>
@@ -166,13 +187,11 @@ const Home = () => {
 
   return (
     <Layout>
-      <div>Home</div>
-
       {/* Hero Section */}
       <Carousel
         autoplay={false}
         loop={true}
-        className="rounded-xl"
+        className="rounded-xl mt-10"
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
@@ -199,6 +218,7 @@ const Home = () => {
                 <Button
                   variant="text"
                   className="flex items-center gap-2 self-start bg-[#F7931E] text-white"
+                  onClick={() => naviagate("/product")}
                 >
                   Shop Now{" "}
                   <svg
@@ -243,7 +263,7 @@ const Home = () => {
           Recommend for you
         </h3>
 
-        <SliderComponent data={recommendData} Component={RecommendComponent} />
+        <SliderComponent data={recommendData} Component={ProudctCard} />
       </div>
 
       <div className="my-20 flex">
