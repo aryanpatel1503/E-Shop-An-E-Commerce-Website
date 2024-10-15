@@ -1,18 +1,34 @@
 import React, { useState } from "react";
 import Layout from "../../app/Layout";
 import {
+  Avatar,
   Button,
   Tab,
   TabPanel,
   Tabs,
   TabsBody,
   TabsHeader,
+  Textarea,
+  Typography,
 } from "@material-tailwind/react";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { borderForField } from "../../lib/commonFunctions";
+import profileImage from "../../../assets/profile.png";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const defaultValues = {
+    feedback: "",
+  };
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ defaultValues });
 
   // Increment quantity
   const increment = () => {
@@ -29,21 +45,25 @@ const ProductDetail = () => {
     console.log(`Added ${quantity} item(s) to cart`);
   };
 
-  const data = [
-    {
-      label: "HTML",
-      value: "html",
-      desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people 
-      who are like offended by it, it doesn't matter.`,
-    },
-    {
-      label: "React",
-      value: "react",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
-    },
-  ];
+  const onSubmitData = (values) => {
+    console.log(values);
+  };
+
+  const onSubmitError = (error) => {
+    Object.values(error).forEach((item, index) => {
+      if (index === 0) {
+        toast.error(item.message, {
+          position: "top-right",
+        });
+        console.log("item", item.message);
+      }
+    });
+  };
+
+  const handleFeedback = (e) => {
+    e.preventDefault();
+    handleSubmit(onSubmitData, onSubmitError)();
+  };
 
   return (
     <Layout>
@@ -147,9 +167,55 @@ const ProductDetail = () => {
                 are like offended by it, it doesn't matter.
               </TabPanel>
               <TabPanel value="review">
-                Because it's about motivating the doers. Because I'm here to
-                follow my dreams and inspire other people to follow their
-                dreams, too.
+                <h4 className="text-xl font-semibold text-black">
+                  Customer Reviews
+                </h4>
+
+                <div className="flex space-x-4 my-5">
+                  <Avatar src={profileImage} alt="avatar" size="sm" />
+                  <div className="border px-2 py-1 w-full rounded-md">
+                    <h5 className="text-lg font-medium text-black">Aryan</h5>
+                    <p className="text-gray-600 mt-2">
+                      This is better product.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-sm mt-3">There are no reviews yet.</p>
+                <p className="mt-3 mb-5">
+                  Be the first to review “14 Pro Max 5G Unlocked Smartphone –
+                  6GB+256GB”
+                </p>
+
+                <form>
+                  <div>
+                    <Controller
+                      name="feedback"
+                      control={control}
+                      rules={{ required: "Review is required" }}
+                      render={({ field }) => (
+                        <Textarea
+                          {...field}
+                          size="lg"
+                          placeholder="Write your review"
+                          className={borderForField(errors.feedback)}
+                          labelProps={{
+                            className: "before:content-none after:content-none",
+                          }}
+                          error={errors.feedback}
+                        />
+                      )}
+                    />
+                  </div>
+                  <Button
+                    variant="filled"
+                    className="mt-6 bg-[#F7931E]"
+                    type="submit"
+                    onClick={handleFeedback}
+                  >
+                    Submit
+                  </Button>
+                </form>
               </TabPanel>
             </TabsBody>
           </Tabs>

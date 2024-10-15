@@ -12,11 +12,24 @@ import {
   Radio,
   Textarea,
 } from "@material-tailwind/react";
+import { borderForField } from "../../lib/commonFunctions";
 
 const SignUp = () => {
   const defaultValues = {
-    email: "",
-    password: "",
+    user_name: "",
+    user_fullname: "",
+    user_mobile: "",
+    user_email: "",
+    user_password: "",
+    user_gender: "",
+    permanent_address: "",
+    permanent_city: "",
+    permanent_state: "",
+    permanent_pincode: "",
+    current_address: "",
+    current_city: "",
+    current_state: "",
+    current_pincode: "",
   };
   const {
     control,
@@ -76,7 +89,7 @@ const SignUp = () => {
                       placeholder="username"
                       onChange={onChange}
                       value={value}
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_name)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -104,7 +117,7 @@ const SignUp = () => {
                       size="lg"
                       {...field}
                       placeholder="fullname"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_fullname)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -132,7 +145,7 @@ const SignUp = () => {
                       size="lg"
                       {...field}
                       placeholder="mobile"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_mobile)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -167,7 +180,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="name@mail.com"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_email)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -196,7 +209,7 @@ const SignUp = () => {
                       type="password"
                       size="lg"
                       placeholder="********"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_password)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -259,7 +272,7 @@ const SignUp = () => {
                     <Textarea
                       {...field}
                       size="lg"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.permanent_address)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -287,7 +300,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="permanent city"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.permanent_city)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -315,7 +328,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="permanent state"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.permanent_state)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -343,7 +356,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="permanent pincode"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.permanent_pincode)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -371,7 +384,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       rows="1"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.current_address)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -399,7 +412,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="current city"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.current_city)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -427,7 +440,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="current state"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.current_state)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -455,7 +468,7 @@ const SignUp = () => {
                       {...field}
                       size="lg"
                       placeholder="current pincode"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.current_pincode)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}

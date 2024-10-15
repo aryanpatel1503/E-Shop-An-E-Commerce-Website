@@ -10,6 +10,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+import { borderForField } from "../../lib/commonFunctions";
 
 const Login = () => {
   const defaultValues = {
@@ -103,7 +104,7 @@ const Login = () => {
                       {...field}
                       size="lg"
                       placeholder="name@mail.com"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_email)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
@@ -132,7 +133,7 @@ const Login = () => {
                       type="password"
                       size="lg"
                       placeholder="********"
-                      className=" border-t-blue-gray-200 focus:!border-[#5479F7]"
+                      className={borderForField(errors.user_password)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
