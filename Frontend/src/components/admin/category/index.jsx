@@ -5,6 +5,7 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { API_URL } from "../../lib/constant";
+import { toast } from "react-toastify";
 
 const ViewCategory = () => {
   const [category, setCategory] = useState([]);
@@ -23,13 +24,19 @@ const ViewCategory = () => {
       if (window.confirm("Are you sure you want to delete this record?")) {
         const response = await axios.delete(`${API_URL}/category/${id}`);
         if (response.status === 200) {
-          alert(response.data.message || "Record deleted successfully!");
+          toast.success(
+            response.data.message || "Record deleted successfully!",
+            {
+              position: "top-center",
+            }
+          );
           getCategory();
         }
       }
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
     }
   };
 

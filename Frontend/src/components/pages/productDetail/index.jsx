@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../app/Layout";
 import {
-  Avatar,
   Button,
+  Card,
   Tab,
   TabPanel,
   Tabs,
@@ -16,12 +16,28 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { borderForField } from "../../lib/commonFunctions";
 import profileImage from "../../../assets/profile.png";
+import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../lib/constant";
+import axios from "axios";
+import { addToCart } from "../../redux/cartSlice";
+import { useDispatch } from "react-redux";
+import { Avatar } from "@mui/material";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const [productData, setProductData] = useState({});
+  const [feedbackData, setFeedbackData] = useState([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const user_id = localStorage.getItem("user_id");
+  const user_name = localStorage.getItem("user_name");
+
   const defaultValues = {
+    username: user_name,
     feedback: "",
+    user_id: user_id,
+    product_id: id,
   };
   const {
     control,
@@ -29,33 +45,79 @@ const ProductDetail = () => {
     watch,
     formState: { errors },
   } = useForm({ defaultValues });
+  const dispatch = useDispatch();
 
-  // Increment quantity
   const increment = () => {
     setQuantity((prev) => prev + 1);
   };
 
-  // Decrement quantity (ensure it stays above 1)
   const decrement = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
-  // Handle Add to Cart (you can customize this)
   const handleAddToCart = () => {
-    console.log(`Added ${quantity} item(s) to cart`);
+    dispatch(addToCart(productData));
   };
 
+  const TABLE_HEAD = ["Name", "Job", "Employed", ""];
+
+  const TABLE_ROWS = [
+    {
+      name: "John Michael",
+      job: "Manager",
+      date: "23/04/18",
+    },
+    {
+      name: "Alexa Liras",
+      job: "Developer",
+      date: "23/04/18",
+    },
+    {
+      name: "Laurent Perrier",
+      job: "Executive",
+      date: "19/09/17",
+    },
+    {
+      name: "Michael Levi",
+      job: "Developer",
+      date: "24/12/08",
+    },
+    {
+      name: "Richard Gran",
+      job: "Manager",
+      date: "04/10/21",
+    },
+  ];
+
   const onSubmitData = (values) => {
-    console.log(values);
+    axios
+      .post(`${API_URL}/feedback/add`, {
+        ...values,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success(
+            response.data.message || "Feedback added Successfully",
+            {
+              position: "top-center",
+            }
+          );
+          getFeedback();
+        }
+      })
+      .catch((response) => {
+        toast.error(response.data.message, {
+          position: "top-center",
+        });
+      });
   };
 
   const onSubmitError = (error) => {
     Object.values(error).forEach((item, index) => {
       if (index === 0) {
         toast.error(item.message, {
-          position: "top-right",
+          position: "top-center",
         });
-        console.log("item", item.message);
       }
     });
   };
@@ -65,15 +127,38 @@ const ProductDetail = () => {
     handleSubmit(onSubmitData, onSubmitError)();
   };
 
+  const getProducts = async () => {
+    const response = await axios.get(`${API_URL}/products/${id}`);
+    setProductData(response.data.result[0]);
+  };
+
+  const getFeedback = async () => {
+    const response = await axios.get(`${API_URL}/feedback/${id}`);
+    setFeedbackData(response.data.result);
+  };
+
+  useEffect(() => {
+    getProducts();
+    getFeedback();
+  }, [id]);
+
   return (
     <Layout>
       <div className="flex my-16">
-        <div className="w-6/12"></div>
+        <div className="w-6/12">
+          <img
+            src={productData.product_img}
+            alt=""
+            className="w-full h-80 object-contain"
+          />
+        </div>
         <div className="w-6/12">
           <h4 className="text-2xl font-medium mb-2">
-            14 Pro Max 5G Unlocked Smartphone – 6GB+256GB
+            {productData.product_name}
           </h4>
-          <h5 className="text-xl font-medium text-[#F7931E]">40000₹</h5>
+          <h5 className="text-xl font-medium text-[#F7931E]">
+            ₹{productData.product_price}
+          </h5>
           <p className="my-5">Category: SmartPhone </p>
 
           <div className="flex items-center space-x-4">
@@ -102,7 +187,9 @@ const ProductDetail = () => {
             </Button>
             <Button
               variant="outlined"
-              onClick={handleAddToCart}
+              onClick={() =>
+                navigate("/checkout", { state: { id: productData.product_id } })
+              }
               className="flex items-center border-2 border-[#F7931E]  text-[#F7931E] px-6 py-3.5 rounded-full hover:bg-[#f7921ee6] hover:text-white focus:outline-none focus:ring-0"
             >
               Buy Now
@@ -157,35 +244,296 @@ const ProductDetail = () => {
                     : "py-3 px-3"
                 }
               >
-                Reviews (0)
+                Reviews ({feedbackData?.length || 0})
               </Tab>
             </TabsHeader>
             <TabsBody>
               <TabPanel value="description">
-                It really matters and then like it really doesn't matter. What
-                matters is the people who are sparked by it. And the people who
-                are like offended by it, it doesn't matter.
+                <Typography
+                  variant="paragraph"
+                  color="blue-gray"
+                  className="font-normal"
+                >
+                  {productData.product_desc}
+                </Typography>
+
+                <Card className="h-full w-full my-10">
+                  <table className="w-full min-w-max table-auto text-left">
+                    <tbody>
+                      <tr>
+                        <td className="p-4 border-y border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Name
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-y border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_name}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Price
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_price}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Color
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_color}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semiboldsemibold"
+                          >
+                            Product Size
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_size}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Storage
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_storage}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Brand
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_brand}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Special Features
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_special_features}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Weight
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_weight}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Height
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_height}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Warranty
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_warranty}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Guarantee
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_guarantee}
+                          </Typography>
+                        </td>
+                      </tr>
+                      <tr className="">
+                        <td className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            Product Info
+                          </Typography>
+                        </td>
+                        <td className="p-4 border-b border-blue-gray-100">
+                          <Typography
+                            variant="h6"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {productData.product_info}
+                          </Typography>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Card>
               </TabPanel>
               <TabPanel value="review">
                 <h4 className="text-xl font-semibold text-black">
                   Customer Reviews
                 </h4>
 
-                <div className="flex space-x-4 my-5">
-                  <Avatar src={profileImage} alt="avatar" size="sm" />
-                  <div className="border px-2 py-1 w-full rounded-md">
-                    <h5 className="text-lg font-medium text-black">Aryan</h5>
-                    <p className="text-gray-600 mt-2">
-                      This is better product.
+                {feedbackData.length > 0 ? (
+                  feedbackData.map((item) => {
+                    return (
+                      <div
+                        className="flex space-x-4 my-5"
+                        key={item.feedback_id}
+                      >
+                        <Avatar src="" alt="user image" size="sm" />
+                        <div className="border px-2 py-1 w-full rounded-md">
+                          <h5 className="text-lg font-medium text-black">
+                            {item.user_name}
+                          </h5>
+                          <p className="text-gray-600 mt-2">{item.feedback}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div>
+                    <p className="text-sm mt-3">There are no reviews yet.</p>
+                    <p className="mt-3 mb-5">
+                      Be the first to review “{productData.product_name}”
                     </p>
                   </div>
-                </div>
-
-                <p className="text-sm mt-3">There are no reviews yet.</p>
-                <p className="mt-3 mb-5">
-                  Be the first to review “14 Pro Max 5G Unlocked Smartphone –
-                  6GB+256GB”
-                </p>
+                )}
 
                 <form>
                   <div>

@@ -1,110 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../app/Layout";
 import SliderComponent from "../../app/SliderComponent";
-import ProudctCard from "../../app/ProudctCard";
+import ProductCard from "../../app/ProductCard";
 import Pagination from "../../app/Pagination";
+import { API_URL } from "../../lib/constant";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
-
-  const productData = [
-    {
-      imgUrl: "",
-      title: "Mobile",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Laptop",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Keyboard",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse1",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse2",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse3",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse4",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse5",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse6",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse7",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse8",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse9",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse10",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse11",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse12",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse13",
-      price: "999",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse14",
-      price: "999",
-    },
-  ];
+  const [productData, setProductData] = useState([]);
+  const { name } = useParams();
 
   const currentData = productData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const response = await axios.get(`${API_URL}/category/${name}`);
+      setProductData(response.data.result);
+    };
+    getProducts();
+  }, [name]);
 
   return (
     <Layout>
@@ -112,7 +32,7 @@ const Product = () => {
         <div className="flex flex-wrap gap-2">
           {currentData.map((item, index) => {
             return (
-              <ProudctCard item={item} key={index} cardClassName="w-4/12" />
+              <ProductCard item={item} key={index} cardClassName="w-4/12" />
             );
           })}
         </div>

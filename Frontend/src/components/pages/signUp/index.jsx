@@ -13,6 +13,9 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import { borderForField } from "../../lib/commonFunctions";
+import axios from "axios";
+import { API_URL } from "../../lib/constant";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const defaultValues = {
@@ -41,14 +44,29 @@ const SignUp = () => {
   const formValues = watch();
 
   const onSubmitData = (values) => {
-    console.log(values);
+    axios
+      .post(`${API_URL}/register`, {
+        ...values,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success(response.data.message, {
+            position: "top-center",
+          });
+          // alert(response.data.message);
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message, {
+          position: "top-center",
+        });
+      });
   };
 
-  const onSubmitError = (values) => {
-    console.log(values);
-  };
+  const onSubmitError = (values) => {};
 
-  const handleSignIn = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
     handleSubmit(onSubmitData, onSubmitError)();
   };
@@ -489,7 +507,7 @@ const SignUp = () => {
               className="mt-6 bg-[#5479F7]"
               fullWidth
               type="submit"
-              onClick={handleSignIn}
+              onClick={handleSignUp}
             >
               Submit
             </Button>

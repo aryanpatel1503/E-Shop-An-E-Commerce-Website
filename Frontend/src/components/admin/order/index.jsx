@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { API_URL } from "../../lib/constant";
+import { toast } from "react-toastify";
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -23,13 +24,19 @@ const ViewOrder = () => {
         const response = await axios.delete(`${API_URL}/orders/${id}`);
 
         if (response.status === 200) {
-          alert(response.data.message || "Record deleted successfully!");
+          toast.success(
+            response.data.message || "Record deleted successfully!",
+            {
+              position: "top-center",
+            }
+          );
           getOrders();
         }
       }
     } catch (error) {
-      alert(error.response.data.message);
-      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
     }
   };
 
@@ -61,8 +68,8 @@ const ViewOrder = () => {
                   <th className="px-3 py-4">Email</th>
                   <th className="px-3 py-4">Pincode</th>
                   <th className="px-3 py-4">shipping_method</th>
-                  <th className="px-3 py-4">Product ID</th>
-                  <th className="px-3 py-4">User ID</th>
+                  <th className="px-3 py-4">Product</th>
+                  <th className="px-3 py-4">User</th>
                   <th className="px-3 py-4">Action</th>
                 </tr>
               </thead>
@@ -83,8 +90,8 @@ const ViewOrder = () => {
                       <td className="px-3 py-3">{item.order_email}</td>
                       <td className="px-3 py-3">{item.order_pincode}</td>
                       <td className="px-3 py-3">{item.shipping_method}</td>
-                      <td className="px-3 py-3">{item.product_id}</td>
-                      <td className="px-3 py-3">{item.user_id}</td>
+                      <td className="px-3 py-3">{item.product_name}</td>
+                      <td className="px-3 py-3">{item.user_name}</td>
                       <td className="px-3 py-3 ">
                         <NavLink
                           to={`/admin/editorder/${item.order_id}`}

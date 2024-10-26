@@ -16,6 +16,11 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
+  };
 
   useEffect(() => {
     dispatch(getTotals());
@@ -36,8 +41,6 @@ const Cart = () => {
   const handleClearCart = (cartItem) => {
     dispatch(clearCart(cartItem));
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -65,7 +68,7 @@ const Cart = () => {
                         Your cart is currently empty.
                       </h4>
                       <NavLink
-                        to="/product"
+                        to="/products/laptop"
                         className="outline outline-1 outline-[#F7931E] text-[#F7931E] hover:bg-[#F7931E] hover:text-white px-5 py-3 bg-violet-600  rounded hover:bg-violet-700 "
                       >
                         {/* <i className="bi bi-arrow-left"></i> */}
@@ -87,7 +90,7 @@ const Cart = () => {
                             <img src={cartItem.product_img} alt="" width={70} />
                           </td>
                           <td className="py-3 flex justify-around">
-                            <p>{cartItem.product_title}</p>
+                            <p>{cartItem.product_name}</p>
                           </td>
                           <td className=" py-3">${cartItem.product_price}</td>
                           <td className="text-center py-3 flex justify-center items-center">
@@ -125,9 +128,9 @@ const Cart = () => {
 
                   <tr className="border border-orange-200">
                     <td className="p-3 flex justify-between">
-                      <React.Fragment className="flex items-center justify-end">
+                      <React.Fragment>
                         <button
-                          className="px-5 py-3 bg-red-500 hover:bg-red-600 rounded text-white"
+                          className="px-5 py-3 bg-red-500 hover:bg-red-600 rounded text-white flex self-end"
                           onClick={handleClearCart}
                         >
                           <DeleteIcon className="mr-2" />
@@ -166,15 +169,13 @@ const Cart = () => {
                       </div>
                       <hr />
                     </div>
-                    {/* <button onClick={() => navigate("/checkout")} className="w-full py-4 text-lg mt-5 outline outline-1 text-violet-600 rounded hover:bg-violet-600 hover:text-white">
-                Proceed to checkout
-              </button> */}
-                    <NavLink
-                      to={`/checkout`}
-                      className="block px-4 py-4 text-lg mt-10 outline outline-1 outline-[#F7931E] text-[#F7931E] rounded hover:bg-[#F7931E] hover:text-white text-center"
+
+                    <button
+                      className="block px-4 py-4 text-lg mt-10 outline outline-1 outline-[#F7931E] text-[#F7931E] rounded hover:bg-[#F7931E] hover:text-white text-center w-full"
+                      onClick={handleCheckout}
                     >
                       Checkout
-                    </NavLink>
+                    </button>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../app/Layout";
 import {
   Button,
@@ -11,20 +11,40 @@ import {
   Avatar,
   Tooltip,
   IconButton,
+  Input,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
 import SliderComponent from "../../app/SliderComponent";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import AttributionIcon from "@mui/icons-material/Attribution";
-import ProudctCard from "../../app/ProudctCard";
+import ProductCard from "../../app/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../redux/cartSlice";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+import { API_URL } from "../../lib/constant";
 
 const Home = () => {
   const naviagate = useNavigate();
   const dispatch = useDispatch();
+  const [productData, setProductData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const heroData = [
     {
       title: "Spark Your Saving on Electronics",
@@ -39,59 +59,6 @@ const Home = () => {
         "New Electronics Deals Added! Explore the latest discounts on Laptop, Keyboard and Smart Phone.",
       imgUrl:
         "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
-    },
-  ];
-
-  const sliderData = [
-    {
-      imgUrl: "",
-      title: "Mobile",
-    },
-    {
-      imgUrl: "",
-      title: "Laptop",
-    },
-    {
-      imgUrl: "",
-      title: "Keyboard",
-    },
-    {
-      imgUrl: "",
-      title: "Mouse",
-    },
-  ];
-
-  const recommendData = [
-    {
-      product_id: "1",
-      product_title: "Mobile",
-      imgUrl: "",
-      title: "Mobile",
-      price: "999",
-      product_price: "999",
-      product_img:
-        "https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    },
-    {
-      product_id: "2",
-      product_title: "Laptop",
-      imgUrl: "",
-      title: "Laptop",
-      price: "999",
-    },
-    {
-      product_id: "3",
-      product_title: "Keyboard",
-      imgUrl: "",
-      title: "Keyboard",
-      price: "999",
-    },
-    {
-      product_id: "4",
-      product_title: "Mouse",
-      imgUrl: "",
-      title: "Mouse",
-      price: "999",
     },
   ];
 
@@ -139,7 +106,7 @@ const Home = () => {
             color="blue-gray"
             className="mb-2 text-center"
           >
-            {item.title}
+            {item.category}
           </Typography>
         </CardBody>
       </Card>
@@ -185,6 +152,21 @@ const Home = () => {
     );
   };
 
+  const getProducts = async () => {
+    const response = await axios.get(`${API_URL}/products`);
+    setProductData(response.data.result);
+  };
+
+  const getCategory = async () => {
+    const response = await axios.get(`${API_URL}/category`);
+    setCategoryData(response.data.result);
+  };
+
+  useEffect(() => {
+    getProducts();
+    getCategory();
+  }, []);
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -215,10 +197,11 @@ const Home = () => {
                 </p>
                 <p className="text-xl my-5">{item.subtitle}</p>
                 <h3 className="text-3xl"></h3>
+
                 <Button
                   variant="text"
                   className="flex items-center gap-2 self-start bg-[#F7931E] text-white"
-                  onClick={() => naviagate("/product")}
+                  onClick={() => naviagate("/products/laptop")}
                 >
                   Shop Now{" "}
                   <svg
@@ -253,7 +236,7 @@ const Home = () => {
         </h3>
 
         <SliderComponent
-          data={sliderData}
+          data={categoryData}
           Component={TrendingCollectionComponent}
         />
       </div>
@@ -263,7 +246,7 @@ const Home = () => {
           Recommend for you
         </h3>
 
-        <SliderComponent data={recommendData} Component={ProudctCard} />
+        <SliderComponent data={productData} Component={ProductCard} />
       </div>
 
       <div className="my-20 flex">

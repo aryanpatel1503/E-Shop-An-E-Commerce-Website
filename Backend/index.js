@@ -100,6 +100,7 @@ app.post("/register", (req, res) => {
         res.status(200);
         res.send({ message: "Registration Successfully", result });
       } else {
+        console.log(err);
         res.status(400);
         res.send({ message: "Enter Correct asked details!" });
       }
@@ -186,11 +187,15 @@ app.post("/admin", (req, res) => {
     [adminname, password],
     (err, result) => {
       if (err) {
+        console.log(err);
         req.setEncoding({ err: err });
       } else {
         if (result.length > 0) {
-          res.send(result);
+          res.status(200);
+          res.send({ result });
         } else {
+          console.log(err);
+          res.status(400);
           res.send({ message: "Wrong Username or Password!" });
         }
       }
@@ -238,7 +243,7 @@ app.get("/users/:id", (req, res) => {
         res.send({ message: "An error occurred!" });
       } else {
         res.status(200);
-        res.send(result);
+        res.send({ result });
       }
     }
   );
@@ -309,15 +314,38 @@ app.put("/users/:id", (req, res) => {
 
 // Get all Product
 app.get("/products", (req, res) => {
-  con.query("SELECT * FROM product ORDER BY product_id ", (err, result) => {
-    if (err) {
-      res.status(400);
-      res.send({ message: "An error occurred!" });
-    } else {
-      res.status(200);
-      res.send({ message: "Product get successfully", result });
+  con.query(
+    "SELECT p.*, c.category FROM product p INNER JOIN category c ON p.category_id = c.category_id ORDER BY product_id ",
+    (err, result) => {
+      if (err) {
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Product get successfully", result });
+      }
     }
-  });
+  );
+});
+
+// Get all Product by category
+app.get("/category/:name", (req, res) => {
+  const category = req.params.name;
+
+  con.query(
+    "SELECT product.product_id, product.product_name, product.product_img, product.product_price,  product.product_desc, category.category FROM product INNER JOIN category ON product.category_id = category.category_id WHERE category.category = ?",
+    [category],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ result });
+      }
+    }
+  );
 });
 
 // Get all Product by category and ascending by product name
@@ -405,16 +433,19 @@ app.get("/products/count", (req, res) => {
 });
 
 // Get Product category count
-app.get("/category/count", (req, res) => {
-  con.query("SELECT count(*) as catcount FROM `category` ", (err, result) => {
-    if (err) {
-      res.status(400);
-      res.send({ message: "An error occurred!" });
-    } else {
-      res.status(200);
-      res.send({ result });
+app.get("/productcategory/count", (req, res) => {
+  con.query(
+    "SELECT COUNT(category_id) as catcount FROM `category` ORDER BY category_id",
+    (err, result) => {
+      if (err) {
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ result });
+      }
     }
-  });
+  );
 });
 
 // Add Product
@@ -561,15 +592,19 @@ app.get("/products/:id", (req, res) => {
 
 // Get all Orders
 app.get("/orders", (req, res) => {
-  con.query("SELECT * FROM orders ORDER BY order_id ", (err, result) => {
-    if (err) {
-      res.status(400);
-      res.send({ message: "An error occurred!" });
-    } else {
-      res.status(200);
-      res.send({ message: "Order get successfully", result });
+  con.query(
+    "SELECT o.*, u.user_name, p.product_name FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id ORDER BY order_id ",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order get successfully", result });
+      }
     }
-  });
+  );
 });
 
 // Get Orders count
@@ -701,13 +736,18 @@ app.get("/orders/:id", (req, res) => {
 
 // Get all feedback
 app.get("/feedback", (req, res) => {
-  con.query("SELECT * FROM feedback ORDER BY feedback_id ", (err, result) => {
-    if (err) {
-      throw err;
-    } else {
-      res.send(result);
+  con.query(
+    "SELECT f.*, u.user_name, p.product_name FROM feedback f INNER JOIN user_reg u ON f.user_id = u.user_id INNER JOIN product p ON f.product_id = p.product_id ORDER BY f.feedback_id",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.send(result);
+      }
     }
-  });
+  );
 });
 
 // Get all feedback by product
@@ -721,7 +761,8 @@ app.get("/feedback/:id", (req, res) => {
       if (err) {
         throw err;
       } else {
-        res.send(result);
+        res.status(200);
+        res.send({ result });
       }
     }
   );
@@ -739,9 +780,10 @@ app.post("/feedback/add", (req, res) => {
     [username, feedback, user_id, product_id],
     (err, result) => {
       if (result) {
-        res.send(result);
+        res.send({ message: "Feedback added successfully", result });
       } else {
         console.log(err);
+        res.status(400);
         res.send({ message: "Enter Correct asked details!" });
       }
     }
@@ -759,9 +801,11 @@ app.post("/contact/add", (req, res) => {
     [username, email, message],
     (err, result) => {
       if (result) {
-        res.send(result);
+        res.status(200);
+        res.send({ message: "Contact added successfully", result });
       } else {
         console.log(err);
+        res.status(400);
         res.send({ message: "Enter Correct asked details!" });
       }
     }
@@ -799,7 +843,7 @@ app.get("/category", (req, res) => {
 });
 
 // get a single category
-app.get("/category/:id", (req, res) => {
+app.get("/getCategory/:id", (req, res) => {
   const category_id = req.params.id;
 
   con.query(
@@ -848,7 +892,7 @@ app.put("/category/:id", (req, res) => {
         res.send({ message: "An error occurred!" });
       } else {
         res.status(200);
-        res.send({ message: "Category edited successfully", result });
+        res.send({ message: "Category updated successfully", result });
       }
     }
   );
@@ -868,6 +912,22 @@ app.delete("/category/:id", (req, res) => {
       } else {
         res.status(200);
         res.send({ message: "Category deleted successfully", result });
+      }
+    }
+  );
+});
+
+// Get Orders count
+app.get("/counts", (req, res) => {
+  con.query(
+    "SELECT (SELECT COUNT(*) FROM user_reg) AS total_users,(SELECT COUNT(*) FROM product) AS total_products,(SELECT COUNT(*) FROM `orders`) AS total_orders,(SELECT COUNT(*) FROM category) AS total_categories",
+    (err, result) => {
+      if (err) {
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ result });
       }
     }
   );

@@ -14,11 +14,10 @@ import { borderForField } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const AdminLogin = ({ setLogin }) => {
   const defaultValues = {
-    // user_email: "",
-    user_name: "",
-    user_password: "",
+    admin_name: "",
+    admin_password: "",
   };
   const {
     control,
@@ -29,21 +28,24 @@ const Login = () => {
 
   const onSubmitData = (values) => {
     axios
-      .post(`${API_URL}/login`, {
+      .post(`${API_URL}/admin`, {
         ...values,
       })
       .then((response) => {
         if (response.status === 200) {
-          toast.success(response.data.message, {
-            position: "top-center",
-          });
-          // alert(response.data.message);
-          localStorage.setItem("user_name", response.data.result[0].user_name);
-          localStorage.setItem("user_id", response.data.result[0].user_id);
-          navigate("/");
+          if (setLogin) {
+            setLogin(true);
+          }
+          localStorage.setItem(
+            "adminData",
+            JSON.stringify(response.data.result[0])
+          );
+
+          navigate("/admin/dashboard");
         }
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err.response.data.message, {
           position: "top-center",
         });
@@ -56,6 +58,11 @@ const Login = () => {
     e.preventDefault();
     handleSubmit(onSubmitData, onSubmitError)();
   };
+
+  useEffect(() => {
+    localStorage.removeItem("adminData");
+  }, []);
+
   return (
     <div
       className=" mx-auto flex flex-wrap justify-center items-center h-screen"
@@ -68,7 +75,7 @@ const Login = () => {
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3 h-[395px] bg-[#f5f5f5] shadow-lg rounded-tr-lg rounded-br-lg px-7 py-4">
         <Typography variant="h4" className="text-center">
-          Login
+          Admin Login
         </Typography>
 
         <Card color="transparent" shadow={false} className="w-full">
@@ -76,74 +83,39 @@ const Login = () => {
             <div className="mb-1 flex flex-col gap-4">
               <div>
                 <Typography color="blue-gray" className="text-md font-medium">
-                  Username
+                  Name
                 </Typography>
                 <Controller
-                  name="user_name"
+                  name="admin_name"
                   control={control}
-                  rules={{ required: "Username is required" }}
+                  rules={{ required: "Admin name is required" }}
                   render={({ field: { onChange, value } }) => (
                     <Input
                       size="lg"
-                      placeholder="username"
+                      placeholder="Admin name"
                       onChange={onChange}
                       value={value}
-                      className={borderForField(errors.user_name)}
+                      className={borderForField(errors.admin_name)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
-                      error={errors.user_name}
+                      error={errors.admin_name}
                     />
                   )}
                 />
-                {errors.user_name && (
+                {errors.admin_name && (
                   <Typography color="red" className="text-md font-medium">
-                    {errors.user_name.message}
+                    {errors.admin_name.message}
                   </Typography>
                 )}
               </div>
-
-              {/* <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
-                  Email
-                </Typography>
-                <Controller
-                  name="user_email"
-                  control={control}
-                  rules={{
-                    required: "Email is required",
-                    pattern: {
-                      value:
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                      message: "Enter a valid email address",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      size="lg"
-                      placeholder="name@mail.com"
-                      className={borderForField(errors.user_email)}
-                      labelProps={{
-                        className: "before:content-none after:content-none",
-                      }}
-                      error={errors.user_email}
-                    />
-                  )}
-                />
-                {errors.user_email && (
-                  <Typography color="red" className="text-md font-medium">
-                    {errors.user_email.message}
-                  </Typography>
-                )}
-              </div> */}
 
               <div>
                 <Typography color="blue-gray" className="text-sm font-medium">
                   Password
                 </Typography>
                 <Controller
-                  name="user_password"
+                  name="admin_password"
                   control={control}
                   rules={{ required: "Password is required" }}
                   render={({ field }) => (
@@ -152,17 +124,17 @@ const Login = () => {
                       type="password"
                       size="lg"
                       placeholder="********"
-                      className={borderForField(errors.user_password)}
+                      className={borderForField(errors.admin_password)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
-                      error={errors.user_password}
+                      error={errors.admin_password}
                     />
                   )}
                 />
-                {errors.user_password && (
+                {errors.admin_password && (
                   <Typography color="red" className="text-md font-medium">
-                    {errors.user_password.message}
+                    {errors.admin_password.message}
                   </Typography>
                 )}
               </div>
@@ -175,14 +147,8 @@ const Login = () => {
               type="submit"
               onClick={handleSignIn}
             >
-              sign in
+              Login
             </Button>
-            <Typography color="gray" className="mt-4 text-center font-normal">
-              New user? Click here to {""}
-              <NavLink className="font-semibold text-[#5479F7]" to="/signup">
-                Register
-              </NavLink>
-            </Typography>
           </form>
         </Card>
       </div>
@@ -190,4 +156,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

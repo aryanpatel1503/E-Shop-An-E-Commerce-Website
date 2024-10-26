@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { borderForField } from "../../lib/commonFunctions";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
+import { toast } from "react-toastify";
 
 const AddUpdateCategory = () => {
   const defaultValues = {
@@ -31,28 +32,45 @@ const AddUpdateCategory = () => {
   const onSubmitData = (values) => {
     if (name) {
       axios
-        .put(`http://localhost:3001/category/${name}`, {
+        .put(`${API_URL}/category/${name}`, {
           ...values,
         })
         .then((response) => {
           if (response) {
-            alert("Category Updated Successfully");
+            toast.success(
+              response.data.message || "Category Updated Successfully",
+              {
+                position: "top-center",
+              }
+            );
             navigate("/admin/viewcategory");
           }
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     } else {
       axios
-        .post("http://localhost:3001/category/add", {
+        .post(`${API_URL}/category/add`, {
           ...values,
         })
         .then((response) => {
           if (response.status === 200) {
-            alert(response.data.message || "Category added Successfully");
+            toast.success(
+              response.data.message || "Category added Successfully",
+              {
+                position: "top-center",
+              }
+            );
             navigate("/admin/viewcategory");
           }
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     }
   };
@@ -64,7 +82,7 @@ const AddUpdateCategory = () => {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/category/${val}`)
+      .get(`${API_URL}/getCategory/${val}`)
       .then((response) => {
         reset((formValues) => ({
           ...formValues,

@@ -11,7 +11,7 @@ import { addToCart } from "../redux/cartSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const ProudctCard = ({ item, cardClassName }) => {
+const ProductCard = ({ item, cardClassName }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,28 +26,35 @@ const ProudctCard = ({ item, cardClassName }) => {
           : "w-full max-w-[26rem] shadow-lg"
       }
     >
-      <CardHeader floated={false} color="blue-gray">
+      <CardHeader
+        floated={false}
+        // color="blue-gray"
+        onClick={() => navigate(`/product/${item.product_id}`)}
+        className="cursor-pointer"
+      >
         <img
-          src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-          alt="ui/ux review check"
+          src={item.product_img}
+          className="w-full object-contain h-48 md:h-56 lg:h-64 xl:h-72"
         />
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
       </CardHeader>
       <CardBody>
         <div className="mb-3 flex items-center justify-between">
           <Typography variant="h5" color="blue-gray" className="font-medium">
-            {item.title}
+            {item.product_name}
           </Typography>
         </div>
         <Typography className="text-xl text-black font-medium">
-          {item.price}
+          ₹{item.product_price}
         </Typography>
       </CardBody>
       <CardFooter className="pt-2 flex justify-between">
         <Button
           size="md"
           className="bg-[#F7931E]"
-          onClick={() => navigate("/checkout")}
+          onClick={() =>
+            navigate("/checkout", { state: { id: item.product_id } })
+          }
         >
           Buy Now
         </Button>
@@ -64,4 +71,4 @@ const ProudctCard = ({ item, cardClassName }) => {
   );
 };
 
-export default ProudctCard;
+export default ProductCard;

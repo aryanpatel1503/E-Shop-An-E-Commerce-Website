@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { borderForField } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { toast } from "react-toastify";
 
 const AddUpdateOrder = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -57,12 +58,16 @@ const AddUpdateOrder = () => {
         })
         .then((response) => {
           if (response.status === 200) {
-            alert("Order Updated Successfully");
+            toast.success("Order Updated Successfully", {
+              position: "top-center",
+            });
             navigate("/admin/vieworder");
           }
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     } else {
       axios
@@ -71,12 +76,16 @@ const AddUpdateOrder = () => {
         })
         .then((response) => {
           if (response.status === 200) {
-            alert(response.data.message || "Order added Successfully");
+            toast.success(response.data.message || "Order added Successfully", {
+              position: "top-center",
+            });
             navigate("/admin/vieworder");
           }
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     }
   };

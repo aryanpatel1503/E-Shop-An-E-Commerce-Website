@@ -14,6 +14,7 @@ import {
 import { borderForField, getBase64 } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
+import { toast } from "react-toastify";
 
 const AddUpdateProduct = () => {
   const defaultValues = {
@@ -75,12 +76,16 @@ const AddUpdateProduct = () => {
         })
         .then((response) => {
           if (response) {
-            alert("Product Updated Successfully");
+            toast.success("Product Updated Successfully", {
+              position: "top-center",
+            });
             navigate("/admin/viewproduct");
           }
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     } else {
       axios
@@ -88,11 +93,15 @@ const AddUpdateProduct = () => {
           ...values,
         })
         .then((response) => {
-          alert(response.data.message || "Product added Successfully");
+          toast.success(response.data.message || "Product added Successfully", {
+            position: "top-center",
+          });
           navigate("/admin/viewproduct");
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     }
   };

@@ -12,6 +12,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { borderForField } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
+import { toast } from "react-toastify";
 
 const AddUpdateCustomer = () => {
   const defaultValues = {
@@ -55,12 +56,19 @@ const AddUpdateCustomer = () => {
         })
         .then((response) => {
           if (response.status === 200) {
-            alert(response.data.message || "User Updated Successfully");
+            toast.success(
+              response.data.message || "User Updated Successfully",
+              {
+                position: "top-center",
+              }
+            );
             navigate("/admin/viewuser");
           }
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     } else {
       axios
@@ -68,11 +76,15 @@ const AddUpdateCustomer = () => {
           ...values,
         })
         .then((response) => {
-          alert("Customer added Successfully");
+          toast.success("Customer added Successfully", {
+            position: "top-center",
+          });
           navigate("/admin/viewuser");
         })
         .catch((err) => {
-          throw err;
+          toast.error(err.response.data.message, {
+            position: "top-center",
+          });
         });
     }
   };
@@ -84,7 +96,7 @@ const AddUpdateCustomer = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/users/${val}`)
+      .get(`${API_URL}/users/${val}`)
       .then((response) => {
         reset((formValues) => ({
           ...formValues,

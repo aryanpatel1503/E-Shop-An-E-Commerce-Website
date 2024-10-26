@@ -27,6 +27,8 @@ import AddUpdateOrder from "../admin/order/AddUpdateOrder";
 import ViewFeedback from "../admin/feedback";
 import Report from "../admin/report";
 import Dashboard from "../admin/dashboard";
+import AdminLogin from "../admin/adminLogin";
+import "react-toastify/dist/ReactToastify.css";
 
 const Router = () => {
   const [path, setPath] = useState("/");
@@ -35,54 +37,68 @@ const Router = () => {
   useEffect(() => {
     setPath(window.location.pathname);
   });
+
   return (
     <>
       {path.includes("admin") ? (
         <>
           <BrowserRouter>
-            {/* {login ? ( */}
-            <>
-              <Sidebar setLogin={setLogin} />
-              <Routes>
-                {/* <Route path="/admin" element={<AdminLogin />} /> */}
-                <Route path="/admin/dashboard" element={<Dashboard />} />
-                <Route path="/admin/viewuser" element={<ViewCustomer />} />
-                <Route path="/admin/adduser" element={<AddUpdateCustomer />} />
-                <Route
-                  path="/admin/edituser/:name"
-                  element={<AddUpdateCustomer />}
-                />
-                <Route path="/admin/viewproduct" element={<ViewProduct />} />
-                <Route
-                  path="/admin/addproduct"
-                  element={<AddUpdateProduct />}
-                />
-                <Route
-                  path="/admin/editproduct/:name"
-                  element={<AddUpdateProduct />}
-                />
-                <Route path="/admin/viewcategory" element={<ViewCategory />} />
-                <Route
-                  path="/admin/addcategory"
-                  element={<AddUpdateCategory />}
-                />
-                <Route
-                  path="/admin/editcategory/:name"
-                  element={<AddUpdateCategory />}
-                />
-                <Route path="/admin/vieworder" element={<ViewOrder />} />
-                <Route path="/admin/addorder" element={<AddUpdateOrder />} />
-                <Route
-                  path="/admin/editorder/:name"
-                  element={<AddUpdateOrder />}
-                />
-                <Route path="/admin/viewfeedback" element={<ViewFeedback />} />
-                <Route path="/admin/report" element={<Report />} />
-              </Routes>
-            </>
-            {/* ) : ( */}
-            <>{/* <AdminLogin setLogin={setLogin} /> */}</>
-            {/* )} */}
+            {login ? (
+              <>
+                <Sidebar setLogin={setLogin} />
+                <Routes>
+                  <Route path="/admin" element={<AdminLogin />} />
+                  <Route path="/admin/dashboard" element={<Dashboard />} />
+                  <Route path="/admin/viewuser" element={<ViewCustomer />} />
+                  <Route
+                    path="/admin/adduser"
+                    element={<AddUpdateCustomer />}
+                  />
+                  <Route
+                    path="/admin/edituser/:name"
+                    element={<AddUpdateCustomer />}
+                  />
+                  <Route path="/admin/viewproduct" element={<ViewProduct />} />
+                  <Route
+                    path="/admin/addproduct"
+                    element={<AddUpdateProduct />}
+                  />
+                  <Route
+                    path="/admin/editproduct/:name"
+                    element={<AddUpdateProduct />}
+                  />
+                  <Route
+                    path="/admin/viewcategory"
+                    element={<ViewCategory />}
+                  />
+                  <Route
+                    path="/admin/addcategory"
+                    element={<AddUpdateCategory />}
+                  />
+                  <Route
+                    path="/admin/editcategory/:name"
+                    element={<AddUpdateCategory />}
+                  />
+                  <Route path="/admin/vieworder" element={<ViewOrder />} />
+                  <Route path="/admin/addorder" element={<AddUpdateOrder />} />
+                  <Route
+                    path="/admin/editorder/:name"
+                    element={<AddUpdateOrder />}
+                  />
+                  <Route
+                    path="/admin/viewfeedback"
+                    element={<ViewFeedback />}
+                  />
+                  <Route path="/admin/report" element={<Report />} />
+                </Routes>
+                <ToastContainer />
+              </>
+            ) : (
+              <>
+                <AdminLogin setLogin={setLogin} />
+                <ToastContainer />
+              </>
+            )}
           </BrowserRouter>
         </>
       ) : (
@@ -91,7 +107,7 @@ const Router = () => {
             {/* <Navbar /> */}
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/product" element={<Product />} />
+              <Route path="/products/:name" element={<Product />} />
               <Route path="/about" element={<About />} />
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/contact" element={<Contact />} />
@@ -103,8 +119,8 @@ const Router = () => {
 
               <Route path="*" element={<Home />} />
             </Routes>
-            {/* <Footer /> */}
             <ToastContainer />
+            {/* <Footer /> */}
           </BrowserRouter>
         </>
       )}

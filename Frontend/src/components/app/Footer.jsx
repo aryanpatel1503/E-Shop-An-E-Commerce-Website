@@ -10,7 +10,7 @@ const Footer = () => {
 
           <div className="flex justify-between my-6 w-96">
             <NavLink to="/">Home</NavLink>
-            <NavLink to="/product">Product</NavLink>
+            <NavLink to="/products/laptop">Product</NavLink>
             <NavLink to="/contact">Contact</NavLink>
             <NavLink to="/about">About</NavLink>
           </div>

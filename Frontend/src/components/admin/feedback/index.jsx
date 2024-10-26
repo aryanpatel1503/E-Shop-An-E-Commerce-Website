@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { API_URL } from "../../lib/constant";
+import { showLocalString } from "../../lib/commonFunctions";
 
 const ViewFeedback = () => {
   const [feedback, setFeedback] = useState([]);
 
   const getFeedback = async () => {
-    const response = await axios.get("http://localhost:3001/feedbacks");
+    const response = await axios.get(`${API_URL}/feedback`);
     setFeedback(response.data);
   };
   useEffect(() => {
@@ -27,26 +29,26 @@ const ViewFeedback = () => {
                 <tr className="">
                   <th className=" px-3 py-4">ID</th>
                   <th className=" px-3 py-4">Username</th>
-                  <th className=" px-3 py-4">Fullname</th>
-                  <th className=" px-3 py-4">Email</th>
-                  <th className=" px-3 py-4">Mobile</th>
-                  <th className="px-3 py-4">Password</th>
+                  <th className=" px-3 py-4">Feedback</th>
+                  <th className=" px-3 py-4">Feedback Date</th>
+                  <th className=" px-3 py-4">Product</th>
                 </tr>
               </thead>
 
               <tbody>
-                {feedback.map((curVal) => {
+                {feedback.map((item) => {
                   return (
                     <tr
-                      key={curVal.user_id}
+                      key={item.user_id}
                       className="border-b-[1px] text-gray-500"
                     >
-                      <td className="px-3 py-3">{curVal.user_id}</td>
-                      <td className="px-3 py-3">{curVal.username}</td>
-                      <td className="px-3 py-3">{curVal.fullname}</td>
-                      <td className="px-3 py-3">{curVal.email}</td>
-                      <td className="px-3 py-3">{curVal.mobile}</td>
-                      <td className="px-3 py-3">{curVal.password}</td>
+                      <td className="px-3 py-3">{item.feedback_id}</td>
+                      <td className="px-3 py-3">{item.user_name}</td>
+                      <td className="px-3 py-3">{item.feedback}</td>
+                      <td className="px-3 py-3">
+                        {showLocalString(item.feedback_date)}
+                      </td>
+                      <td className="px-3 py-3">{item.product_name}</td>
                     </tr>
                   );
                 })}
