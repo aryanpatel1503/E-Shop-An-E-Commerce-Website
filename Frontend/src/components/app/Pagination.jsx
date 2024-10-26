@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { Button, IconButton } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-const Pagination = ({ data, itemsPerPage, currentPage, setCurrentPage }) => {
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+const Pagination = ({
+  data,
+  itemsPerPage,
+  currentPage,
+  setCurrentPage,
+  alignRight = false,
+  buttonName = true,
+}) => {
+  const totalPages = Math.ceil(data?.length / itemsPerPage);
 
   const getItemProps = (index) => ({
     variant: currentPage === index ? "filled" : "text",
@@ -24,14 +31,19 @@ const Pagination = ({ data, itemsPerPage, currentPage, setCurrentPage }) => {
   };
 
   return (
-    <div className="flex justify-center items-center gap-4 my-4">
+    <div
+      className={`flex ${
+        alignRight ? "justify-end" : "justify-center"
+      } items-center gap-4 my-4`}
+    >
       <Button
         variant="text"
         className="flex items-center gap-2"
         onClick={prev}
         disabled={currentPage === 1}
       >
-        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
+        <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+        {buttonName && "Previous"}
       </Button>
       <div className="flex items-center gap-2">
         {Array.from({ length: totalPages }, (_, i) => {
@@ -48,7 +60,7 @@ const Pagination = ({ data, itemsPerPage, currentPage, setCurrentPage }) => {
         onClick={next}
         disabled={currentPage === totalPages}
       >
-        Next
+        {buttonName && "Next"}
         <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
       </Button>
     </div>

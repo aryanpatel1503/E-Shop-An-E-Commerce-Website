@@ -69,7 +69,6 @@ const ViewOrder = () => {
                   <th className="px-3 py-4">Pincode</th>
                   <th className="px-3 py-4">shipping_method</th>
                   <th className="px-3 py-4">Product</th>
-                  <th className="px-3 py-4">User</th>
                   <th className="px-3 py-4">Action</th>
                 </tr>
               </thead>
@@ -91,7 +90,6 @@ const ViewOrder = () => {
                       <td className="px-3 py-3">{item.order_pincode}</td>
                       <td className="px-3 py-3">{item.shipping_method}</td>
                       <td className="px-3 py-3">{item.product_name}</td>
-                      <td className="px-3 py-3">{item.user_name}</td>
                       <td className="px-3 py-3 ">
                         <NavLink
                           to={`/admin/editorder/${item.order_id}`}
