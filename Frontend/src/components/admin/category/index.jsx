@@ -6,9 +6,18 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
+import Pagination from "../../app/Pagination";
 
 const ViewCategory = () => {
   const [category, setCategory] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const categoryData = category?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getCategory = async () => {
     const response = await axios.get(`${API_URL}/category`);
@@ -66,7 +75,7 @@ const ViewCategory = () => {
               </thead>
 
               <tbody>
-                {category.map((curVal) => {
+                {categoryData?.map((curVal) => {
                   return (
                     <tr
                       key={curVal.category_id}
@@ -96,6 +105,14 @@ const ViewCategory = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            data={category}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            alignRight={true}
+            buttonName={false}
+          />
         </div>
       </div>
     </>

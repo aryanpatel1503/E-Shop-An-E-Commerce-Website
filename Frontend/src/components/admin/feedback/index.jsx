@@ -2,14 +2,23 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../lib/constant";
 import { showLocalString } from "../../lib/commonFunctions";
+import Pagination from "../../app/Pagination";
 
 const ViewFeedback = () => {
   const [feedback, setFeedback] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const feedbackData = feedback?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getFeedback = async () => {
     const response = await axios.get(`${API_URL}/feedback`);
     setFeedback(response.data);
   };
+
   useEffect(() => {
     getFeedback();
   }, []);
@@ -36,10 +45,10 @@ const ViewFeedback = () => {
               </thead>
 
               <tbody>
-                {feedback.map((item) => {
+                {feedbackData.map((item) => {
                   return (
                     <tr
-                      key={item.user_id}
+                      key={item.feedback_id}
                       className="border-b-[1px] text-gray-500"
                     >
                       <td className="px-3 py-3">{item.feedback_id}</td>
@@ -55,6 +64,14 @@ const ViewFeedback = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            data={feedback}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            alignRight={true}
+            buttonName={false}
+          />
         </div>
       </div>
     </>

@@ -1,16 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../lib/constant";
-import { showLocalString } from "../../lib/commonFunctions";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import { toast } from "react-toastify";
-import { NavLink } from "react-router-dom";
 import Pagination from "../../app/Pagination";
 
 function Icon({ id, open }) {
@@ -103,7 +98,7 @@ const Report = () => {
               Customer Report
             </AccordionHeader>
             <AccordionBody>
-              <div class="overflow-auto">
+              <div className="overflow-auto">
                 <table className="text-left rounded-lg ">
                   <thead className="border-b-[2px] overflow-auto">
                     <tr className="">
@@ -173,7 +168,7 @@ const Report = () => {
               Product Report
             </AccordionHeader>
             <AccordionBody className="">
-              <div class="overflow-auto">
+              <div className="overflow-auto">
                 <table className="text-left rounded-lg ">
                   <thead className="border-b-[2px] ">
                     <tr className="">
@@ -246,7 +241,7 @@ const Report = () => {
               Order Report
             </AccordionHeader>
             <AccordionBody className="overflow-auto">
-              <div class="overflow-auto">
+              <div className="overflow-auto">
                 <table className="w-full text-left rounded-lg ">
                   <thead className="border-b-[2px] ">
                     <tr className="">

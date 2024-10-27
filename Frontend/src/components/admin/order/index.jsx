@@ -6,9 +6,17 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
+import Pagination from "../../app/Pagination";
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const orderData = orders?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getOrders = async () => {
     const response = await axios.get(`${API_URL}/orders`);
@@ -74,7 +82,7 @@ const ViewOrder = () => {
               </thead>
 
               <tbody>
-                {orders?.map((item) => {
+                {orderData?.map((item) => {
                   return (
                     <tr
                       key={item.order_id}
@@ -112,6 +120,14 @@ const ViewOrder = () => {
               </tbody>
             </table>
           </div>
+          <Pagination
+            data={orders}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            alignRight={true}
+            buttonName={false}
+          />
         </div>
       </div>
     </>

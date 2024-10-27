@@ -6,9 +6,17 @@ import { API_URL } from "../../lib/constant";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { toast } from "react-toastify";
+import Pagination from "../../app/Pagination";
 
 const ViewCustomer = () => {
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const userData = users?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getUsers = async () => {
     const response = await axios.get(`${API_URL}/users`);
@@ -56,7 +64,7 @@ const ViewCustomer = () => {
               <AddCircleOutlineRoundedIcon className="mr-1" /> Add Customer
             </NavLink>
           </div>
-          <div className="absolute left-4 flex justify-start bg-white mx-3 py-4 w-[98%]">
+          <div className="absolute left-4 flex flex-col justify-start bg-white mx-3 py-4 w-[98%]">
             <div className="overflow-x-auto overflow-y-auto w-[99%] h-[80%]">
               <table className=" text-left rounded-lg ">
                 <thead className="border-b-[2px] ">
@@ -81,7 +89,7 @@ const ViewCustomer = () => {
                 </thead>
 
                 <tbody>
-                  {users?.map((item) => {
+                  {userData?.map((item) => {
                     return (
                       <tr
                         key={item.user_id}
@@ -124,6 +132,14 @@ const ViewCustomer = () => {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              data={users}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              alignRight={true}
+              buttonName={false}
+            />
           </div>
         </div>
       </div>

@@ -6,9 +6,17 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
+import Pagination from "../../app/Pagination";
 
 const ViewProduct = () => {
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const productData = products?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const getProducts = async () => {
     const response = await axios.get(`${API_URL}/products`);
@@ -55,7 +63,7 @@ const ViewProduct = () => {
               <AddCircleOutlineRoundedIcon className="mr-1" /> Add Product
             </NavLink>
           </div>
-          <div className="absolute left-4 flex justify-start bg-white mx-3 py-4 w-[98%]">
+          <div className="absolute left-4 flex flex-col justify-start bg-white mx-3 py-4 w-[98%]">
             <div className="overflow-x-auto overflow-y-auto w-[99%] h-[80%]">
               <table className="text-left rounded-lg ">
                 <thead className="border-b-[2px] ">
@@ -81,8 +89,7 @@ const ViewProduct = () => {
                 </thead>
 
                 <tbody>
-                  {products.map((item) => {
-                    const name = item.product_title?.replaceAll(" ", "_");
+                  {productData?.map((item) => {
                     return (
                       <tr
                         key={item.product_id}
@@ -130,6 +137,14 @@ const ViewProduct = () => {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              data={products}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              alignRight={true}
+              buttonName={false}
+            />
           </div>
         </div>
       </div>
