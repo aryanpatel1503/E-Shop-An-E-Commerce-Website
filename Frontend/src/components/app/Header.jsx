@@ -34,23 +34,16 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const Header = () => {
   const [categoryData, setCategoryData] = useState([]);
+  const [productData, setProductData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const { cartItems: list } = useSelector((state) => state.cart);
   const user_id = localStorage.getItem("user_id");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [searchText, setSearchText] = useState("");
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  const [searchAnchorEl, setSearchAnchorEl] = React.useState(null);
-  const openForSearch = Boolean(searchAnchorEl);
-
-  const handleClickForSearch = (event) => {
-    setSearchAnchorEl(event.currentTarget);
-  };
-  const handleCloseForSearch = () => {
-    setSearchAnchorEl(null);
-  };
 
   const navLinkStyle = ({ isActive, isPending, isTransitioning }) => {
     return {
@@ -78,14 +71,28 @@ const Header = () => {
     setCategoryData(response.data.result);
   };
 
+  const getProducts = async () => {
+    const response = await axios.get(`${API_URL}/products`);
+    setProductData(response.data.result);
+  };
+
   useEffect(() => {
     getCategory();
+    getProducts();
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_name");
     navigate("/login");
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+    const filterData = productData.filter((item) =>
+      item.product_name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredData(filterData);
   };
 
   return (
@@ -98,43 +105,43 @@ const Header = () => {
           E-Shop
         </NavLink>
 
-        {/* <div className="flex md:ml-auto md:mr-auto space-x-2">
-          <div className=" flex border border-blue-gray-200 rounded-md">
-            <Input
-              type="text"
-              placeholder="Search for products"
-              className="!border !border-blue-gray-200 border-none bg-white text-gray-900 placeholder:text-gray-500 placeholder:opacity-100 "
-              labelProps={{
-                className: "hidden",
-              }}
-            />
-          </div>
-          <Button className="flex items-center gap-1 bg-[#5093f7]">
-            <SearchOutlinedIcon fontSize="small" />
-          </Button>
-        </div> */}
-
         <div className="relative flex md:mx-auto w-full max-w-[24rem]">
           <Input
             type="search"
-            // value={email}
-            // onChange={onChange}
+            value={searchText}
+            onChange={handleSearchChange}
             placeholder="Search for products"
             labelProps={{
               className: "hidden",
             }}
             className="pr-20 !border !border-blue-gray-200 bg-white text-gray-900 placeholder:text-gray-500 placeholder:opacity-100 "
           />
-          <Button
-            size="sm"
-            color={"blue-gray"}
-            // color={email ? "gray" : "blue-gray"}
-            // disabled={!email}
-            className="!absolute right-1 top-[1.8px] rounded"
-            onClick={handleClickForSearch}
-          >
-            <SearchOutlinedIcon fontSize="small" />
-          </Button>
+          <Menu placement="bottom-end">
+            <MenuHandler>
+              <Button
+                size="sm"
+                color={"blue-gray"}
+                // color={email ? "gray" : "blue-gray"}
+                // disabled={!email}d
+                className="!absolute right-1 top-[1.8px] rounded"
+              >
+                <SearchOutlinedIcon fontSize="small" />
+              </Button>
+            </MenuHandler>
+            <MenuList>
+              {filteredData.map((item, index) => {
+                return (
+                  <MenuItem
+                    className="flex items-center gap-2"
+                    key={index}
+                    onClick={() => navigate(`/product/${item.product_id}`)}
+                  >
+                    {item.product_name}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </Menu>
         </div>
 
         <div className="flex space-x-4">
@@ -145,12 +152,6 @@ const Header = () => {
                   <div className="relative flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 shadow-md cursor-pointer">
                     <PersonOutlineIcon className="" sx={{ color: "#22262A" }} />
                   </div>
-                  {/*                   <Avatar
-                    variant="circular"
-                    alt="tania andrew"
-                    className="cursor-pointer"
-                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                  /> */}
                 </MenuHandler>
                 <MenuList>
                   <MenuItem className="flex items-center gap-2">
