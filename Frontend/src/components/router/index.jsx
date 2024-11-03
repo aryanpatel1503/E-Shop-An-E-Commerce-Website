@@ -29,6 +29,8 @@ import Report from "../admin/report";
 import Dashboard from "../admin/dashboard";
 import AdminLogin from "../admin/adminLogin";
 import "react-toastify/dist/ReactToastify.css";
+import Profile from "../pages/profile";
+import Order from "../pages/order";
 
 const Router = () => {
   const [path, setPath] = useState("/");
@@ -113,6 +115,8 @@ const Router = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/order" element={<Order />} />
 
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />

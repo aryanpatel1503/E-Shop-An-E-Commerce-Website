@@ -19,13 +19,7 @@ const ProductCard = ({ item, cardClassName }) => {
     dispatch(addToCart(product));
   };
   return (
-    <Card
-      className={
-        cardClassName
-          ? `max-w-[26rem] shadow-lg ${cardClassName}`
-          : "w-full max-w-[26rem] shadow-lg"
-      }
-    >
+    <Card className="shadow-lg">
       <CardHeader
         floated={false}
         // color="blue-gray"

@@ -104,7 +104,7 @@ const Login = () => {
               </div>
 
               {/* <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Email
                 </Typography>
                 <Controller
@@ -139,7 +139,7 @@ const Login = () => {
               </div> */}
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Password
                 </Typography>
                 <Controller

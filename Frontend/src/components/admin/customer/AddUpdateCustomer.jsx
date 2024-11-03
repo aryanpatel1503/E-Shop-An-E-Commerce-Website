@@ -100,7 +100,7 @@ const AddUpdateCustomer = () => {
       .then((response) => {
         reset((formValues) => ({
           ...formValues,
-          ...response.data[0],
+          ...response.data.result[0],
         }));
       })
       .catch(function (error) {

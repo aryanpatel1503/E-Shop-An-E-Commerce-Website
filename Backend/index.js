@@ -333,7 +333,7 @@ app.get("/category/:name", (req, res) => {
   const category = req.params.name;
 
   con.query(
-    "SELECT product.product_id, product.product_name, product.product_img, product.product_price,  product.product_desc, category.category FROM product INNER JOIN category ON product.category_id = category.category_id WHERE category.category = ?",
+    "SELECT product.*, category.category FROM product INNER JOIN category ON product.category_id = category.category_id WHERE category.category = ?",
     [category],
     (err, result) => {
       if (err) {
@@ -576,7 +576,7 @@ app.put("/products/:id", (req, res) => {
 app.get("/products/:id", (req, res) => {
   const id = req.params.id;
   con.query(
-    "SELECT * FROM product WHERE product_id = ? ",
+    "SELECT p.*, c.category FROM product p INNER JOIN category c ON p.category_id = c.category_id WHERE product_id = ? ",
     [id],
     (err, result) => {
       if (err) {
@@ -593,7 +593,7 @@ app.get("/products/:id", (req, res) => {
 // Get all Orders
 app.get("/orders", (req, res) => {
   con.query(
-    "SELECT o.*, u.user_name, p.product_name FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id ORDER BY order_id ",
+    "SELECT o.*, u.user_name, p.product_name, p.product_desc, p.product_price, p.product_img FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id ORDER BY order_id ",
     (err, result) => {
       if (err) {
         console.log(err);

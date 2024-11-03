@@ -179,7 +179,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Email
                 </Typography>
                 <Controller
@@ -214,7 +214,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Password
                 </Typography>
                 <Controller
@@ -243,7 +243,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Gender
                 </Typography>
                 <Controller
@@ -279,7 +279,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Permenent Address
                 </Typography>
                 <Controller
@@ -306,7 +306,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Permenent City
                 </Typography>
                 <Controller
@@ -334,7 +334,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Permenent State
                 </Typography>
                 <Controller
@@ -362,7 +362,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Permenent Pincode
                 </Typography>
                 <Controller
@@ -390,7 +390,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Current Address
                 </Typography>
                 <Controller
@@ -418,7 +418,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Current City
                 </Typography>
                 <Controller
@@ -446,7 +446,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Current State
                 </Typography>
                 <Controller
@@ -474,7 +474,7 @@ const SignUp = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-sm font-medium">
+                <Typography color="blue-gray" className="text-md font-medium">
                   Current Pincode
                 </Typography>
                 <Controller

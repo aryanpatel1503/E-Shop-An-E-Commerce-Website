@@ -159,7 +159,7 @@ const ProductDetail = () => {
           <h5 className="text-xl font-medium text-[#F7931E]">
             ₹{productData.product_price}
           </h5>
-          <p className="my-5">Category: SmartPhone </p>
+          <p className="my-5">Category: {productData.category} </p>
 
           <div className="flex items-center space-x-4">
             <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
