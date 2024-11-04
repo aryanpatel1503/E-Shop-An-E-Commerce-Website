@@ -1,33 +1,28 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../app/Layout";
 import {
+  Avatar,
   Button,
   Card,
-  Carousel,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
+  Carousel,
   Typography,
-  Avatar,
-  Tooltip,
-  IconButton,
-  Input,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
-import SliderComponent from "../../app/SliderComponent";
-import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import AttributionIcon from "@mui/icons-material/Attribution";
-import ProductCard from "../../app/ProductCard";
-import { useNavigate } from "react-router-dom";
-import { addToCart } from "../../redux/cartSlice";
-import { useDispatch } from "react-redux";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Layout from "../../app/Layout";
+import ProductCard from "../../app/ProductCard";
+import SliderComponent from "../../app/SliderComponent";
 import { API_URL } from "../../lib/constant";
+import heroImg1 from "../../../assets/heroImg1.png";
+import heroImg2 from "../../../assets/heroImg2.png";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 
 const Home = () => {
   const naviagate = useNavigate();
@@ -35,30 +30,18 @@ const Home = () => {
   const [productData, setProductData] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const heroData = [
     {
       title: "Spark Your Saving on Electronics",
       subtitle:
         "New Electronics Deals Added! Explore the latest discounts on Laptop, Keyboard and Smart Phone.",
-      imgUrl:
-        "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80",
+      imgUrl: heroImg1,
     },
     {
       title: "Spark Your Saving on Electronics",
       subtitle:
         "New Electronics Deals Added! Explore the latest discounts on Laptop, Keyboard and Smart Phone.",
-      imgUrl:
-        "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80",
+      imgUrl: heroImg2,
     },
   ];
 
@@ -96,8 +79,8 @@ const Home = () => {
             size="xxl"
             variant="circular"
             alt="tania andrew"
-            className="mx-auto"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            className="mx-auto object-contain rounded-full shadow-allSide p-2"
+            src={item.category_img}
           />
         </CardHeader>
         <CardBody>
@@ -109,45 +92,6 @@ const Home = () => {
             {item.category}
           </Typography>
         </CardBody>
-      </Card>
-    );
-  };
-
-  const RecommendComponent = ({ item }) => {
-    return (
-      <Card className="w-full max-w-[26rem] shadow-lg">
-        <CardHeader floated={false} color="blue-gray">
-          <img
-            src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-            alt="ui/ux review check"
-          />
-          <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-        </CardHeader>
-        <CardBody>
-          <div className="mb-3 flex items-center justify-between">
-            <Typography variant="h5" color="blue-gray" className="font-medium">
-              {item.title}
-            </Typography>
-          </div>
-          <Typography className="text-xl text-black font-medium">
-            {item.price}
-          </Typography>
-        </CardBody>
-        <CardFooter className="pt-2 flex justify-between">
-          <Button size="md" className="bg-[#F7931E]">
-            Buy Now
-          </Button>
-          <Button
-            variant="outlined"
-            size="md"
-            className="text-[#F7931E] border-[#F7931E]"
-            onClick={() => {
-              addItem(item);
-            }}
-          >
-            Add To Cart
-          </Button>
-        </CardFooter>
       </Card>
     );
   };
@@ -171,16 +115,41 @@ const Home = () => {
     <Layout>
       {/* Hero Section */}
       <Carousel
-        autoplay={false}
+        autoplay={true}
+        autoplayDelay={3000}
         loop={true}
         className="rounded-xl mt-10"
+        prevArrow={({ handlePrev }) => (
+          <IconButton
+            variant="text"
+            color="white"
+            size="lg"
+            onClick={handlePrev}
+            className="!absolute top-2/4 left-4 -translate-y-2/4"
+          >
+            <ChevronLeft fontSize="large" />
+          </IconButton>
+        )}
+        nextArrow={({ handleNext }) => (
+          <IconButton
+            variant="text"
+            color="white"
+            size="lg"
+            onClick={handleNext}
+            className="!absolute top-2/4 !right-4 -translate-y-2/4"
+          >
+            <ChevronRight fontSize="large" />
+          </IconButton>
+        )}
         navigation={({ setActiveIndex, activeIndex, length }) => (
           <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
             {new Array(length).fill("").map((_, i) => (
               <span
                 key={i}
                 className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                  activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                  activeIndex === i
+                    ? "w-8 bg-black"
+                    : "w-4 bg-blue-gray-300  /50"
                 }`}
                 onClick={() => setActiveIndex(i)}
               />
@@ -200,7 +169,7 @@ const Home = () => {
 
                 <Button
                   variant="text"
-                  className="flex items-center gap-2 self-start bg-[#F7931E] text-white"
+                  className="flex items-center gap-2 self-start bg-[#F7931E] text-white hover:bg-[#ff9e2f]"
                   onClick={() => naviagate("/products/laptop")}
                 >
                   Shop Now{" "}
@@ -223,7 +192,7 @@ const Home = () => {
               <img
                 src={item.imgUrl}
                 alt="image 1"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             </div>
           );
@@ -246,7 +215,10 @@ const Home = () => {
           Recommend for you
         </h3>
 
-        <SliderComponent data={productData} Component={ProductCard} />
+        <SliderComponent
+          data={productData.filter((item, index) => index <= 12)}
+          Component={ProductCard}
+        />
       </div>
 
       <div className="my-20 flex">

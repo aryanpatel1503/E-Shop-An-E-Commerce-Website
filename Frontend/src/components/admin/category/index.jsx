@@ -67,25 +67,29 @@ const ViewCategory = () => {
           <div className="flex justify-center bg-white mx-3 py-4">
             <table className="w-[95%] text-left rounded-lg ">
               <thead className="border-b-[2px] ">
-                <tr className="grid grid-cols-3">
+                <tr className="grid grid-cols-4">
                   <th className=" px-3 py-4">ID</th>
                   <th className=" px-3 py-4">Category</th>
+                  <th className=" px-3 py-4">Image</th>
                   <th className="px-3 py-4">Action</th>
                 </tr>
               </thead>
 
               <tbody>
-                {categoryData?.map((curVal) => {
+                {categoryData?.map((item) => {
                   return (
                     <tr
-                      key={curVal.category_id}
-                      className="grid grid-cols-3 border-b-[1px] text-gray-500 items-center"
+                      key={item.category_id}
+                      className="grid grid-cols-4 border-b-[1px] text-gray-500 items-center"
                     >
-                      <td className="px-3 py-3">{curVal.category_id}</td>
-                      <td className="px-3 py-3">{curVal.category}</td>
+                      <td className="px-3 py-3">{item.category_id}</td>
+                      <td className="px-3 py-3">{item.category}</td>
+                      <td className="px-3 py-3">
+                        <img src={item.category_img} alt="" className="w-16" />
+                      </td>
                       <td className="px-3 py-3 flex items-center">
                         <NavLink
-                          to={`/admin/editcategory/${curVal.category_id}`}
+                          to={`/admin/editcategory/${item.category_id}`}
                           className="px-4 py-2 mr-1 outline outline-1 outline-green-500 text-green-500 hover:bg-green-500 hover:text-white  rounded-md"
                         >
                           <EditRoundedIcon /> Edit
@@ -93,7 +97,7 @@ const ViewCategory = () => {
                         <NavLink
                           to=""
                           className="px-4 py-2 bg-red-500 hover:bg-black text-white rounded-md"
-                          onClick={() => deleteCategory(curVal.category_id)}
+                          onClick={() => deleteCategory(item.category_id)}
                         >
                           <DeleteRoundedIcon />
                           Delete

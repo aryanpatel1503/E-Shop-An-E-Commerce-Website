@@ -47,6 +47,7 @@ const AddUpdateProduct = () => {
   const val = name?.replaceAll("_", " ");
 
   const [categoryAll, setCategoryAll] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -55,8 +56,14 @@ const AddUpdateProduct = () => {
     setCategoryAll(response.data.result);
   };
 
+  const getUsers = async () => {
+    const response = await axios.get(`${API_URL}/users`);
+    setUsers(response.data.result);
+  };
+
   useEffect(() => {
     getCategory();
+    getUsers();
   }, []);
 
   const imgUpload = async (e, onChange) => {
@@ -96,7 +103,20 @@ const AddUpdateProduct = () => {
           toast.success(response.data.message || "Product added Successfully", {
             position: "top-center",
           });
-          navigate("/admin/viewproduct");
+
+          axios
+            .post(`${API_URL}/send-email`, {
+              email: users.map((item) => item.user_email),
+              product: values.product_name,
+              image: values.product_img,
+            })
+            .then((response) => {
+              navigate("/admin/viewproduct");
+              console.log("Email sent successfully:", response.data);
+            })
+            .catch((error) => {
+              console.error("Error sending email:", error);
+            });
         })
         .catch((err) => {
           toast.error(err.response.data.message, {

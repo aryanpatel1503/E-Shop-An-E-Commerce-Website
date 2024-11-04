@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const { sendEmail } = require("./EmailService");
 // const path = require("path");
 
 const app = express();
@@ -864,9 +865,10 @@ app.get("/getCategory/:id", (req, res) => {
 // Add Category
 app.post("/category/add", (req, res) => {
   const category = req.body.category;
+  const category_img = req.body.category_img;
   con.query(
-    "INSERT INTO category (category) values (?)",
-    [category],
+    "INSERT INTO category (category, category_img) values (?, ?)",
+    [category, category_img],
     (err, result) => {
       if (err) {
         res.status(400);
@@ -883,11 +885,13 @@ app.post("/category/add", (req, res) => {
 app.put("/category/:id", (req, res) => {
   const id = req.params.id;
   const category = req.body.category;
+  const category_img = req.body.category_img;
   con.query(
-    "UPDATE category SET category = ? WHERE category_id = ?",
-    [category, id],
+    "UPDATE category SET category = ?, category_img = ? WHERE category_id = ?",
+    [category, category_img, id],
     (err, result) => {
       if (err) {
+        console.log(err);
         res.status(400);
         res.send({ message: "An error occurred!" });
       } else {
@@ -931,6 +935,23 @@ app.get("/counts", (req, res) => {
       }
     }
   );
+});
+
+// Endpoint to trigger email notifications
+app.post("/send-email", async (req, res) => {
+  const { email, product, image } = req.body;
+
+  try {
+    await sendEmail({
+      recipients: email,
+      subject: "New Product Added",
+      text: `The product "${product}" has been added.`,
+      image,
+    });
+    res.status(200).send("Email sent successfully");
+  } catch (error) {
+    res.status(500).send("Error sending email");
+  }
 });
 
 app.listen(3001, () => {

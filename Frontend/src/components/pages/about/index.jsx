@@ -8,6 +8,7 @@ import {
   CardFooter,
   Typography,
 } from "@material-tailwind/react";
+import aboutImg from "../../../assets/about_us_img.jpg";
 
 const About = () => {
   const aboutUsData = [
@@ -26,15 +27,22 @@ const About = () => {
   ];
   return (
     <Layout>
-      <div className=" flex flex-col justify-center items-center text-black h-64">
-        <h2 className="text-5xl font-medium mb-4">About Us</h2>
+      <div
+        className=" flex flex-col justify-center items-end pr-10 text-white h-64 my-12 rounded-md"
+        style={{
+          backgroundImage: `url(${aboutImg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <h2 className="text-5xl font-medium mb-4 text-left">About Us</h2>
         <p className="text-xl">We care for the User and we love it</p>
       </div>
 
-      <div className="flex">
+      <div className="flex gap-4">
         {aboutUsData.map((item) => {
           return (
-            <Card className="mt-6 w-4/12 shadow-none">
+            <Card className="mt-6 w-4/12 shadow-allSide" shadow={false}>
               <CardBody className="text-center">
                 <Typography
                   variant="h3"
