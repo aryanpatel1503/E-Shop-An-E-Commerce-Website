@@ -7,6 +7,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 import Pagination from "../../app/Pagination";
+import AdminLayout from "../AdminLayout";
 
 function Icon({ id, open }) {
   return (
@@ -85,8 +86,8 @@ const Report = () => {
   }, []);
 
   return (
-    <div className="py-4 sm:ml-64">
-      <div className="mt-10">
+    <AdminLayout>
+      <div className="">
         <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
           <h3 className="text-2xl font-medium font-serif text-blue-500">
             Report
@@ -293,7 +294,7 @@ const Report = () => {
           </Accordion>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

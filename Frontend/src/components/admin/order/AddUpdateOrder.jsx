@@ -16,6 +16,7 @@ import { borderForField } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
+import AdminLayout from "../AdminLayout";
 
 const AddUpdateOrder = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -29,6 +30,7 @@ const AddUpdateOrder = () => {
     order_mobile: "",
     order_email: "",
     order_pincode: "",
+    order_status: "pending",
     shipping_method: "cash on delivery",
     product_id: "",
     user_id: "",
@@ -125,8 +127,8 @@ const AddUpdateOrder = () => {
   }, []);
 
   return (
-    <div className="py-4 sm:ml-64">
-      <div className="mt-10">
+    <AdminLayout>
+      <div className="">
         <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
           <h3 className="text-2xl font-medium font-serif text-blue-500">
             {name ? "Edit Order" : "Add Order"}
@@ -380,6 +382,44 @@ const AddUpdateOrder = () => {
                     className="text-md font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
+                    Order Status
+                  </Typography>
+                  <Controller
+                    name="order_status"
+                    control={control}
+                    rules={{ required: "Order status is required" }}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        placeholder="Select order status"
+                        className={borderForField(errors.order_status)}
+                        inputProps={{ "aria-label": "Without label" }}
+                        fullWidth={true}
+                        sx={{ height: 45 }}
+                        error={errors.order_status}
+                      >
+                        <MenuItem value="pending">Pending</MenuItem>
+                        <MenuItem value="shipped">Shipped</MenuItem>
+                        <MenuItem value="out for delivery">
+                          Out For Delivery
+                        </MenuItem>
+                        <MenuItem value="delivered">Delivered</MenuItem>
+                      </Select>
+                    )}
+                  />
+                  {errors.order_status && (
+                    <Typography color="red" className="text-md font-medium">
+                      {errors.order_status.message}
+                    </Typography>
+                  )}
+                </div>
+
+                <div>
+                  <Typography
+                    color="blue-gray"
+                    className="text-md font-semibold"
+                  >
+                    <span className="text-red-500 font-semibold mr-1">*</span>
                     Shipping Method
                   </Typography>
                   <Controller
@@ -507,7 +547,7 @@ const AddUpdateOrder = () => {
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

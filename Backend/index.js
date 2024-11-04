@@ -626,19 +626,22 @@ app.get("/orders/count", (req, res) => {
 
 // Add Order
 app.post("/orders/add", (req, res) => {
-  const order_name = req.body.order_name;
-  const order_address = req.body.order_address;
-  const order_city = req.body.order_city;
-  const order_state = req.body.order_state;
-  const order_mobile = req.body.order_mobile;
-  const order_email = req.body.order_email;
-  const order_pincode = req.body.order_pincode;
-  const shipping_method = req.body.shipping_method;
-  const product_id = req.body.product_id;
-  const user_id = req.body.user_id;
+  const {
+    order_name,
+    order_address,
+    order_city,
+    order_state,
+    order_mobile,
+    order_email,
+    order_pincode,
+    order_status,
+    shipping_method,
+    product_id,
+    user_id,
+  } = req.body;
 
   con.query(
-    "INSERT INTO orders (order_name, order_address, order_city, order_state, order_mobile, order_email, order_pincode, shipping_method, product_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO orders (order_name, order_address, order_city, order_state, order_mobile, order_email, order_pincode, order_status, shipping_method, product_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       order_name,
       order_address,
@@ -647,6 +650,7 @@ app.post("/orders/add", (req, res) => {
       order_mobile,
       order_email,
       order_pincode,
+      order_status,
       shipping_method,
       product_id,
       user_id,
@@ -682,19 +686,22 @@ app.delete("/orders/:id", (req, res) => {
 
 app.put("/orders/:id", (req, res) => {
   const id = req.params.id;
-  const order_name = req.body.order_name;
-  const order_address = req.body.order_address;
-  const order_city = req.body.order_city;
-  const order_state = req.body.order_state;
-  const order_mobile = req.body.order_mobile;
-  const order_email = req.body.order_email;
-  const order_pincode = req.body.order_pincode;
-  const shipping_method = req.body.shipping_method;
-  const product_id = req.body.product_id;
-  const user_id = req.body.user_id;
+  const {
+    order_name,
+    order_address,
+    order_city,
+    order_state,
+    order_mobile,
+    order_email,
+    order_pincode,
+    order_status,
+    shipping_method,
+    product_id,
+    user_id,
+  } = req.body;
 
   con.query(
-    "UPDATE orders SET order_name = ?, order_address = ?, order_city = ?, order_state = ?, order_mobile = ?, order_email = ?, order_pincode = ?, shipping_method = ?, product_id = ?, user_id = ? WHERE order_id = ? ",
+    "UPDATE orders SET order_name = ?, order_address = ?, order_city = ?, order_state = ?, order_mobile = ?, order_email = ?, order_pincode = ?, order_status = ?, shipping_method = ?, product_id = ?, user_id = ? WHERE order_id = ? ",
     [
       order_name,
       order_address,
@@ -703,6 +710,7 @@ app.put("/orders/:id", (req, res) => {
       order_mobile,
       order_email,
       order_pincode,
+      order_status,
       shipping_method,
       product_id,
       user_id,

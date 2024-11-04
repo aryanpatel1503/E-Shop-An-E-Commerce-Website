@@ -15,7 +15,6 @@ import Login from "../pages/login";
 import SignUp from "../pages/signUp";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
-import Sidebar from "../admin/Sidebar";
 import ViewCustomer from "../admin/customer";
 import AddUpdateCustomer from "../admin/customer/AddUpdateCustomer";
 import ViewProduct from "../admin/product";
@@ -31,10 +30,12 @@ import AdminLogin from "../admin/adminLogin";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from "../pages/profile";
 import Order from "../pages/order";
+import { PrivateRoute } from "../app/PrivateRoute";
 
 const Router = () => {
   const [path, setPath] = useState("/");
   const [login, setLogin] = useState(false);
+  const islogin = localStorage.getItem("adminData");
 
   useEffect(() => {
     setPath(window.location.pathname);
@@ -44,88 +45,62 @@ const Router = () => {
     <>
       {path.includes("admin") ? (
         <>
-          <BrowserRouter>
-            {login ? (
-              <>
-                <Sidebar setLogin={setLogin} />
-                <Routes>
-                  <Route path="/admin" element={<AdminLogin />} />
-                  <Route path="/admin/dashboard" element={<Dashboard />} />
-                  <Route path="/admin/viewuser" element={<ViewCustomer />} />
-                  <Route
-                    path="/admin/adduser"
-                    element={<AddUpdateCustomer />}
-                  />
-                  <Route
-                    path="/admin/edituser/:name"
-                    element={<AddUpdateCustomer />}
-                  />
-                  <Route path="/admin/viewproduct" element={<ViewProduct />} />
-                  <Route
-                    path="/admin/addproduct"
-                    element={<AddUpdateProduct />}
-                  />
-                  <Route
-                    path="/admin/editproduct/:name"
-                    element={<AddUpdateProduct />}
-                  />
-                  <Route
-                    path="/admin/viewcategory"
-                    element={<ViewCategory />}
-                  />
-                  <Route
-                    path="/admin/addcategory"
-                    element={<AddUpdateCategory />}
-                  />
-                  <Route
-                    path="/admin/editcategory/:name"
-                    element={<AddUpdateCategory />}
-                  />
-                  <Route path="/admin/vieworder" element={<ViewOrder />} />
-                  <Route path="/admin/addorder" element={<AddUpdateOrder />} />
-                  <Route
-                    path="/admin/editorder/:name"
-                    element={<AddUpdateOrder />}
-                  />
-                  <Route
-                    path="/admin/viewfeedback"
-                    element={<ViewFeedback />}
-                  />
-                  <Route path="/admin/report" element={<Report />} />
-                </Routes>
-                <ToastContainer />
-              </>
-            ) : (
-              <>
-                <AdminLogin setLogin={setLogin} />
-                <ToastContainer />
-              </>
-            )}
-          </BrowserRouter>
+          <Routes>
+            <Route element={<PrivateRoute islogin={login || islogin} />}>
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/viewuser" element={<ViewCustomer />} />
+              <Route path="/admin/adduser" element={<AddUpdateCustomer />} />
+              <Route
+                path="/admin/edituser/:name"
+                element={<AddUpdateCustomer />}
+              />
+              <Route path="/admin/viewproduct" element={<ViewProduct />} />
+              <Route path="/admin/addproduct" element={<AddUpdateProduct />} />
+              <Route
+                path="/admin/editproduct/:name"
+                element={<AddUpdateProduct />}
+              />
+              <Route path="/admin/viewcategory" element={<ViewCategory />} />
+              <Route
+                path="/admin/addcategory"
+                element={<AddUpdateCategory />}
+              />
+              <Route
+                path="/admin/editcategory/:name"
+                element={<AddUpdateCategory />}
+              />
+              <Route path="/admin/vieworder" element={<ViewOrder />} />
+              <Route path="/admin/addorder" element={<AddUpdateOrder />} />
+              <Route
+                path="/admin/editorder/:name"
+                element={<AddUpdateOrder />}
+              />
+              <Route path="/admin/viewfeedback" element={<ViewFeedback />} />
+              <Route path="/admin/report" element={<Report />} />
+            </Route>
+            <Route path="/admin" element={<AdminLogin setLogin={setLogin} />} />
+          </Routes>
+          <ToastContainer />
         </>
       ) : (
         <>
-          <BrowserRouter>
-            {/* <Navbar /> */}
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products/:name" element={<Product />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/order" element={<Order />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products/:name" element={<Product />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/order" element={<Order />} />
 
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
 
-              <Route path="*" element={<Home />} />
-            </Routes>
-            <ToastContainer />
-            {/* <Footer /> */}
-          </BrowserRouter>
+            <Route path="*" element={<Home />} />
+          </Routes>
+          <ToastContainer />
         </>
       )}
     </>

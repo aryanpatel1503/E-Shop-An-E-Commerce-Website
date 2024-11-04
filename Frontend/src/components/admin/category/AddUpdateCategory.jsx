@@ -7,6 +7,7 @@ import { borderForField, getBase64 } from "../../lib/commonFunctions";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
+import AdminLayout from "../AdminLayout";
 
 const AddUpdateCategory = () => {
   const defaultValues = {
@@ -103,105 +104,103 @@ const AddUpdateCategory = () => {
   }, [name]);
 
   return (
-    <>
-      <div className="py-4 sm:ml-64">
-        <div className="mt-10">
-          <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
-            <h3 className="text-2xl font-medium font-serif text-blue-500">
-              {name ? "Edit Category" : "Add Category"}
-            </h3>
-            <NavLink
-              to="/admin/viewcategory"
-              className="px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              <ArrowBackRoundedIcon className="mr-1" />
-              Back
-            </NavLink>
-          </div>
-          <div className="flex justify-center">
-            <div className="w-8/12 bg-white rounded-md ">
-              <form className="w-11/12  flex flex-col items-center my-10">
-                <div className="w-full space-y-4">
-                  <div className="w-full">
-                    <Typography
-                      color="blue-gray"
-                      className="text-md font-semibold"
-                    >
-                      <span className="text-red-500 font-semibold mr-1">*</span>
-                      Category Name
-                    </Typography>
-                    <Controller
-                      name="category"
-                      control={control}
-                      rules={{ required: "Category name is required" }}
-                      render={({ field: { onChange, value } }) => (
-                        <Input
-                          size="lg"
-                          placeholder="Category"
-                          onChange={onChange}
-                          value={value}
-                          className={borderForField(errors.category)}
-                          labelProps={{
-                            className: "before:content-none after:content-none",
-                          }}
-                          error={errors.category}
-                        />
-                      )}
-                    />
-                    {errors.category && (
-                      <Typography color="red" className="text-md font-medium">
-                        {errors.category.message}
-                      </Typography>
-                    )}
-                  </div>
-
-                  <div className="w-full">
-                    <Typography
-                      color="blue-gray"
-                      className="text-md font-semibold"
-                    >
-                      <span className="text-red-500 font-semibold mr-1">*</span>
-                      Image
-                    </Typography>
-                    <Controller
-                      name="category_img"
-                      control={control}
-                      rules={{ required: "Image is required" }}
-                      render={({ field: { onChange, value } }) => (
-                        <input
-                          type="file"
-                          name="category_img"
-                          onChange={(e) => imgUpload(e, onChange)}
-                          placeholder="Image"
-                          className="w-full px-3 py-3 border rounded-md"
-                          required
-                        />
-                      )}
-                    />
-                    {errors.category_img && (
-                      <Typography color="red" className="text-md font-medium">
-                        {errors.category_img.message}
-                      </Typography>
-                    )}
-                  </div>
-
-                  <Button
-                    variant="filled"
-                    className="mt-8 bg-green-500 text-white 
-               text-md font-medium rounded-md hover:bg-green-600 capitalize"
-                    fullWidth
-                    type="submit"
-                    onClick={handleAddCategory}
+    <AdminLayout>
+      <div className="">
+        <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
+          <h3 className="text-2xl font-medium font-serif text-blue-500">
+            {name ? "Edit Category" : "Add Category"}
+          </h3>
+          <NavLink
+            to="/admin/viewcategory"
+            className="px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            <ArrowBackRoundedIcon className="mr-1" />
+            Back
+          </NavLink>
+        </div>
+        <div className="flex justify-center">
+          <div className="w-8/12 bg-white rounded-md ">
+            <form className="w-11/12  flex flex-col items-center my-10">
+              <div className="w-full space-y-4">
+                <div className="w-full">
+                  <Typography
+                    color="blue-gray"
+                    className="text-md font-semibold"
                   >
-                    {name ? "Update Category" : "Add Category"}
-                  </Button>
+                    <span className="text-red-500 font-semibold mr-1">*</span>
+                    Category Name
+                  </Typography>
+                  <Controller
+                    name="category"
+                    control={control}
+                    rules={{ required: "Category name is required" }}
+                    render={({ field: { onChange, value } }) => (
+                      <Input
+                        size="lg"
+                        placeholder="Category"
+                        onChange={onChange}
+                        value={value}
+                        className={borderForField(errors.category)}
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                        error={errors.category}
+                      />
+                    )}
+                  />
+                  {errors.category && (
+                    <Typography color="red" className="text-md font-medium">
+                      {errors.category.message}
+                    </Typography>
+                  )}
                 </div>
-              </form>
-            </div>
+
+                <div className="w-full">
+                  <Typography
+                    color="blue-gray"
+                    className="text-md font-semibold"
+                  >
+                    <span className="text-red-500 font-semibold mr-1">*</span>
+                    Image
+                  </Typography>
+                  <Controller
+                    name="category_img"
+                    control={control}
+                    rules={{ required: "Image is required" }}
+                    render={({ field: { onChange, value } }) => (
+                      <input
+                        type="file"
+                        name="category_img"
+                        onChange={(e) => imgUpload(e, onChange)}
+                        placeholder="Image"
+                        className="w-full px-3 py-3 border rounded-md"
+                        required
+                      />
+                    )}
+                  />
+                  {errors.category_img && (
+                    <Typography color="red" className="text-md font-medium">
+                      {errors.category_img.message}
+                    </Typography>
+                  )}
+                </div>
+
+                <Button
+                  variant="filled"
+                  className="mt-8 bg-green-500 text-white 
+               text-md font-medium rounded-md hover:bg-green-600 capitalize"
+                  fullWidth
+                  type="submit"
+                  onClick={handleAddCategory}
+                >
+                  {name ? "Update Category" : "Add Category"}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </>
+    </AdminLayout>
   );
 };
 

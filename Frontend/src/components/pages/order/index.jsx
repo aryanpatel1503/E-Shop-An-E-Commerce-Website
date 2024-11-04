@@ -7,6 +7,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Chip,
   Typography,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +15,17 @@ import { useNavigate } from "react-router-dom";
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+
+  const getStatusColor = (status) => {
+    if (status === "delivered") {
+      return "green";
+    } else if (status === "out for delivery") {
+      return "teal";
+    } else if (status === "shipped") {
+      return "cyan";
+    }
+    return "yellow";
+  };
 
   const getOrders = async () => {
     const response = await axios.get(`${API_URL}/orders`);
@@ -46,19 +58,29 @@ const Order = () => {
                   onClick={() => navigate(`/product/${item.product_id}`)}
                 />
               </CardHeader>
-              <CardBody>
+              <CardBody className="flex flex-col">
                 <Typography
                   color="blue-gray"
                   className="mb-2 text-2xl font-medium"
                 >
                   {item.product_name}
                 </Typography>
-                <Typography color="gray" className="mb-8 text-md font-normal">
+                <Typography color="gray" className="text-md font-normal">
                   {item.product_desc}
                 </Typography>
-                <Typography color="blue-gray" className="text-lg font-medium">
+                <Typography
+                  color="blue-gray"
+                  className="my-4 text-lg font-medium"
+                >
                   ₹{item.product_price}
                 </Typography>
+                <Chip
+                  variant="ghost"
+                  color={getStatusColor(item.order_status)}
+                  size="sm"
+                  value={item.order_status}
+                  className="self-start"
+                />
               </CardBody>
             </Card>
           );

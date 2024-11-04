@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm, Controller } from "react-hook-form";
 import loginimg from "../../../assets/login1.png";
@@ -25,6 +25,7 @@ const AdminLogin = ({ setLogin }) => {
     formState: { errors },
   } = useForm({ defaultValues });
   const navigate = useNavigate();
+  const islogin = localStorage.getItem("adminData");
 
   const onSubmitData = (values) => {
     axios
@@ -33,15 +34,14 @@ const AdminLogin = ({ setLogin }) => {
       })
       .then((response) => {
         if (response.status === 200) {
-          if (setLogin) {
-            setLogin(true);
-          }
           localStorage.setItem(
             "adminData",
             JSON.stringify(response.data.result[0])
           );
-
-          navigate("/admin/dashboard");
+          if (setLogin) {
+            setLogin(true);
+            navigate("/admin/dashboard");
+          }
         }
       })
       .catch((err) => {
@@ -60,8 +60,12 @@ const AdminLogin = ({ setLogin }) => {
   };
 
   useEffect(() => {
-    localStorage.removeItem("adminData");
+    // localStorage.removeItem("adminData");
   }, []);
+
+  if (islogin) {
+    return <Navigate to="/admin/dashboard" />;
+  }
 
   return (
     <div

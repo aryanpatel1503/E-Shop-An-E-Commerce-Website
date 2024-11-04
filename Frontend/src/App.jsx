@@ -8,7 +8,10 @@ const App = () => {
   return (
     <>
       {/* <RouterProvider router={router} /> */}
-      <Router />
+
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </>
   );
 };

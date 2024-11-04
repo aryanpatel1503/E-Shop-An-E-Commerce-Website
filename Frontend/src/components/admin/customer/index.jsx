@@ -7,6 +7,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import { toast } from "react-toastify";
 import Pagination from "../../app/Pagination";
+import AdminLayout from "../AdminLayout";
 
 const ViewCustomer = () => {
   const [users, setUsers] = useState([]);
@@ -51,9 +52,9 @@ const ViewCustomer = () => {
 
   return (
     <>
-      <div className="py-4 sm:ml-64 relative w-[82.1%]">
-        <div className="mt-10">
-          <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
+      <AdminLayout>
+        <div className="">
+          <div className="h-20 flex justify-between items-center mb-2 px-3 bg-blue-100">
             <h3 className="text-2xl font-medium font-serif text-blue-500">
               Customer Details
             </h3>
@@ -64,8 +65,8 @@ const ViewCustomer = () => {
               <AddCircleOutlineRoundedIcon className="mr-1" /> Add Customer
             </NavLink>
           </div>
-          <div className="absolute left-4 flex flex-col justify-start bg-white mx-3 py-4 w-[98%]">
-            <div className="overflow-x-auto overflow-y-auto w-[99%] h-[80%]">
+          <div className="bg-white py-4 flex flex-col items-center">
+            <div className="overflow-x-auto h-[80%] w-[98%]">
               <table className=" text-left rounded-lg ">
                 <thead className="border-b-[2px] ">
                   <tr className="">
@@ -132,17 +133,19 @@ const ViewCustomer = () => {
                 </tbody>
               </table>
             </div>
-            <Pagination
-              data={users}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              alignRight={true}
-              buttonName={false}
-            />
+            <div className="mb-10 flex justify-end w-[98%]">
+              <Pagination
+                data={users}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                alignRight={true}
+                buttonName={false}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </AdminLayout>
     </>
   );
 };
