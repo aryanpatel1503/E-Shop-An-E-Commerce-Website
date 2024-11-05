@@ -23,6 +23,7 @@ const Checkout = () => {
     order_mobile: "",
     order_email: "",
     order_pincode: "",
+    order_status: "pending",
     shipping_method: "cash on delivery",
     product_id: state?.id,
     user_id: user_id,
@@ -101,6 +102,10 @@ const Checkout = () => {
   const handleConfirmOrder = (e) => {
     e.preventDefault();
     handleSubmit(onSubmit, onSubmitError)();
+  };
+
+  const handleCancelOrder = () => {
+    navigate(-1);
   };
 
   return (
@@ -268,16 +273,33 @@ const Checkout = () => {
           <p className="text-green-600 font-semibold mb-6">Cash On Delivery</p>
 
           <hr className="my-8 border-[1.3px] border-gray-300" />
-          <h2 className="text-2xl font-bold mb-4">Billing Info</h2>
-          <p className="text-green-600 font-semibold mb-6">
-            Total: ₹{productData.product_price}
-          </p>
+          <h2 className="text-2xl font-bold">Billing Info</h2>
+          <div className="space-y-4 w-4/12 mt-4 mb-10">
+            <div className="flex justify-between text-lg">
+              <p className="text-green-600 font-semibold">Subtotal</p>
+              <p className="text-green-600 font-semibold">
+                ₹{productData.product_price}
+              </p>
+            </div>
+            <div className="flex justify-between text-lg">
+              <p className="text-green-600 font-semibold">Delivery Charges</p>
+              <p className="text-green-600 font-semibold">₹0.00</p>
+            </div>
+            <hr className="border-[1.3px] border-gray-300" />
+            <div className="flex justify-between text-xl">
+              <p className="text-green-600 font-semibold">Total Payable</p>
+              <p className="text-green-600 font-semibold">
+                ₹{productData.product_price}
+              </p>
+            </div>
+          </div>
 
           <div className="flex justify-between">
             <Button
               variant="outlined"
               size="md"
               className="text-red-600 border-red-600"
+              onClick={handleCancelOrder}
             >
               Cancel Order
             </Button>

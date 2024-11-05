@@ -1,25 +1,24 @@
-const http = require("http");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "patelaryankumar123@gmail.com",
-    pass: "zobd oovy mejj zmpw",
+    user: "eshop9231@gmail.com",
+    pass: "hchq mrow ilwt alax",
   },
-  logger: true,
-  debug: true,
+  // logger: true,
+  // debug: true,
 });
 
 const sendEmail = async ({ to, recipients, subject, text, image }) => {
   const mailOptions = {
-    from: "patelaryankumar123@gmail.com",
+    from: "eshop9231@gmail.com",
     bcc: recipients.join(", "),
     subject: subject,
     html: `
     <h2>${subject}</h2>
     <p>${text}</p>
-    <img src="cid:product-image.jpg" alt="Product Image" style="width:300px;" />
+    <img src="cid:product-image.jpg" alt="Product Image" style="height:300px; object-fit: contain;" />
   `,
 
     attachments: [

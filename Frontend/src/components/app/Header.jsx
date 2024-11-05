@@ -129,17 +129,23 @@ const Header = () => {
               </Button>
             </MenuHandler>
             <MenuList>
-              {filteredData?.map((item, index) => {
-                return (
-                  <MenuItem
-                    className="flex items-center gap-2"
-                    key={index}
-                    onClick={() => navigate(`/product/${item.product_id}`)}
-                  >
-                    {item.product_name}
-                  </MenuItem>
-                );
-              })}
+              {filteredData?.length > 0 ? (
+                filteredData?.map((item, index) => {
+                  return (
+                    <MenuItem
+                      className="flex items-center gap-2"
+                      key={index}
+                      onClick={() => navigate(`/product/${item.product_id}`)}
+                    >
+                      {item.product_name}
+                    </MenuItem>
+                  );
+                })
+              ) : (
+                <MenuItem className="flex items-center">
+                  No Records found
+                </MenuItem>
+              )}
             </MenuList>
           </Menu>
         </div>
