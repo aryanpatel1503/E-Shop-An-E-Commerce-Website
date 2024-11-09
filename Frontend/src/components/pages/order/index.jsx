@@ -19,8 +19,6 @@ const Order = () => {
   const getStatusColor = (status) => {
     if (status === "delivered") {
       return "green";
-    } else if (status === "out for delivery") {
-      return "teal";
     } else if (status === "shipped") {
       return "cyan";
     }

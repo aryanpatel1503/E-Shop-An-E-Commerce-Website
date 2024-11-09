@@ -101,7 +101,11 @@ const Checkout = () => {
 
   const handleConfirmOrder = (e) => {
     e.preventDefault();
-    handleSubmit(onSubmit, onSubmitError)();
+    if (user_id) {
+      handleSubmit(onSubmit, onSubmitError)();
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleCancelOrder = () => {

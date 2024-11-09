@@ -59,35 +59,13 @@ const ProductDetail = () => {
     dispatch(addToCart(productData));
   };
 
-  const TABLE_HEAD = ["Name", "Job", "Employed", ""];
-
-  const TABLE_ROWS = [
-    {
-      name: "John Michael",
-      job: "Manager",
-      date: "23/04/18",
-    },
-    {
-      name: "Alexa Liras",
-      job: "Developer",
-      date: "23/04/18",
-    },
-    {
-      name: "Laurent Perrier",
-      job: "Executive",
-      date: "19/09/17",
-    },
-    {
-      name: "Michael Levi",
-      job: "Developer",
-      date: "24/12/08",
-    },
-    {
-      name: "Richard Gran",
-      job: "Manager",
-      date: "04/10/21",
-    },
-  ];
+  const handleBuyNow = () => {
+    if (user_id) {
+      navigate("/checkout", { state: { id: productData.product_id } });
+    } else {
+      navigate("/login");
+    }
+  };
 
   const onSubmitData = (values) => {
     axios
@@ -187,9 +165,7 @@ const ProductDetail = () => {
             </Button>
             <Button
               variant="outlined"
-              onClick={() =>
-                navigate("/checkout", { state: { id: productData.product_id } })
-              }
+              onClick={handleBuyNow}
               className="flex items-center border-2 border-[#F7931E]  text-[#F7931E] px-6 py-3.5 rounded-full hover:bg-[#f7921ee6] hover:text-white focus:outline-none focus:ring-0"
             >
               Buy Now

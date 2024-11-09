@@ -1,6 +1,6 @@
 export const borderForField = (error) => {
   if (error) {
-    return `border-t-red-600 focus:!border-[#5479F7] `;
+    return `!border-t-red-600 focus:!border-[#5479F7] `;
   } else {
     return `!border-t-blue-gray-200 focus:!border-[#5479F7]`;
   }

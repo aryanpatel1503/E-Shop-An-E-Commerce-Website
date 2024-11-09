@@ -78,11 +78,11 @@ const SignUp = () => {
         background: "linear-gradient(to top, #198754 0%, #6c757d 100%)",
       }}
     >
-      <div className="w-full md:w-1/2 lg:w-1/3 flex justify-center h-[90%] bg-white shadow-lg rounded-tl-lg rounded-bl-lg">
+      <div className="w-full md:w-1/2 lg:w-1/3 flex justify-center items-center h-[90%] bg-white shadow-lg rounded-tl-lg rounded-bl-lg">
         <img
           src={loginimg}
           alt="login"
-          className="object-scale-down rounded-lg"
+          className="object-contain h-[85%] rounded-lg"
         />
       </div>
       <div className="w-full md:w-1/2 lg:w-1/3 h-[90%] overflow-y-auto bg-[#f5f5f5] shadow-lg rounded-tr-lg rounded-br-lg px-7 py-4">

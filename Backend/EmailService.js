@@ -10,16 +10,35 @@ const transporter = nodemailer.createTransport({
   // debug: true,
 });
 
-const sendEmail = async ({ to, recipients, subject, text, image }) => {
+const sendEmail = async ({
+  to,
+  recipients,
+  product,
+  price,
+  subject,
+  text,
+  image,
+}) => {
   const mailOptions = {
     from: "eshop9231@gmail.com",
     bcc: recipients.join(", "),
     subject: subject,
     html: `
-    <h2>${subject}</h2>
-    <p>${text}</p>
-    <img src="cid:product-image.jpg" alt="Product Image" style="height:300px; object-fit: contain;" />
-  `,
+      <div>
+        <h2>${text}</h2>
+        <div style="display: flex;">
+          <div style="padding: 2px;">
+            <img src="cid:product-image.jpg" alt="Product Image" style="height: 100px; object-fit: contain;" />
+          </div>
+          <div style="">
+            <p style="font-size: 18px; font-weight: 500; line-height: 23px;">
+              ${product}
+            </p>
+            <p style="font-size: 17px; font-weight: 450; line-height: 5px;">₹${price}</p>
+          </div>
+        </div>
+      </div>
+    `,
 
     attachments: [
       {

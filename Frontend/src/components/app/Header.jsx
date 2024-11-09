@@ -121,8 +121,6 @@ const Header = () => {
               <Button
                 size="sm"
                 color={"blue-gray"}
-                // color={email ? "gray" : "blue-gray"}
-                // disabled={!email}d
                 className="!absolute right-1 top-[1.8px] rounded"
               >
                 <SearchOutlinedIcon fontSize="small" />
@@ -266,7 +264,7 @@ const Header = () => {
         </div>
       </div>
 
-      <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+      <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-lg justify-center">
         <NavLink
           to="/"
           style={navLinkStyle}

@@ -4,33 +4,40 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Home from "../pages/home";
-import Product from "../pages/product";
-import Contact from "../pages/contact";
-import About from "../pages/about";
-import ProductDetail from "../pages/productDetail";
-import Cart from "../pages/cart";
-import Checkout from "../pages/checkout";
-import Login from "../pages/login";
-import SignUp from "../pages/signUp";
+import { lazy, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from "react";
-import ViewCustomer from "../admin/customer";
-import AddUpdateCustomer from "../admin/customer/AddUpdateCustomer";
-import ViewProduct from "../admin/product";
-import AddUpdateProduct from "../admin/product/AddUpdateProduct";
-import ViewCategory from "../admin/category";
-import AddUpdateCategory from "../admin/category/AddUpdateCategory";
-import ViewOrder from "../admin/order";
-import AddUpdateOrder from "../admin/order/AddUpdateOrder";
-import ViewFeedback from "../admin/feedback";
-import Report from "../admin/report";
-import Dashboard from "../admin/dashboard";
-import AdminLogin from "../admin/adminLogin";
 import "react-toastify/dist/ReactToastify.css";
-import Profile from "../pages/profile";
-import Order from "../pages/order";
 import { PrivateRoute } from "../app/PrivateRoute";
+const Home = lazy(() => import("../pages/home"));
+const Product = lazy(() => import("../pages/product"));
+const Contact = lazy(() => import("../pages/contact"));
+const About = lazy(() => import("../pages/about"));
+const ProductDetail = lazy(() => import("../pages/productDetail"));
+const Cart = lazy(() => import("../pages/cart"));
+const Checkout = lazy(() => import("../pages/checkout"));
+const Login = lazy(() => import("../pages/login"));
+const SignUp = lazy(() => import("../pages/signUp"));
+const ResetPassword = lazy(() => import("../pages/resetPassword"));
+const Profile = lazy(() => import("../pages/profile"));
+const Order = lazy(() => import("../pages/order"));
+const ViewCustomer = lazy(() => import("../admin/customer"));
+const AddUpdateCustomer = lazy(() =>
+  import("../admin/customer/AddUpdateCustomer")
+);
+const ViewProduct = lazy(() => import("../admin/product"));
+const AddUpdateProduct = lazy(() =>
+  import("../admin/product/AddUpdateProduct")
+);
+const ViewCategory = lazy(() => import("../admin/category"));
+const AddUpdateCategory = lazy(() =>
+  import("../admin/category/AddUpdateCategory")
+);
+const ViewOrder = lazy(() => import("../admin/order"));
+const AddUpdateOrder = lazy(() => import("../admin/order/AddUpdateOrder"));
+const ViewFeedback = lazy(() => import("../admin/feedback"));
+const Report = lazy(() => import("../admin/report"));
+const Dashboard = lazy(() => import("../admin/dashboard"));
+const AdminLogin = lazy(() => import("../admin/adminLogin"));
 
 const Router = () => {
   const [path, setPath] = useState("/");
@@ -94,10 +101,9 @@ const Router = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/order" element={<Order />} />
-
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-
+            <Route path="/resetpassword" element={<ResetPassword />} />
             <Route path="*" element={<Home />} />
           </Routes>
           <ToastContainer />

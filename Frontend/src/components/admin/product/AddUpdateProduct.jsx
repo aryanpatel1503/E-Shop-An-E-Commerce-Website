@@ -16,6 +16,8 @@ import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
 import AdminLayout from "../AdminLayout";
+import { useDispatch, useSelector } from "react-redux";
+import { loadingStart, loadingStop } from "../../redux/cartSlice";
 
 const AddUpdateProduct = () => {
   const defaultValues = {
@@ -49,6 +51,7 @@ const AddUpdateProduct = () => {
 
   const [categoryAll, setCategoryAll] = useState([]);
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -96,30 +99,34 @@ const AddUpdateProduct = () => {
           });
         });
     } else {
+      dispatch(loadingStart());
       axios
         .post(`${API_URL}/products/add`, {
           ...values,
         })
         .then((response) => {
-          toast.success(response.data.message || "Product added Successfully", {
-            position: "top-center",
-          });
-
           axios
             .post(`${API_URL}/send-email`, {
               email: users.map((item) => item.user_email),
               product: values.product_name,
+              price: values.product_price,
               image: values.product_img,
             })
             .then((response) => {
+              dispatch(loadingStop());
+              toast.success("Product added successfully", {
+                position: "top-center",
+              });
               navigate("/admin/viewproduct");
               console.log("Email sent successfully:", response.data);
             })
             .catch((error) => {
+              dispatch(loadingStop());
               console.error("Error sending email:", error);
             });
         })
         .catch((err) => {
+          dispatch(loadingStop());
           toast.error(err.response.data.message, {
             position: "top-center",
           });

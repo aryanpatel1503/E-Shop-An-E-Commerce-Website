@@ -14,31 +14,45 @@ import { borderForField } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const ResetPassword = () => {
   const defaultValues = {
-    user_name: "",
+    user_email: "",
     user_password: "",
+    user_conf_password: "",
   };
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({ defaultValues });
+  const formValues = watch();
   const navigate = useNavigate();
+
+  const confirmPasswordValidate = (value) => {
+    if (value === formValues.user_password) {
+      return true;
+    } else {
+      return "Passwords do not match";
+    }
+  };
 
   const onSubmitData = (values) => {
     axios
-      .post(`${API_URL}/login`, {
-        ...values,
+      .put(`${API_URL}/resetpassword`, {
+        user_email: values.user_email,
+        user_password: values.user_password,
       })
       .then((response) => {
-        if (response.status === 200) {
-          toast.success(response.data.message, {
+        if (response.data.result.affectedRows == 0) {
+          toast.warning("Email is not Registred! Please Register Yourself", {
             position: "top-center",
           });
-          localStorage.setItem("user_name", response.data.result[0].user_name);
-          localStorage.setItem("user_id", response.data.result[0].user_id);
-          navigate("/");
+        } else {
+          toast.success("Password reset successfully", {
+            position: "top-center",
+          });
+          navigate("/login");
         }
       })
       .catch((err) => {
@@ -61,16 +75,16 @@ const Login = () => {
         background: "linear-gradient(to top, #198754 0%, #6c757d 100%)",
       }}
     >
-      <div className="w-full md:w-1/2 lg:w-1/3 flex justify-center items-center h-[395px] bg-white shadow-lg rounded-tl-lg rounded-bl-lg">
+      <div className="w-full md:w-1/2 lg:w-1/3 flex justify-center items-center h-[445px] bg-white shadow-lg rounded-tl-lg rounded-bl-lg">
         <img
           src={loginimg}
           alt="login"
           className="object-contain h-[85%] rounded-lg"
         />
       </div>
-      <div className="w-full md:w-1/2 lg:w-1/3 h-[395px] bg-[#f5f5f5] shadow-lg rounded-tr-lg rounded-br-lg px-7 py-4">
+      <div className="w-full md:w-1/2 lg:w-1/3 h-[445px] bg-[#f5f5f5] shadow-lg rounded-tr-lg rounded-br-lg px-7 py-4">
         <Typography variant="h4" className="text-center">
-          Login
+          Reset Password
         </Typography>
 
         <Card color="transparent" shadow={false} className="w-full">
@@ -78,29 +92,34 @@ const Login = () => {
             <div className="mb-1 flex flex-col space-y-[1px]">
               <div>
                 <Typography color="blue-gray" className="text-md font-medium">
-                  Username
+                  Email
                 </Typography>
                 <Controller
-                  name="user_name"
+                  name="user_email"
                   control={control}
-                  rules={{ required: "Username is required" }}
-                  render={({ field: { onChange, value } }) => (
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: "Enter a valid email address",
+                    },
+                  }}
+                  render={({ field }) => (
                     <Input
+                      {...field}
                       size="lg"
-                      placeholder="username"
-                      onChange={onChange}
-                      value={value}
-                      className={borderForField(errors.user_name)}
+                      placeholder="name@mail.com"
+                      className={borderForField(errors.user_email)}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
-                      error={errors.user_name}
+                      error={errors.user_email}
                     />
                   )}
                 />
-
                 <Typography color="red" className="text-sm font-medium">
-                  {errors.user_name ? errors.user_name.message : "\u00A0"}
+                  {errors.user_email ? errors.user_email.message : "\u00A0"}
                 </Typography>
               </div>
 
@@ -128,12 +147,42 @@ const Login = () => {
                 />
                 <Typography color="red" className="text-sm font-medium">
                   {errors.user_password
-                    ? errors.user_password.message
+                    ? errors.user_password?.message
                     : "\u00A0"}
                 </Typography>
-                <div className="flex justify-end">
-                  <NavLink to="/resetpassword">Forget Password?</NavLink>
-                </div>
+              </div>
+
+              <div>
+                <Typography color="blue-gray" className="text-md font-medium">
+                  Confirm Password
+                </Typography>
+                <Controller
+                  name="user_conf_password"
+                  control={control}
+                  rules={{
+                    required: "Confirm Password is required",
+                    validate: confirmPasswordValidate,
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="password"
+                      size="lg"
+                      placeholder="********"
+                      className={borderForField(errors.user_conf_password)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      error={errors.user_conf_password}
+                    />
+                  )}
+                />
+
+                <Typography color="red" className="text-sm font-medium">
+                  {errors.user_conf_password
+                    ? errors.user_conf_password?.message
+                    : "\u00A0"}
+                </Typography>
               </div>
             </div>
 
@@ -159,4 +208,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

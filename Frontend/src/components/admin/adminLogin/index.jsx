@@ -146,12 +146,12 @@ const AdminLogin = ({ setLogin }) => {
 
             <Button
               variant="filled"
-              className="mt-6 bg-[#5479F7]"
+              className="mt-6 bg-[#5479F7] tracking-wide"
               fullWidth
               type="submit"
               onClick={handleSignIn}
             >
-              Login
+              Submit
             </Button>
           </form>
         </Card>

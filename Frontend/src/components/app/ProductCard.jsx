@@ -12,12 +12,22 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ item, cardClassName }) => {
+  const islogin = localStorage.getItem("user_id");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const addItem = (product) => {
     dispatch(addToCart(product));
   };
+
+  const handleBuyNow = (item) => {
+    if (islogin) {
+      navigate("/checkout", { state: { id: item.product_id } });
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <Card className="shadow-lg">
       <CardHeader
@@ -46,9 +56,7 @@ const ProductCard = ({ item, cardClassName }) => {
         <Button
           size="md"
           className="bg-[#F7931E]"
-          onClick={() =>
-            navigate("/checkout", { state: { id: item.product_id } })
-          }
+          onClick={() => handleBuyNow(item)}
         >
           Buy Now
         </Button>

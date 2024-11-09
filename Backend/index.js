@@ -151,8 +151,10 @@ app.post("/user/emailcheck", (req, res) => {
         req.setEncoding({ err: err });
       } else {
         if (result.length > 0) {
-          res.send(result);
+          res.status(200);
+          res.send({ result });
         } else {
+          res.status(400);
           res.send({ message: "Email is not registered!" });
         }
       }
@@ -170,9 +172,12 @@ app.put("/resetpassword", (req, res) => {
     [password, email],
     (err, result) => {
       if (result) {
-        res.send(result);
+        res.status(200);
+        res.send({ result });
       } else {
         console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
       }
     }
   );
@@ -947,13 +952,15 @@ app.get("/counts", (req, res) => {
 
 // Endpoint to trigger email notifications
 app.post("/send-email", async (req, res) => {
-  const { email, product, image } = req.body;
+  const { email, product, price, image } = req.body;
 
   try {
     await sendEmail({
       recipients: email,
       subject: "New Product Added",
       text: `The product "${product}" has been added.`,
+      product,
+      price,
       image,
     });
     res.status(200).send("Email sent successfully");

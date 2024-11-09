@@ -78,7 +78,7 @@ const Home = () => {
           <Avatar
             size="xxl"
             variant="circular"
-            alt="tania andrew"
+            alt={item.category}
             className="mx-auto object-contain rounded-full shadow-allSide p-2"
             src={item.category_img}
           />

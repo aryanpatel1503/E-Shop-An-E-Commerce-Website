@@ -7,6 +7,7 @@ const initialState = {
     : [],
   cartTotalQuantity: 0,
   cartTotalAmount: 0,
+  loading: false,
 };
 
 const cartSlice = createSlice({
@@ -103,10 +104,23 @@ const cartSlice = createSlice({
       state.cartTotalQuantity = quantity;
       state.cartTotalAmount = total;
     },
+    loadingStart(state, action) {
+      state.loading = true;
+    },
+    loadingStop(state, action) {
+      state.loading = false;
+    },
   },
 });
 
-export const { addToCart, removeFromCart, decreaseCart, clearCart, getTotals } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  decreaseCart,
+  clearCart,
+  getTotals,
+  loadingStart,
+  loadingStop,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

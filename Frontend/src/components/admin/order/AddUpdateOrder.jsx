@@ -400,9 +400,6 @@ const AddUpdateOrder = () => {
                       >
                         <MenuItem value="pending">Pending</MenuItem>
                         <MenuItem value="shipped">Shipped</MenuItem>
-                        <MenuItem value="out for delivery">
-                          Out For Delivery
-                        </MenuItem>
                         <MenuItem value="delivered">Delivered</MenuItem>
                       </Select>
                     )}

@@ -8,6 +8,7 @@ import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 import Pagination from "../../app/Pagination";
 import AdminLayout from "../AdminLayout";
+import { showLocalString } from "../../lib/commonFunctions";
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -75,6 +76,7 @@ const ViewOrder = () => {
                 <th className="px-3 py-4">Mobile</th>
                 <th className="px-3 py-4">Email</th>
                 <th className="px-3 py-4">Pincode</th>
+                <th className="px-3 py-4">Date</th>
                 <th className="px-3 py-4">Status</th>
                 <th className="px-3 py-4">shipping_method</th>
                 <th className="px-3 py-4">Product</th>
@@ -97,6 +99,9 @@ const ViewOrder = () => {
                     <td className="px-3 py-3">{item.order_mobile}</td>
                     <td className="px-3 py-3">{item.order_email}</td>
                     <td className="px-3 py-3">{item.order_pincode}</td>
+                    <td className="px-3 py-3">
+                      {showLocalString(item.order_date)}
+                    </td>
                     <td className="px-3 py-3">{item.order_status}</td>
                     <td className="px-3 py-3">{item.shipping_method}</td>
                     <td className="px-3 py-3">{item.product_name}</td>

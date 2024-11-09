@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { lazy, useEffect, useMemo, useState } from "react";
 import Layout from "../../app/Layout";
-import ProductCard from "../../app/ProductCard";
+const ProductCard = lazy(() => import("../../app/ProductCard"));
 import Pagination from "../../app/Pagination";
 import { API_URL } from "../../lib/constant";
 import axios from "axios";
