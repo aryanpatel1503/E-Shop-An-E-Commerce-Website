@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../app/Layout";
 import { useForm, Controller } from "react-hook-form";
-import { Input, Button, Select, Option } from "@material-tailwind/react";
+import { Input, Button, Select, Option, Radio } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 import { getFormattedDate } from "../../lib/commonFunctions";
@@ -11,6 +11,7 @@ import { getFormattedDate } from "../../lib/commonFunctions";
 const Checkout = () => {
   const [productData, setProductData] = useState({});
   const [userData, setUserData] = useState({});
+  const [selectedValue, setSelectedValue] = useState("current");
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -37,6 +38,33 @@ const Checkout = () => {
   } = useForm({ defaultValues });
 
   const formValues = watch();
+
+  const setCurrentAddress = (response) => {
+    response = response || userData;
+    reset((formValues) => ({
+      ...formValues,
+      order_name: response.user_fullname,
+      order_address: response.current_address,
+      order_state: response.current_state,
+      order_city: response.current_city,
+      order_mobile: response.user_mobile,
+      order_email: response.user_email,
+      order_pincode: response.current_pincode,
+    }));
+  };
+
+  const setPermanentAddress = () => {
+    reset((formValues) => ({
+      ...formValues,
+      order_name: userData.user_fullname,
+      order_address: userData.permanent_address,
+      order_state: userData.permanent_state,
+      order_city: userData.permanent_city,
+      order_mobile: userData.user_mobile,
+      order_email: userData.user_email,
+      order_pincode: userData.permanent_pincode,
+    }));
+  };
 
   const onSubmit = (values) => {
     axios
@@ -67,17 +95,7 @@ const Checkout = () => {
     const response = await axios.get(`${API_URL}/users/${user_id}`);
     const responseData = response.data.result[0];
     setUserData(responseData);
-
-    reset((formValues) => ({
-      ...formValues,
-      order_name: responseData.user_fullname,
-      order_address: responseData.current_address,
-      order_state: responseData.current_state,
-      order_city: responseData.current_city,
-      order_mobile: responseData.user_mobile,
-      order_email: responseData.user_email,
-      order_pincode: responseData.current_pincode,
-    }));
+    setCurrentAddress(responseData);
   };
 
   useEffect(() => {
@@ -112,6 +130,16 @@ const Checkout = () => {
     navigate(-1);
   };
 
+  const handleRadioChange = (event) => {
+    const value = event.target.value;
+    if (value === "permanent") {
+      setPermanentAddress();
+    } else {
+      setCurrentAddress();
+    }
+    setSelectedValue(event.target.value);
+  };
+
   return (
     <Layout>
       <div className="my-10">
@@ -144,7 +172,23 @@ const Checkout = () => {
           </div>
 
           <hr className="my-8 border-[1.3px] border-gray-300" />
-          <h2 className="text-2xl font-bold mb-4">Shipping Information</h2>
+          <h2 className="text-2xl font-bold">Shipping Information</h2>
+
+          <div className="flex gap-10 my-4">
+            <Radio
+              name="type"
+              value="current"
+              label="Same as Current address"
+              defaultChecked
+              onChange={handleRadioChange}
+            />
+            <Radio
+              name="type"
+              value="permanent"
+              label="Same as Permanent address"
+              onChange={handleRadioChange}
+            />
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             <Controller
               name="order_name"
