@@ -208,7 +208,18 @@ const Profile = () => {
                     <Controller
                       name="user_mobile"
                       control={control}
-                      rules={{ required: "Mobile is required" }}
+                      rules={{
+                        required: "Mobile number is required",
+                        maxLength: {
+                          value: 10,
+                          message: "Mobile number must be 10 digits",
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message:
+                            "Invalid mobile number. It must contain only digits.",
+                        },
+                      }}
                       render={({ field }) => (
                         <Input
                           size="lg"
@@ -432,7 +443,21 @@ const Profile = () => {
                   <Controller
                     name="permanent_pincode"
                     control={control}
-                    rules={{ required: "Permenent Pincode is required" }}
+                    rules={{
+                      required: "Permenent Pincode is required",
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "Pincode must contain only digits",
+                      },
+                      minLength: {
+                        value: 6,
+                        message: "Pincode must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 6,
+                        message: "Pincode must be exactly 6 digits",
+                      },
+                    }}
                     render={({ field }) => (
                       <Input
                         {...field}
@@ -544,7 +569,21 @@ const Profile = () => {
                   <Controller
                     name="current_pincode"
                     control={control}
-                    rules={{ required: "Current Pincode is required" }}
+                    rules={{
+                      required: "Current Pincode is required",
+                      pattern: {
+                        value: /^[0-9]+$/,
+                        message: "Pincode must contain only digits",
+                      },
+                      minLength: {
+                        value: 6,
+                        message: "Pincode must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 6,
+                        message: "Pincode must be exactly 6 digits",
+                      },
+                    }}
                     render={({ field }) => (
                       <Input
                         {...field}

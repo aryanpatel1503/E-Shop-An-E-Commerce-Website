@@ -172,7 +172,7 @@ const AddUpdateProduct = () => {
         </div>
         <div className="flex justify-center">
           <div className="w-8/12 bg-white rounded-md flex flex-col items-center">
-            <form className="w-11/12 flex flex-col items-center justify-center my-10 space-y-4">
+            <form className="w-11/12 flex flex-col items-center justify-center mt-1 mb-10 space-y-4">
               <div className="w-full">
                 <Typography color="blue-gray" className="text-md font-semibold">
                   <span className="text-red-500 font-semibold mr-1">*</span>

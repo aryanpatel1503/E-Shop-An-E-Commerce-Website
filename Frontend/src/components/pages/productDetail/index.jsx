@@ -102,7 +102,12 @@ const ProductDetail = () => {
 
   const handleFeedback = (e) => {
     e.preventDefault();
-    handleSubmit(onSubmitData, onSubmitError)();
+
+    if (user_id) {
+      handleSubmit(onSubmitData, onSubmitError)();
+    } else {
+      navigate("/login");
+    }
   };
 
   const getProducts = async () => {

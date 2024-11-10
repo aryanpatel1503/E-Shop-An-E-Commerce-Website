@@ -56,9 +56,12 @@ const Router = () => {
             <Route element={<PrivateRoute islogin={login || islogin} />}>
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/viewuser" element={<ViewCustomer />} />
-              <Route path="/admin/adduser" element={<AddUpdateCustomer />} />
               <Route
-                path="/admin/edituser/:name"
+                path="/admin/addcustomer"
+                element={<AddUpdateCustomer />}
+              />
+              <Route
+                path="/admin/editcustomer/:name"
                 element={<AddUpdateCustomer />}
               />
               <Route path="/admin/viewproduct" element={<ViewProduct />} />

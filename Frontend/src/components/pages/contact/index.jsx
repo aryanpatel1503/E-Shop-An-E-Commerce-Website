@@ -59,10 +59,14 @@ const Contact = () => {
   return (
     <Layout>
       <div className="flex my-14">
-        <div className="w-5/12 h-[428px]">
-          <img src={contactImg} className="object-cover w-full h-full" alt="" />
+        <div className="w-5/12 h-[428px] rounded-tl-md rounded-bl-md">
+          <img
+            src={contactImg}
+            className="object-cover w-full h-full rounded-tl-md rounded-bl-md"
+            alt="Contact Image"
+          />
         </div>
-        <div className="w-7/12 px-5 py-3 bg-[#f2f2f2]">
+        <div className="w-7/12 px-5 py-3 bg-[#f2f2f2] rounded-tr-md rounded-br-md">
           <h3 className="text-2xl font-medium">Get In Touch</h3>
           <p className="text-lg py-2">
             Your Gateway to Excellence: Contact Us and Unlock a World of

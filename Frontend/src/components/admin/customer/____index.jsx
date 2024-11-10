@@ -49,7 +49,7 @@ const ViewCustomer = () => {
                   Customer Details
                 </h3>
                 <NavLink
-                  to="/admin/adduser"
+                  to="/admin/addcustomer"
                   className="px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
                   <AddCircleOutlineRoundedIcon className="mr-1" /> Add Customer
@@ -113,7 +113,7 @@ const ViewCustomer = () => {
                             </td>
                             <td className="px-3 py-3 ">
                               <NavLink
-                                to={`/admin/edituser/${item.user_id}`}
+                                to={`/admin/editcustomer/${item.user_id}`}
                                 className="px-7 py-2 outline outline-1 outline-green-500 text-green-500 hover:bg-green-500 hover:text-white rounded-md flex mb-2"
                               >
                                 <EditRoundedIcon className="mr-2" /> Edit
