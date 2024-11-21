@@ -33,9 +33,9 @@ const Login = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          toast.success(response.data.message, {
-            position: "top-center",
-          });
+          // toast.success(response.data.message, {
+          //   position: "top-center",
+          // });
           localStorage.setItem("user_name", response.data.result[0].user_name);
           localStorage.setItem("user_id", response.data.result[0].user_id);
           navigate("/");

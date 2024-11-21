@@ -57,7 +57,7 @@ const Profile = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          toast.success(response.data.message || "User Updated Successfully", {
+          toast.success("User Updated Successfully", {
             position: "top-center",
           });
         }

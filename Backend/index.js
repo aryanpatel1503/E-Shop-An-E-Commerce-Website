@@ -516,6 +516,7 @@ app.delete("/products/:id", (req, res) => {
     [id],
     (err, result) => {
       if (err) {
+        console.log(err);
         res.status(400);
         res.send({ message: "An error occurred!" });
       } else {
@@ -597,6 +598,26 @@ app.get("/products/:id", (req, res) => {
 });
 
 // Get all Orders
+app.get("/getOrders/:id", (req, res) => {
+  const id = req.params.id;
+
+  con.query(
+    "SELECT o.*, u.user_name, p.product_name, p.product_desc, p.product_price, p.product_img FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id WHERE u.user_id = ? ORDER BY order_id ",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order get successfully", result });
+      }
+    }
+  );
+});
+
+// Get all Orders
 app.get("/orders", (req, res) => {
   con.query(
     "SELECT o.*, u.user_name, p.product_name, p.product_desc, p.product_price, p.product_img FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id ORDER BY order_id ",
@@ -632,6 +653,7 @@ app.get("/orders/count", (req, res) => {
 // Add Order
 app.post("/orders/add", (req, res) => {
   const {
+    order_id,
     order_name,
     order_address,
     order_city,
@@ -646,8 +668,9 @@ app.post("/orders/add", (req, res) => {
   } = req.body;
 
   con.query(
-    "INSERT INTO orders (order_name, order_address, order_city, order_state, order_mobile, order_email, order_pincode, order_status, shipping_method, product_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO orders (order_id, order_name, order_address, order_city, order_state, order_mobile, order_email, order_pincode, order_status, shipping_method, product_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
+      order_id,
       order_name,
       order_address,
       order_city,
@@ -784,14 +807,13 @@ app.get("/feedback/:id", (req, res) => {
 
 // Add Feedback
 app.post("/feedback/add", (req, res) => {
-  const username = req.body.username;
   const feedback = req.body.feedback;
   const user_id = req.body.user_id;
   const product_id = req.body.product_id;
 
   con.query(
-    "INSERT INTO feedback (username, feedback, user_id, product_id) VALUES (?, ?, ?, ?) ",
-    [username, feedback, user_id, product_id],
+    "INSERT INTO feedback (feedback, user_id, product_id) VALUES (?, ?, ?) ",
+    [feedback, user_id, product_id],
     (err, result) => {
       if (result) {
         res.send({ message: "Feedback added successfully", result });
@@ -808,11 +830,12 @@ app.post("/feedback/add", (req, res) => {
 app.post("/contact/add", (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
+  const subject = req.body.subject;
   const message = req.body.message;
 
   con.query(
-    "INSERT INTO contact (username, email, message) VALUES (?, ?, ?) ",
-    [username, email, message],
+    "INSERT INTO contact (username, email,  subject, message) VALUES (?, ?, ?, ?) ",
+    [username, email, subject, message],
     (err, result) => {
       if (result) {
         res.status(200);

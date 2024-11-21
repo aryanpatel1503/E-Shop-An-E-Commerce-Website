@@ -55,3 +55,10 @@ export const getFormattedDate = () => {
 
   return `${day}/${month.toLowerCase()}/${year}`;
 };
+
+export const generateOrderId = () => {
+  // const timestamp = Date.now();
+  const timestamp = new Date().getMilliseconds();
+  const randomNumber = Math.floor(Math.random() * 100000);
+  return `OD${timestamp}${randomNumber}`;
+};

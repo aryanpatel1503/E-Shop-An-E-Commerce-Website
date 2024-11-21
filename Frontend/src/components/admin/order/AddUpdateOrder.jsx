@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
-import { borderForField } from "../../lib/commonFunctions";
+import { borderForField, generateOrderId } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
@@ -23,6 +23,7 @@ const AddUpdateOrder = () => {
   const [allUsers, setAllUsers] = useState([]);
 
   const defaultValues = {
+    order_id: generateOrderId(),
     order_name: "",
     order_address: "",
     order_city: "",

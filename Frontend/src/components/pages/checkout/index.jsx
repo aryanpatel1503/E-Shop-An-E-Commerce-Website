@@ -6,7 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Input, Button, Select, Option, Radio } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
-import { getFormattedDate } from "../../lib/commonFunctions";
+import { generateOrderId, getFormattedDate } from "../../lib/commonFunctions";
 
 const Checkout = () => {
   const [productData, setProductData] = useState({});
@@ -16,7 +16,11 @@ const Checkout = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const user_id = localStorage.getItem("user_id");
+
+  const order_id = generateOrderId();
+
   const defaultValues = {
+    order_id: order_id,
     order_name: "",
     order_address: "",
     order_city: "",
@@ -38,7 +42,6 @@ const Checkout = () => {
   } = useForm({ defaultValues });
 
   const formValues = watch();
-
   const setCurrentAddress = (response) => {
     response = response || userData;
     reset((formValues) => ({
@@ -148,9 +151,7 @@ const Checkout = () => {
           <hr className="my-8 border-[1.3px] border-gray-300" />
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Order Details</h2>
-            <h2 className="text-xl font-semibold">
-              Date: {getFormattedDate()}
-            </h2>
+            <h2 className="text-xl font-medium">Date - {getFormattedDate()}</h2>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">

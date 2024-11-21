@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  const user_id = localStorage.getItem("user_id");
 
   const getStatusColor = (status) => {
     if (status === "delivered") {
@@ -26,7 +27,7 @@ const Order = () => {
   };
 
   const getOrders = async () => {
-    const response = await axios.get(`${API_URL}/orders`);
+    const response = await axios.get(`${API_URL}/getOrders/${user_id}`);
     setOrders(response.data.result);
   };
 
@@ -56,13 +57,20 @@ const Order = () => {
                   onClick={() => navigate(`/product/${item.product_id}`)}
                 />
               </CardHeader>
-              <CardBody className="flex flex-col">
-                <Typography
-                  color="blue-gray"
-                  className="mb-2 text-2xl font-medium"
+              <CardBody className="flex flex-col w-full">
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {item.product_name}
-                </Typography>
+                  <Typography
+                    color="blue-gray"
+                    className="mb-2 text-2xl font-medium"
+                  >
+                    {item.product_name}
+                  </Typography>
+                  <Typography color="gray" className="text-md font-normal">
+                    {item.order_id}
+                  </Typography>
+                </div>
                 <Typography color="gray" className="text-md font-normal">
                   {item.product_desc}
                 </Typography>

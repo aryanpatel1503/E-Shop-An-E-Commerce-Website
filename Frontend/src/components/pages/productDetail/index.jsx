@@ -34,7 +34,6 @@ const ProductDetail = () => {
   const user_name = localStorage.getItem("user_name");
 
   const defaultValues = {
-    username: user_name,
     feedback: "",
     user_id: user_id,
     product_id: id,
@@ -43,6 +42,7 @@ const ProductDetail = () => {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues });
   const dispatch = useDispatch();
@@ -74,17 +74,15 @@ const ProductDetail = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          toast.success(
-            response.data.message || "Feedback added Successfully",
-            {
-              position: "top-center",
-            }
-          );
+          toast.success("Review added successfully", {
+            position: "top-center",
+          });
+          reset();
           getFeedback();
         }
       })
-      .catch((response) => {
-        toast.error(response.data.message, {
+      .catch((err) => {
+        toast.error(err.response.data.message, {
           position: "top-center",
         });
       });
