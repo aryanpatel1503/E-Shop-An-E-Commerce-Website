@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import Invoice from "./InvoiceDocument";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
@@ -87,6 +88,11 @@ const Order = () => {
                   value={item.order_status}
                   className="self-start"
                 />
+                {item.order_status === "delivered" && (
+                  <div className="mt-4">
+                    <Invoice item={item} />
+                  </div>
+                )}
               </CardBody>
             </Card>
           );
