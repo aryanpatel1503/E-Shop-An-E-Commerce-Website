@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="bg-black text-white py-8">
+    <div className="bg-black text-white py-8 px-2 sm:px-0">
       <div className="flex container mx-auto">
         <div className="">
           <h5 className="text-xl">E-Shop</h5>
 
-          <div className="flex justify-between my-6 w-96">
+          <div className="my-6 space-x-9">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/products/laptop">Product</NavLink>
             <NavLink to="/contact">Contact</NavLink>

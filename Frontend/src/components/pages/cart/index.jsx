@@ -17,6 +17,7 @@ const Cart = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currency = "₹";
 
   const handleCheckout = () => {
     navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
@@ -45,12 +46,12 @@ const Cart = () => {
   return (
     <>
       <Layout>
-        <div className="md:mx-container my-16 bg-white">
+        <div className="md:mx-container my-10 md:my-16 bg-white">
           <section className="">
             <h3 className="text-3xl mb-7 text-center">Cart</h3>
 
-            <div className="mb-7">
-              <table className=" w-full border-collapse border border-orange-200 ">
+            <div className="mb-7 w-full overflow-auto px-4">
+              <table className="w-full border-collapse border border-orange-200 overflow-auto">
                 <thead className="bg-orange-50 text-gray-600">
                   <tr className="grid grid-cols-5 ">
                     <th className="py-3"></th>
@@ -60,7 +61,7 @@ const Cart = () => {
                     <th className="py-3">Subtotal</th>
                   </tr>
                 </thead>
-                <tbody className="border border-orange-200 text-gray-600 max-h-96">
+                <tbody className="border border-orange-200 text-gray-600 max-h-96 overflow-auto">
                   {/* <Scrollbars> */}
                   {cart.cartItems.length === 0 ? (
                     <div className="cart_empty flex flex-col justify-center items-center h-48">
@@ -92,7 +93,10 @@ const Cart = () => {
                           <td className="py-3 flex justify-around">
                             <p>{cartItem.product_name}</p>
                           </td>
-                          <td className=" py-3">${cartItem.product_price}</td>
+                          <td className=" py-3">
+                            {currency}
+                            {cartItem.product_price}
+                          </td>
                           <td className="text-center py-3 flex justify-center items-center">
                             {/* <input
                         type="number"
@@ -119,7 +123,8 @@ const Cart = () => {
                             </span>
                           </td>
                           <td className=" py-3">
-                            ${cartItem.product_price * cartItem.cartQuantity}
+                            {currency}
+                            {cartItem.product_price * cartItem.cartQuantity}
                           </td>
                         </tr>
                       );
@@ -145,8 +150,8 @@ const Cart = () => {
               </table>
             </div>
 
-            <div className="flex justify-end">
-              <div className="w-4/12">
+            <div className="flex justify-end px-4">
+              <div className="w-full md:w-5/12 lg:w-4/12">
                 <div className="border border-orange-200 ">
                   <h6 className="text-xl font-medium p-4 border-b bg-orange-50">
                     Cart totals
@@ -157,14 +162,16 @@ const Cart = () => {
                       <div className="flex justify-between">
                         <p className=" text-gray-600"> Subtotal </p>
                         <p className=" text-gray-600">
-                          ${cart.cartTotalAmount}
+                          {currency}
+                          {cart.cartTotalAmount}
                         </p>
                       </div>
                       <hr />
                       <div className="flex justify-between">
                         <p className=" text-gray-600"> Total </p>
                         <p className=" text-gray-600">
-                          ${cart.cartTotalAmount}
+                          {currency}
+                          {cart.cartTotalAmount}
                         </p>
                       </div>
                       <hr />

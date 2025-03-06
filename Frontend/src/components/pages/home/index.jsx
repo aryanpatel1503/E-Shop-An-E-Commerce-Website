@@ -69,7 +69,7 @@ const Home = () => {
 
   const TrendingCollectionComponent = ({ item }) => {
     return (
-      <Card className="mt-6 w-96 shadow-none" style={{ margin: "0 10px" }}>
+      <Card className="mt-6 shadow-none">
         <CardHeader
           color="transparent"
           className="rounded-full text-center shadow-none"
@@ -221,12 +221,12 @@ const Home = () => {
         />
       </div>
 
-      <div className="my-20 flex">
+      <div className="my-20 grid gap-6 grid-cols-1 md:grid-cols-3 mx-2 md:mx-0">
         {infoData.map((item, index) => {
           return (
-            <div className="flex w-4/12" key={index}>
-              <div className="w-3/12">{item.icon}</div>
-              <div className="w-9/12">
+            <div className="flex items-start space-x-4" key={index}>
+              <div>{item.icon}</div>
+              <div>
                 <h4 className="text-2xl"> {item.title} </h4>
                 <p className="text-lg text-gray-700 mt-1"> {item.subtitle} </p>
               </div>

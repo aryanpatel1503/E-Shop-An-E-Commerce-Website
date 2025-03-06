@@ -38,65 +38,65 @@ const Order = () => {
 
   return (
     <Layout>
-      <h2 className="text-2xl mt-3">My Orders</h2>
-      <div className="mt-5 mb-8">
-        {orders.map((item, index) => {
-          return (
-            <Card
-              className="w-full h-auto flex flex-row mb-4 shadow-allSide transition-shadow duration-300 hover:shadow-onHover"
-              shadow={false}
-              key={index}
-            >
-              <CardHeader
+      <div className="px-4 md:px-0 my-10">
+        <h2 className="text-2xl mt-3">My Orders</h2>
+        <div className="mt-5 mb-8">
+          {orders.map((item, index) => {
+            return (
+              <Card
+                className="w-full h-auto flex flex-col md:flex-row mb-4 shadow-allSide transition-shadow duration-300 hover:shadow-onHover"
                 shadow={false}
-                floated={false}
-                className="m-0 w-2/12 shrink-0 rounded-r-none flex items-center"
+                key={index}
               >
-                <img
-                  src={item.product_img}
-                  className="h-32 w-full object-contain cursor-pointer"
-                  onClick={() => navigate(`/product/${item.product_id}`)}
-                />
-              </CardHeader>
-              <CardBody className="flex flex-col w-full">
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
+                <CardHeader
+                  shadow={false}
+                  floated={false}
+                  className="m-0 w-full md:w-2/12 p-5 md:p-0 shrink-0 flex items-center"
                 >
+                  <img
+                    src={item.product_img}
+                    className="h-32 w-full object-contain cursor-pointer"
+                    onClick={() => navigate(`/product/${item.product_id}`)}
+                  />
+                </CardHeader>
+                <CardBody className="flex flex-col w-full p-4 md:p-6">
+                  <div className="flex flex-col md:flex-row justify-between">
+                    <Typography
+                      color="blue-gray"
+                      className="mb-2 text-xl md:text-2xl font-medium"
+                    >
+                      {item.product_name}
+                    </Typography>
+                    <Typography color="gray" className="text-md font-normal">
+                      {item.order_id}
+                    </Typography>
+                  </div>
+                  <Typography color="gray" className="text-md font-normal">
+                    {item.product_desc}
+                  </Typography>
                   <Typography
                     color="blue-gray"
-                    className="mb-2 text-2xl font-medium"
+                    className="my-4 text-lg md:text-xl font-medium"
                   >
-                    {item.product_name}
+                    ₹{item.product_price}
                   </Typography>
-                  <Typography color="gray" className="text-md font-normal">
-                    {item.order_id}
-                  </Typography>
-                </div>
-                <Typography color="gray" className="text-md font-normal">
-                  {item.product_desc}
-                </Typography>
-                <Typography
-                  color="blue-gray"
-                  className="my-4 text-lg font-medium"
-                >
-                  ₹{item.product_price}
-                </Typography>
-                <Chip
-                  variant="ghost"
-                  color={getStatusColor(item.order_status)}
-                  size="sm"
-                  value={item.order_status}
-                  className="self-start"
-                />
-                {item.order_status === "delivered" && (
-                  <div className="mt-4">
-                    <Invoice item={item} />
-                  </div>
-                )}
-              </CardBody>
-            </Card>
-          );
-        })}
+                  <Chip
+                    variant="ghost"
+                    color={getStatusColor(item.order_status)}
+                    size="sm"
+                    value={item.order_status}
+                    className="self-start"
+                  />
+                  {item.order_status === "delivered" && (
+                    <div className="mt-4">
+                      <Invoice item={item} />
+                    </div>
+                  )}
+                </CardBody>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </Layout>
   );

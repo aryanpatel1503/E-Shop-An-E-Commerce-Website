@@ -54,7 +54,7 @@ const ProductCard = ({ item, cardClassName }) => {
       </CardBody>
       <CardFooter className="pt-2 flex justify-between">
         <Button
-          size="md"
+          size="sm"
           className="bg-[#F7931E]"
           onClick={() => handleBuyNow(item)}
         >
@@ -62,7 +62,7 @@ const ProductCard = ({ item, cardClassName }) => {
         </Button>
         <Button
           variant="outlined"
-          size="md"
+          size="sm"
           className="text-[#F7931E] border-[#F7931E]"
           onClick={() => addItem(item)}
         >

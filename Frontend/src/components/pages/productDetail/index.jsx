@@ -125,15 +125,15 @@ const ProductDetail = () => {
 
   return (
     <Layout>
-      <div className="flex my-16">
-        <div className="w-6/12">
+      <div className="md:flex space-y-5 md:space-y-0 px-4 md:px-0 my-10 md:my-16">
+        <div className="w-full md:w-6/12">
           <img
             src={productData.product_img}
             alt=""
-            className="w-full h-80 object-contain"
+            className="w-full md:h-80 h-60 object-contain"
           />
         </div>
-        <div className="w-6/12">
+        <div className="w-full md:w-6/12">
           <h4 className="text-2xl font-medium mb-2">
             {productData.product_name}
           </h4>
@@ -142,7 +142,7 @@ const ProductDetail = () => {
           </h5>
           <p className="my-5">Category: {productData.category} </p>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-start gap-3">
             <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
               <button
                 onClick={decrement}
@@ -236,7 +236,7 @@ const ProductDetail = () => {
                   {productData.product_desc}
                 </Typography>
 
-                <Card className="h-full w-full my-10">
+                <Card className="h-full w-full my-10 overflow-auto">
                   <table className="w-full min-w-max table-auto text-left">
                     <tbody>
                       <tr>
@@ -364,16 +364,16 @@ const ProductDetail = () => {
                           <Typography
                             variant="h6"
                             color="blue-gray"
-                            className="font-semibold"
+                            className="font-semibold break-words break-all"
                           >
                             Product Special Features
                           </Typography>
                         </td>
-                        <td className="p-4 border-b border-blue-gray-100">
+                        <td className="p-4 border-b border-blue-gray-100 ">
                           <Typography
                             variant="h6"
                             color="blue-gray"
-                            className="font-normal"
+                            className="font-normal break-words break-all"
                           >
                             {productData.product_special_features}
                           </Typography>

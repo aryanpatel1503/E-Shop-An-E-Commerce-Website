@@ -58,15 +58,15 @@ const Contact = () => {
 
   return (
     <Layout>
-      <div className="flex my-14">
-        <div className="w-5/12 h-[428px] rounded-tl-md rounded-bl-md">
+      <div className="flex flex-col md:flex-row my-14">
+        <div className="md:w-5/12 w-full h-[300px] md:h-auto">
           <img
             src={contactImg}
-            className="object-cover w-full h-full rounded-tl-md rounded-bl-md"
+            className="object-cover w-full h-full md:rounded-tl-md md:rounded-bl-md"
             alt="Contact Image"
           />
         </div>
-        <div className="w-7/12 px-5 py-3 bg-[#f2f2f2] rounded-tr-md rounded-br-md">
+        <div className="md:w-7/12 w-full px-5 py-3 bg-[#f2f2f2] md:rounded-tr-md md:rounded-br-md">
           <h3 className="text-2xl font-medium">Get In Touch</h3>
           <p className="text-lg py-2">
             Your Gateway to Excellence: Contact Us and Unlock a World of
@@ -74,7 +74,7 @@ const Contact = () => {
           </p>
 
           <div className="space-y-6 pt-2">
-            <div className="flex gap-x-2">
+            <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 gap-x-2">
               <Controller
                 control={control}
                 name="username"

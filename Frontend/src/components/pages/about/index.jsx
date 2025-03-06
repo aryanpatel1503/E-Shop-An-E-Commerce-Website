@@ -28,7 +28,7 @@ const About = () => {
   return (
     <Layout>
       <div
-        className=" flex flex-col justify-center items-end pr-10 text-white h-64 my-12 rounded-md"
+        className="flex flex-col justify-center lg:items-end items-center lg:pr-10 text-white h-64 my-12 rounded-md"
         style={{
           backgroundImage: `url(${aboutImg})`,
           backgroundSize: "cover",
@@ -39,10 +39,10 @@ const About = () => {
         <p className="text-xl">We care for the User and we love it</p>
       </div>
 
-      <div className="flex gap-4">
-        {aboutUsData.map((item) => {
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mx-2 lg:mx-0">
+        {aboutUsData.map((item, index) => {
           return (
-            <Card className="mt-6 w-4/12 shadow-allSide" shadow={false}>
+            <Card key={index} className="lg:mt-6 shadow-allSide" shadow={false}>
               <CardBody className="text-center">
                 <Typography
                   variant="h3"

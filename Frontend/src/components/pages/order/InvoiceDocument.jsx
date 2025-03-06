@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 
 // Define the main Invoice component
 const Invoice = ({ item }) => {
-  console.log(item);
+  // console.log(item);
   // const currency = "\u20B9";
   const currency = "";
 
@@ -167,7 +167,7 @@ const Invoice = ({ item }) => {
         style={{
           backgroundColor: "#167269",
           color: "white",
-          padding: 5,
+          padding: "5px 10px",
           borderRadius: 5,
         }}
       >

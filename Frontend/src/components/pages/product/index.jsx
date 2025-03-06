@@ -13,7 +13,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
-import { Checkbox } from "@material-tailwind/react";
+import { Button, Checkbox, Drawer, Typography } from "@material-tailwind/react";
 
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,10 +25,15 @@ const Product = () => {
     brand: [],
     color: [],
   });
+  const [openRight, setOpenRight] = useState(false);
   const navigate = useNavigate();
   const { name } = useParams();
   const brandData = [...new Set(productData.map((item) => item.product_brand))];
   const colorData = [...new Set(productData.map((item) => item.product_color))];
+
+  const closeDrawerRight = () => {
+    setOpenRight(false);
+  };
 
   const handleSortingChange = (e) => {
     setSortOption(e.target.value);
@@ -112,79 +117,89 @@ const Product = () => {
 
   return (
     <Layout>
-      <div className="my-20 flex gap-x-3">
-        <div className="w-2/12">
+      <div className="my-10 lg:my-20 flex justify-center lg:gap-x-3">
+        <div className="hidden lg:block lg:w-2/12 ">
           <div className="">
             <h5 className="text-2xl">Filters</h5>
           </div>
 
           <hr className="my-3" />
 
-          <div>
-            <h6 className="text-xl">Categories</h6>
-            <List dense>
-              {category.map((item, index) => {
-                return (
-                  <ListItem
-                    key={index}
-                    secondaryAction={
-                      <IconButton
-                        edge="end"
-                        aria-label="comments"
-                        onClick={() => handleCatgeoryClick(item)}
-                      >
-                        <ChevronRight />
-                      </IconButton>
-                    }
-                    disablePadding
-                  >
-                    <ListItemButton onClick={() => handleCatgeoryClick(item)}>
-                      <ListItemText primary={item.category} />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </div>
-
-          <hr className="my-3" />
-
-          <div>
-            <h6 className="text-xl">Brand</h6>
-            <div className="flex flex-col">
-              {brandData.map((item, index) => {
-                return (
-                  <Checkbox
-                    key={index}
-                    label={item}
-                    value={item}
-                    onChange={(e) => handleFilterClick(e, "brand")}
-                  />
-                );
-              })}
+          <>
+            <div>
+              <h6 className="text-xl">Categories</h6>
+              <List dense>
+                {category.map((item, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      secondaryAction={
+                        <IconButton
+                          edge="end"
+                          aria-label="comments"
+                          onClick={() => handleCatgeoryClick(item)}
+                        >
+                          <ChevronRight />
+                        </IconButton>
+                      }
+                      disablePadding
+                    >
+                      <ListItemButton onClick={() => handleCatgeoryClick(item)}>
+                        <ListItemText primary={item.category} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
             </div>
-          </div>
 
-          <hr className="my-3" />
+            <hr className="my-3" />
 
-          <div>
-            <h6 className="text-xl">Color</h6>
-            <div className="flex flex-col">
-              {colorData.map((item, index) => {
-                return (
-                  <Checkbox
-                    key={index}
-                    label={item}
-                    value={item}
-                    onChange={(e) => handleFilterClick(e, "color")}
-                  />
-                );
-              })}
+            <div>
+              <h6 className="text-xl">Brand</h6>
+              <div className="flex flex-col">
+                {brandData.map((item, index) => {
+                  return (
+                    <Checkbox
+                      key={index}
+                      label={item}
+                      value={item}
+                      onChange={(e) => handleFilterClick(e, "brand")}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
+
+            <hr className="my-3" />
+
+            <div>
+              <h6 className="text-xl">Color</h6>
+              <div className="flex flex-col mb-9">
+                {colorData.map((item, index) => {
+                  return (
+                    <Checkbox
+                      key={index}
+                      label={item}
+                      value={item}
+                      onChange={(e) => handleFilterClick(e, "color")}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </>
         </div>
-        <div className="w-10/12">
-          <div className="flex justify-end mb-4">
+        <div className="w-12/12 lg:w-10/12">
+          <div className="flex justify-end mb-4 space-x-3">
+            <Button
+              variant="outlined"
+              className="outline-none ring-0 lg:hidden"
+              onClick={() => setOpenRight(true)}
+            >
+              Filter
+            </Button>
+
             <select
               value={sortOption}
               onChange={handleSortingChange}
@@ -197,7 +212,7 @@ const Product = () => {
               <option value="nameZToA">Name: Z to A</option>
             </select>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {paginatedProducts.map((item, index) => {
               return <ProductCard item={item} key={index} />;
             })}
@@ -211,6 +226,106 @@ const Product = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+
+      <Drawer
+        placement="right"
+        open={openRight}
+        onClose={closeDrawerRight}
+        className="p-4"
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <Typography variant="h5" color="blue-gray">
+            Filter
+          </Typography>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            onClick={closeDrawerRight}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </IconButton>
+        </div>
+        <hr />
+        <div className="flex flex-col py-4 h-full overflow-auto">
+          <>
+            <div>
+              <h6 className="text-xl">Categories</h6>
+              <List dense>
+                {category.map((item, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      secondaryAction={
+                        <IconButton
+                          edge="end"
+                          aria-label="comments"
+                          onClick={() => handleCatgeoryClick(item)}
+                        >
+                          <ChevronRight />
+                        </IconButton>
+                      }
+                      disablePadding
+                    >
+                      <ListItemButton onClick={() => handleCatgeoryClick(item)}>
+                        <ListItemText primary={item.category} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </div>
+
+            <hr className="my-3" />
+
+            <div>
+              <h6 className="text-xl">Brand</h6>
+              <div className="flex flex-col">
+                {brandData.map((item, index) => {
+                  return (
+                    <Checkbox
+                      key={index}
+                      label={item}
+                      value={item}
+                      onChange={(e) => handleFilterClick(e, "brand")}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+
+            <hr className="my-3" />
+
+            <div>
+              <h6 className="text-xl">Color</h6>
+              <div className="flex flex-col mb-9">
+                {colorData.map((item, index) => {
+                  return (
+                    <Checkbox
+                      key={index}
+                      label={item}
+                      value={item}
+                      onChange={(e) => handleFilterClick(e, "color")}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        </div>
+      </Drawer>
     </Layout>
   );
 };

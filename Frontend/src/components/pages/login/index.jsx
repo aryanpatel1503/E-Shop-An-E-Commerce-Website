@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { borderForField } from "../../lib/commonFunctions";
+import { borderForField, isblank } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 
@@ -18,13 +18,17 @@ const Login = () => {
   const defaultValues = {
     user_name: "",
     user_password: "",
+    remember_me: false,
   };
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm({ defaultValues });
   const navigate = useNavigate();
+  const formValues = watch();
 
   const onSubmitData = (values) => {
     axios
@@ -39,6 +43,18 @@ const Login = () => {
           localStorage.setItem("user_name", response.data.result[0].user_name);
           localStorage.setItem("user_id", response.data.result[0].user_id);
           navigate("/");
+
+          if (values.remember_me) {
+            localStorage.setItem(
+              "remember_me",
+              JSON.stringify({
+                user_name: response.data.result[0].user_name,
+                user_password: response.data.result[0].user_password,
+              })
+            );
+          } else {
+            localStorage.removeItem("remember_me");
+          }
         }
       })
       .catch((err) => {
@@ -54,28 +70,38 @@ const Login = () => {
     e.preventDefault();
     handleSubmit(onSubmitData, onSubmitError)();
   };
+
+  useEffect(() => {
+    let rememberMeData = localStorage.getItem("remember_me");
+    if (!isblank(rememberMeData)) {
+      rememberMeData = JSON.parse(rememberMeData);
+      setValue("user_name", rememberMeData.user_name);
+      setValue("user_password", rememberMeData.user_password);
+    }
+  }, []);
+
   return (
     <div
-      className=" mx-auto flex flex-wrap justify-center items-center h-screen"
+      className="mx-auto p-4 lg:p-0 flex flex-col md:flex-row justify-center items-center md:h-screen"
       style={{
         background: "linear-gradient(to top, #198754 0%, #6c757d 100%)",
       }}
     >
-      <div className="w-full md:w-1/2 lg:w-1/3 flex justify-center items-center h-[395px] bg-white shadow-lg rounded-tl-lg rounded-bl-lg">
+      <div className="w-full sm:w-2/3 lg:w-1/3 flex justify-center items-center h-[300px] md:h-[408px] bg-white shadow-lg rounded-tl-lg rounded-tr-lg md:rounded-tr-none md:rounded-bl-lg">
         <img
           src={loginimg}
           alt="login"
-          className="object-contain h-[85%] rounded-lg"
+          className="object-contain h-[95%] md:h-[85%]"
         />
       </div>
-      <div className="w-full md:w-1/2 lg:w-1/3 h-[395px] bg-[#f5f5f5] shadow-lg rounded-tr-lg rounded-br-lg px-7 py-4">
+      <div className="w-full sm:w-2/3 lg:w-1/3 md:h-[408px] bg-[#f5f5f5] shadow-lg md:rounded-tr-lg rounded-br-lg rounded-bl-lg md:rounded-bl-none px-4 md:px-7 py-4">
         <Typography variant="h4" className="text-center">
           Login
         </Typography>
 
         <Card color="transparent" shadow={false} className="w-full">
-          <form className="mt-5 mb-2 w-[80%] flex flex-col self-center">
-            <div className="mb-1 flex flex-col space-y-[1px]">
+          <form className="mt-5 mb-2 w-full flex flex-col self-center">
+            <div className="mb-1 flex flex-col space-y-[1px] w-full">
               <div>
                 <Typography color="blue-gray" className="text-md font-medium">
                   Username
@@ -131,7 +157,30 @@ const Login = () => {
                     ? errors.user_password.message
                     : "\u00A0"}
                 </Typography>
-                <div className="flex justify-end">
+                <div className="flex flex-wrap justify-between items-center md:gap-2">
+                  <Controller
+                    name="remember_me"
+                    control={control}
+                    rules={{ required: false }}
+                    render={({ field }) => (
+                      <Checkbox
+                        {...field}
+                        type="password"
+                        size="lg"
+                        label="Remember me"
+                        className={borderForField(errors.remember_me)}
+                        labelProps={{
+                          className:
+                            "before:content-none after:content-none font-normal",
+                        }}
+                        containerProps={{
+                          className: "-mt-1",
+                        }}
+                        error={errors.remember_me}
+                      />
+                    )}
+                  />
+
                   <NavLink to="/resetpassword">Forget Password?</NavLink>
                 </div>
               </div>

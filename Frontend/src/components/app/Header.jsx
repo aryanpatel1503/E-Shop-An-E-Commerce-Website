@@ -3,15 +3,19 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
   Button,
+  Drawer,
   IconButton,
   Input,
+  ListItem,
+  ListItemPrefix,
   Menu,
   MenuHandler,
   MenuItem,
   MenuList,
-  Option,
-  Select,
   Tooltip,
 } from "@material-tailwind/react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -23,27 +27,38 @@ import {
   Collapse,
   List,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Popover,
   Typography,
 } from "@mui/material";
-import StarBorder from "@mui/icons-material/StarBorder";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  PresentationChartBarIcon,
+} from "@heroicons/react/24/outline";
 
 const Header = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { cartItems: list } = useSelector((state) => state.cart);
   const user_id = localStorage.getItem("user_id");
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [openRight, setOpenRight] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState(0);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const closeDrawerRight = () => {
+    setOpenRight(false);
+  };
 
   const navLinkStyle = ({ isActive, isPending, isTransitioning }) => {
     return {
@@ -62,8 +77,8 @@ const Header = () => {
   };
 
   const handleCatgeoryClick = (item) => {
-    navigate(`/products/${item.category}`);
     handleClose();
+    navigate(`/products/${item.category}`);
   };
 
   const getCategory = async () => {
@@ -95,16 +110,38 @@ const Header = () => {
     setFilteredData(filterData);
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    setOpenRight(true);
+  };
+
+  const handleOpen = (value) => {
+    setOpenAccordion(openAccordion === value ? 0 : value);
+  };
+
   return (
     <header className="text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap py-5 flex-col md:flex-row items-center">
-        <NavLink
-          to="/"
-          className="text-3xl flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
-        >
-          E-Shop
-        </NavLink>
+      <div className="container mx-auto flex flex-wrap p-4 flex-col md:flex-row items-center justify-center space-y-5">
+        {/* Logo */}
+        <span className="flex justify-between items-center w-[100%] md:w-auto">
+          <NavLink
+            to="/"
+            className="text-3xl flex title-font font-medium items-center text-gray-900 "
+          >
+            E-Shop
+          </NavLink>
 
+          {/* Mobile Menu Button */}
+          <IconButton
+            className="md:hidden shadow-none"
+            color="white"
+            onClick={toggleMobileMenu}
+          >
+            <MenuIcon />
+          </IconButton>
+        </span>
+
+        {/* Search Input */}
         <div className="relative flex md:mx-auto w-full max-w-[24rem]">
           <Input
             type="search"
@@ -148,7 +185,8 @@ const Header = () => {
           </Menu>
         </div>
 
-        <div className="flex space-x-4">
+        {/* Account and Cart Buttons */}
+        <div className="flex space-x-4 order-4 md:order-3">
           {user_id ? (
             <>
               <Menu>
@@ -264,7 +302,112 @@ const Header = () => {
         </div>
       </div>
 
-      <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-lg justify-center">
+      <Drawer
+        placement="right"
+        open={openRight}
+        onClose={closeDrawerRight}
+        className="p-4"
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <Typography variant="h5" color="blue-gray">
+            E-Shop
+          </Typography>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            onClick={closeDrawerRight}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </IconButton>
+        </div>
+        <hr />
+        <div className="flex flex-col py-4 h-full overflow-auto">
+          <List className="space-y-3">
+            <ListItemButton
+              className="text-lg"
+              selected={location.pathname === "/"}
+              onClick={() => navigate("/")}
+            >
+              Home
+            </ListItemButton>
+            <Accordion
+              open={openAccordion === 1}
+              icon={
+                <ChevronDownIcon
+                  strokeWidth={2.5}
+                  className={`mx-auto h-4 w-4 transition-transform ${
+                    openAccordion === 1 ? "rotate-180" : ""
+                  }`}
+                />
+              }
+            >
+              <ListItemButton
+                className="p-0"
+                selected={location.pathname.startsWith("/products")}
+              >
+                <AccordionHeader
+                  onClick={() => handleOpen(1)}
+                  className="border-b-0 py-0"
+                >
+                  <Typography color="" className="mr-auto text-lg font-normal">
+                    Products
+                  </Typography>
+                </AccordionHeader>
+              </ListItemButton>
+              <AccordionBody className="py-1">
+                <List disablePadding sx={{ minWidth: 150 }} dense>
+                  {categoryData?.map((item, index) => (
+                    <ListItemButton
+                      key={index}
+                      selected={
+                        location.pathname === `/products/${item.category}`
+                      }
+                      onClick={() => handleCatgeoryClick(item)}
+                    >
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      <ListItemText primary={item.category} />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </AccordionBody>
+            </Accordion>
+            <ListItemButton
+              className="text-lg"
+              selected={location.pathname === "/contact"}
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </ListItemButton>
+            <ListItemButton
+              className="text-lg"
+              selected={location.pathname === "/about"}
+              onClick={() => navigate("/about")}
+            >
+              About
+            </ListItemButton>
+          </List>
+        </div>
+      </Drawer>
+
+      {/* Navigation Links */}
+      <nav
+        className={`md:ml-auto md:mr-auto hidden md:flex flex-wrap items-center text-lg justify-center`}
+      >
         <NavLink
           to="/"
           style={navLinkStyle}
@@ -272,47 +415,25 @@ const Header = () => {
         >
           Home
         </NavLink>
+
         <NavLink
           to=""
-          // style={navLinkStyle}
           style={{
             color: "black",
+            fontWeight: location.pathname.startsWith("/products") ? "bold" : "",
           }}
-          className="mr-5 hover:text-gray-900"
           onClick={handleClick}
+          className="mr-5 hover:text-gray-900"
         >
-          Product
-          {open ? (
-            <ExpandLessIcon className="ml-2" />
-          ) : (
-            <ExpandMoreIcon className="ml-2" />
-          )}
+          Products{" "}
+          <span>
+            {open ? (
+              <ExpandLessIcon fontSize="small" />
+            ) : (
+              <ExpandMoreIcon fontSize="small" />
+            )}
+          </span>
         </NavLink>
-
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <List component="div" disablePadding style={{ width: "150px" }} dense>
-            {categoryData?.map((item, index) => {
-              return (
-                <ListItemButton
-                  onClick={() => handleCatgeoryClick(item)}
-                  selected={location.pathname === `/products/${item.category}`}
-                  key={index}
-                >
-                  <ListItemText primary={item.category} />
-                </ListItemButton>
-              );
-            })}
-          </List>
-        </Popover>
 
         <NavLink
           to="/contact"
@@ -329,6 +450,33 @@ const Header = () => {
           About
         </NavLink>
       </nav>
+
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <List disablePadding sx={{ minWidth: 150 }} dense>
+          {categoryData?.map((item, index) => (
+            <ListItemButton
+              key={index}
+              selected={location.pathname === `/products/${item.category}`}
+              onClick={() => handleCatgeoryClick(item)}
+            >
+              <ListItemText primary={item.category} />
+            </ListItemButton>
+          ))}
+        </List>
+      </Popover>
     </header>
   );
 };

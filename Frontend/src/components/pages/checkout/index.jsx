@@ -145,16 +145,18 @@ const Checkout = () => {
 
   return (
     <Layout>
-      <div className="my-10">
+      <div className="my-10 px-4 md:px-0">
         <form onSubmit={handleConfirmOrder} className="max-w-4xl mx-auto my-8">
           <h2 className="text-3xl font-medium text-center">Checkout</h2>
           <hr className="my-8 border-[1.3px] border-gray-300" />
-          <div className="flex justify-between items-center mb-4">
+          <div className="sm:flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Order Details</h2>
-            <h2 className="text-xl font-medium">Date - {getFormattedDate()}</h2>
+            <h2 className="text-xl font-medium hidden sm:block">
+              Date - {getFormattedDate()}
+            </h2>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="flex items-center">
               <img
                 src={productData.product_img}
@@ -175,7 +177,7 @@ const Checkout = () => {
           <hr className="my-8 border-[1.3px] border-gray-300" />
           <h2 className="text-2xl font-bold">Shipping Information</h2>
 
-          <div className="flex gap-10 my-4">
+          <div className="md:flex gap-10 my-4">
             <Radio
               name="type"
               value="current"
@@ -342,7 +344,7 @@ const Checkout = () => {
 
           <hr className="my-8 border-[1.3px] border-gray-300" />
           <h2 className="text-2xl font-bold">Billing Info</h2>
-          <div className="space-y-4 w-4/12 mt-4 mb-10">
+          <div className="space-y-4 w-full md:w-5/12 mt-4 mb-10">
             <div className="flex justify-between text-lg">
               <p className="text-green-600 font-semibold">Subtotal</p>
               <p className="text-green-600 font-semibold">
@@ -362,16 +364,20 @@ const Checkout = () => {
             </div>
           </div>
 
-          <div className="flex justify-between">
+          <div className="flex flex-wrap gap-4 justify-center sm:justify-between items-center">
             <Button
               variant="outlined"
               size="md"
-              className="text-red-600 border-red-600"
+              className="text-red-600 border-red-600 w-full sm:w-auto"
               onClick={handleCancelOrder}
             >
               Cancel Order
             </Button>
-            <Button type="submit" size="md" className="bg-teal-500">
+            <Button
+              type="submit"
+              size="md"
+              className="bg-teal-500 w-full sm:w-auto"
+            >
               Confirm Order
             </Button>
           </div>

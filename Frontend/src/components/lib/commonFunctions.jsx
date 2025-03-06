@@ -85,3 +85,10 @@ export const generateOrderId = () => {
 export const amountFormat = (amount, decimal = 2) => {
   return parseFloat(amount).toFixed(decimal);
 };
+
+export const isblank = (value) => {
+  if (value === null || value === undefined || value === "") {
+    return true;
+  }
+  return false;
+};
