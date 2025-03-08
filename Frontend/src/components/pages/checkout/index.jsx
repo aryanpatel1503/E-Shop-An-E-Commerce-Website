@@ -7,12 +7,14 @@ import { Input, Button, Select, Option, Radio } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 import { generateOrderId, getFormattedDate } from "../../lib/commonFunctions";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
-  const [productData, setProductData] = useState({});
+  const [productData, setProductData] = useState([]);
   const [userData, setUserData] = useState({});
   const [selectedValue, setSelectedValue] = useState("current");
-  const { id } = useParams();
+  const cart = useSelector((state) => state.cart);
+  // const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const user_id = localStorage.getItem("user_id");
@@ -20,7 +22,7 @@ const Checkout = () => {
   const order_id = generateOrderId();
 
   const defaultValues = {
-    order_id: order_id,
+    // order_id: order_id,
     order_name: "",
     order_address: "",
     order_city: "",
@@ -30,7 +32,8 @@ const Checkout = () => {
     order_pincode: "",
     order_status: "pending",
     shipping_method: "cash on delivery",
-    product_id: state?.id,
+    total_amount: 0,
+    // product_id: state?.id || "",
     user_id: user_id,
   };
   const {
@@ -40,8 +43,15 @@ const Checkout = () => {
     reset,
     formState: { errors },
   } = useForm({ defaultValues });
-
   const formValues = watch();
+
+  const totalAmount =
+    state?.from === "cart"
+      ? parseFloat(cart.cartTotalAmount).toFixed(2)
+      : parseFloat(
+          productData?.reduce((acc, item) => acc + item.product_price, 0)
+        ).toFixed(2);
+
   const setCurrentAddress = (response) => {
     response = response || userData;
     reset((formValues) => ({
@@ -71,8 +81,15 @@ const Checkout = () => {
 
   const onSubmit = (values) => {
     axios
-      .post(`${API_URL}/orders/add`, {
+      .post(`${API_URL}/orders/addNew`, {
         ...values,
+        total_amount: totalAmount,
+        order_items: JSON.stringify(
+          productData.map((item) => ({
+            quantity: item.cartQuantity,
+            product_id: item.product_id,
+          }))
+        ),
       })
       .then((response) => {
         if (response.status === 200) {
@@ -91,7 +108,13 @@ const Checkout = () => {
 
   const getProducts = async () => {
     const response = await axios.get(`${API_URL}/products/${state?.id}`);
-    setProductData(response.data.result[0]);
+    response.data.result = response.data.result.map((item) => {
+      return {
+        ...item,
+        cartQuantity: 1,
+      };
+    });
+    setProductData(response.data.result);
   };
 
   const getUser = async () => {
@@ -102,9 +125,12 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (state?.id) {
+    if (state?.from === "cart") {
+      setProductData(cart.cartItems);
+    } else if (state?.id) {
       getProducts();
     }
+
     if (user_id) {
       getUser();
     }
@@ -156,22 +182,35 @@ const Checkout = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="flex items-center">
-              <img
-                src={productData.product_img}
-                alt="product image"
-                className="mr-4 w-28"
-              />
-            </div>
-            <div className="flex items-center">
-              <h3 className="text-xl font-semibold">
-                {productData.product_name}
-              </h3>
-            </div>
-            <div className="flex items-center justify-end">
-              <p className="text-xl">₹{productData.product_price}</p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-center gap-4 mb-6">
+            {productData.map((item, index) => {
+              return (
+                <React.Fragment key={index}>
+                  {/* <div className="flex items-center"> */}
+                  <img
+                    src={item.product_img}
+                    alt="product image"
+                    className="mr-4 w-28"
+                  />
+                  {/* </div> */}
+                  {/* <div className="flex items-center"> */}
+                  <h3 className="text-md sm:text-lg md:text-xl font-semibold">
+                    {item.product_name}
+                  </h3>
+                  {/* </div> */}
+                  {/* <div className="flex items-center justify-center"> */}
+                  <h3 className="text-md sm:text-lg md:text-xl font-semibold text-center">
+                    {item.cartQuantity}
+                  </h3>
+                  {/* </div> */}
+                  <div className="flex items-center justify-end">
+                    <p className="text-md sm:text-lg md:text-xl">
+                      ₹{item.product_price}
+                    </p>
+                  </div>
+                </React.Fragment>
+              );
+            })}
           </div>
 
           <hr className="my-8 border-[1.3px] border-gray-300" />
@@ -347,9 +386,7 @@ const Checkout = () => {
           <div className="space-y-4 w-full md:w-5/12 mt-4 mb-10">
             <div className="flex justify-between text-lg">
               <p className="text-green-600 font-semibold">Subtotal</p>
-              <p className="text-green-600 font-semibold">
-                ₹{productData.product_price}
-              </p>
+              <p className="text-green-600 font-semibold">₹{totalAmount}</p>
             </div>
             <div className="flex justify-between text-lg">
               <p className="text-green-600 font-semibold">Delivery Charges</p>
@@ -358,9 +395,7 @@ const Checkout = () => {
             <hr className="border-[1.3px] border-gray-300" />
             <div className="flex justify-between text-xl">
               <p className="text-green-600 font-semibold">Total Payable</p>
-              <p className="text-green-600 font-semibold">
-                ₹{productData.product_price}
-              </p>
+              <p className="text-green-600 font-semibold">₹{totalAmount}</p>
             </div>
           </div>
 

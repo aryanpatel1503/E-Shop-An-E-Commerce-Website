@@ -20,7 +20,10 @@ const Cart = () => {
   const currency = "₹";
 
   const handleCheckout = () => {
-    navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
+    // navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
+    navigate("/checkout", {
+      state: { from: "cart" },
+    });
   };
 
   useEffect(() => {

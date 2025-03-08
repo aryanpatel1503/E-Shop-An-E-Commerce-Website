@@ -617,10 +617,77 @@ app.get("/getOrders/:id", (req, res) => {
   );
 });
 
+// Get all Orders (New)
+app.get("/getOrdersNew/:id", (req, res) => {
+  const id = req.params.id;
+
+  con.query(
+    `SELECT o.*,
+     JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'product_id', p.product_id,
+            'product_name', p.product_name,
+            'quantity', oi.quantity,
+            'product_price', p.product_price,
+            'product_desc', p.product_desc,
+            'product_img', p.product_img
+        )
+    ) AS order_items
+      FROM orders o INNER JOIN order_items oi ON o.order_id = oi.order_id INNER JOIN product p ON oi.product_id = p.product_id INNER JOIN user_reg u ON o.user_id = u.user_id WHERE u.user_id = ?
+    GROUP BY 
+      o.order_id
+    ORDER BY 
+      o.order_id;`,
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order get successfully", result });
+      }
+    }
+  );
+});
+
 // Get all Orders
 app.get("/orders", (req, res) => {
   con.query(
     "SELECT o.*, u.user_name, p.product_name, p.product_desc, p.product_price, p.product_img FROM orders o INNER JOIN user_reg u ON o.user_id = u.user_id INNER JOIN product p ON o.product_id = p.product_id ORDER BY order_id ",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order get successfully", result });
+      }
+    }
+  );
+});
+
+// Get all Orders (New)
+app.get("/ordersNew", (req, res) => {
+  con.query(
+    `SELECT o.*,
+     JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'product_id', p.product_id,
+            'product_name', p.product_name,
+            'quantity', oi.quantity,
+            'product_price', p.product_price,
+            'product_desc', p.product_desc,
+            'product_img', p.product_img
+        )
+    ) AS order_items
+      FROM orders o INNER JOIN order_items oi ON o.order_id = oi.order_id INNER JOIN product p ON oi.product_id = p.product_id 
+    GROUP BY 
+      o.order_id
+    ORDER BY 
+      o.order_id;`,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -648,6 +715,120 @@ app.get("/orders/count", (req, res) => {
       }
     }
   );
+});
+
+// Add Order (New)
+app.post("/orders/addNew", (req, res) => {
+  const {
+    order_name,
+    order_address,
+    order_city,
+    order_state,
+    order_mobile,
+    order_email,
+    order_pincode,
+    order_status,
+    shipping_method,
+    total_amount,
+    user_id,
+    order_items,
+  } = req.body;
+  let orderItems =
+    order_items && typeof order_items === "string"
+      ? JSON.parse(order_items)
+      : [];
+
+  con.beginTransaction((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send({ message: "Transaction start failed" });
+      // throw err;
+    }
+
+    // Insert into the first table (e.g., products table)
+
+    const orderSql =
+      "INSERT INTO orders (order_name, order_address, order_city, order_state, order_mobile, order_email, order_pincode, order_status, shipping_method, total_amount, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    con.query(
+      orderSql,
+      [
+        order_name,
+        order_address,
+        order_city,
+        order_state,
+        order_mobile,
+        order_email,
+        order_pincode,
+        order_status,
+        shipping_method,
+        total_amount,
+        user_id,
+      ],
+      (err, orderResults) => {
+        if (err) {
+          return con.rollback(() => {
+            // throw err;
+            console.log("Error inserting into orders table:", err);
+            return res.status(500).send({ message: "Failed to insert order" });
+          });
+        }
+
+        const insertedOrderId = orderResults.insertId; // Get the inserted product ID
+        /* const orderItemsValues = orderItems.map((item) => ({
+          ...item,
+          order_id: insertedOrderId,
+        })); */
+
+        const orderItemsValues = orderItems.map((item) => [
+          item.quantity,
+          item.product_id,
+          insertedOrderId,
+        ]);
+
+        // Insert into the second table (e.g., orders table) with a reference to the first table
+        const orderItemsSql =
+          "INSERT INTO order_items (quantity, product_id , order_id) VALUES ?";
+        con.query(orderItemsSql, [orderItemsValues], (err, orderResults) => {
+          if (err) {
+            return con.rollback(() => {
+              // throw err;
+              console.log("Error inserting into order_items table:", err);
+              return res
+                .status(500)
+                .send({ message: "Failed to insert order items" });
+            });
+          }
+
+          // Commit the transaction if both inserts succeed
+          con.commit((err) => {
+            if (err) {
+              return con.rollback(() => {
+                // throw err;
+                console.log("Transaction commit failed:", err);
+                return res
+                  .status(500)
+                  .send({ message: "Transaction commit failed" });
+              });
+            }
+
+            console.log(
+              "Transaction complete, data inserted into both tables!"
+            );
+            res.status(200).send({ message: "Order placed successfully" });
+
+            // Close the connection after committing
+            /*  con.end((err) => {
+              if (err) {
+                console.error("Error closing connection:", err);
+              } else {
+                console.log("MySQL connection closed.");
+              }
+            }); */
+          });
+        });
+      }
+    );
+  });
 });
 
 // Add Order
@@ -711,7 +892,6 @@ app.delete("/orders/:id", (req, res) => {
 });
 
 // Edit Order
-
 app.put("/orders/:id", (req, res) => {
   const id = req.params.id;
   const {
@@ -757,6 +937,131 @@ app.put("/orders/:id", (req, res) => {
   );
 });
 
+// Update Order (New)
+app.put("/orders/update/:orderId", (req, res) => {
+  const {
+    order_name,
+    order_address,
+    order_city,
+    order_state,
+    order_mobile,
+    order_email,
+    order_pincode,
+    order_status,
+    shipping_method,
+    total_amount,
+    user_id,
+    order_items,
+  } = req.body;
+  const { orderId } = req.params;
+
+  let orderItems =
+    order_items && typeof order_items === "string"
+      ? JSON.parse(order_items)
+      : [];
+
+  con.beginTransaction((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send({ message: "Transaction start failed" });
+    }
+
+    // Check if the order exists
+    const checkOrderSql = "SELECT * FROM orders WHERE order_id = ?";
+    con.query(checkOrderSql, [orderId], (err, orderResults) => {
+      if (err || orderResults.length === 0) {
+        return con.rollback(() => {
+          console.log("Order not found or query failed:", err);
+          return res.status(404).send({ message: "Order not found" });
+        });
+      }
+
+      // Update the order in the `orders` table
+      const updateOrderSql =
+        "UPDATE orders SET order_name = ?, order_address = ?, order_city = ?, order_state = ?, order_mobile = ?, order_email = ?, order_pincode = ?, order_status = ?, shipping_method = ?, total_amount = ?, user_id = ? WHERE order_id = ?";
+      con.query(
+        updateOrderSql,
+        [
+          order_name,
+          order_address,
+          order_city,
+          order_state,
+          order_mobile,
+          order_email,
+          order_pincode,
+          order_status,
+          shipping_method,
+          total_amount,
+          user_id,
+          orderId,
+        ],
+        (err, updateResults) => {
+          if (err) {
+            return con.rollback(() => {
+              console.log("Error updating order:", err);
+              return res
+                .status(500)
+                .send({ message: "Failed to update order" });
+            });
+          }
+
+          // Delete existing order items for this order (optional, based on use case)
+          const deleteOrderItemsSql =
+            "DELETE FROM order_items WHERE order_id = ?";
+          con.query(deleteOrderItemsSql, [orderId], (err) => {
+            if (err) {
+              return con.rollback(() => {
+                console.log("Error deleting order items:", err);
+                return res
+                  .status(500)
+                  .send({ message: "Failed to delete order items" });
+              });
+            }
+
+            const numOrderId = Number(orderId);
+            // Insert updated order items
+            const orderItemsValues = orderItems.map((item) => [
+              item.quantity,
+              item.product_id,
+              numOrderId,
+            ]);
+
+            const insertOrderItemsSql =
+              "INSERT INTO order_items (quantity, product_id, order_id) VALUES ?";
+            con.query(insertOrderItemsSql, [orderItemsValues], (err) => {
+              if (err) {
+                return con.rollback(() => {
+                  console.log("Error inserting new order items:", err);
+                  return res
+                    .status(500)
+                    .send({ message: "Failed to insert new order items" });
+                });
+              }
+
+              // Commit the transaction if both updates succeed
+              con.commit((err) => {
+                if (err) {
+                  return con.rollback(() => {
+                    console.log("Transaction commit failed:", err);
+                    return res
+                      .status(500)
+                      .send({ message: "Transaction commit failed" });
+                  });
+                }
+
+                console.log(
+                  "Transaction complete, order and items updated successfully!"
+                );
+                res.status(200).send({ message: "Order updated successfully" });
+              });
+            });
+          });
+        }
+      );
+    });
+  });
+});
+
 // Get single order
 app.get("/orders/:id", (req, res) => {
   const id = req.params.id;
@@ -769,6 +1074,36 @@ app.get("/orders/:id", (req, res) => {
       res.send({ message: "Order get successfully", result });
     }
   });
+});
+
+// Get single order (New)
+app.get("/ordersNew/:id", (req, res) => {
+  const id = req.params.id;
+  con.query(
+    `SELECT o.*,
+     JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'product_id', p.product_id,
+            'product_name', p.product_name,
+            'quantity', oi.quantity,
+            'product_price', p.product_price,
+            'product_desc', p.product_desc,
+            'product_img', p.product_img
+        )
+    ) AS order_items
+      FROM orders o INNER JOIN order_items oi ON o.order_id = oi.order_id INNER JOIN product p ON oi.product_id = p.product_id 
+    WHERE o.order_id = ?`,
+    [id],
+    (err, result) => {
+      if (err) {
+        res.status(400);
+        res.send({ message: "An error occurred!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order get successfully", result });
+      }
+    }
+  );
 });
 
 // Get all feedback

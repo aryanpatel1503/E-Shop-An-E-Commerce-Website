@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import Pagination from "../../app/Pagination";
 import AdminLayout from "../AdminLayout";
+import { isblank, showLocalString } from "../../lib/commonFunctions";
 
 function Icon({ id, open }) {
   return (
@@ -72,7 +73,18 @@ const Report = () => {
   };
 
   const getAllOrders = async () => {
-    const response = await axios.get(`${API_URL}/orders`);
+    const response = await axios.get(`${API_URL}/ordersNew`);
+    response.data.result = response.data.result.map((item) => {
+      const order_items =
+        !isblank(item.order_items) && typeof item.order_items === "string"
+          ? JSON.parse(item.order_items)
+          : [];
+      return {
+        ...item,
+        product_name: order_items?.map((i) => i.product_name)?.toString() || "",
+        order_items,
+      };
+    });
     setData((prev) => ({
       ...prev,
       orders: response.data.result,
@@ -254,7 +266,9 @@ const Report = () => {
                       <th className="px-3 py-4">Mobile</th>
                       <th className="px-3 py-4">Email</th>
                       <th className="px-3 py-4">Pincode</th>
-                      <th className="px-3 py-4">shipping_method</th>
+                      <th className="px-3 py-4">Date</th>
+                      <th className="px-3 py-4">Status</th>
+                      <th className="px-3 py-4">Shipping Method</th>
                       <th className="px-3 py-4">Product</th>
                     </tr>
                   </thead>
@@ -274,6 +288,10 @@ const Report = () => {
                           <td className="px-3 py-3">{item.order_mobile}</td>
                           <td className="px-3 py-3">{item.order_email}</td>
                           <td className="px-3 py-3">{item.order_pincode}</td>
+                          <td className="px-3 py-3">
+                            {showLocalString(item.order_date)}
+                          </td>
+                          <td className="px-3 py-3">{item.order_status}</td>
                           <td className="px-3 py-3">{item.shipping_method}</td>
                           <td className="px-3 py-3">{item.product_name}</td>
                         </tr>

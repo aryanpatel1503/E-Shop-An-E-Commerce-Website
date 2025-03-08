@@ -4,6 +4,9 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import axios from "axios";
 import {
   Button,
+  Card,
+  CardFooter,
+  IconButton,
   Input,
   Option,
   Radio,
@@ -11,19 +14,47 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import { Controller, useForm } from "react-hook-form";
-import { borderForField, generateOrderId } from "../../lib/commonFunctions";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+  borderForField,
+  generateOrderId,
+  isblank,
+} from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { toast } from "react-toastify";
 import AdminLayout from "../AdminLayout";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AddUpdateOrder = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
 
+  const TABLE_HEAD = [
+    {
+      name: "Product",
+      width: "",
+    },
+    {
+      name: "Quantity",
+      width: 50,
+    },
+    {
+      name: "",
+      width: 30,
+    },
+  ];
+
+  const TABLE_ROWS = [
+    {
+      name: "John Michael",
+      job: "Manager",
+      date: "23/04/18",
+    },
+  ];
+
   const defaultValues = {
-    order_id: generateOrderId(),
+    // order_id: generateOrderId(),
     order_name: "",
     order_address: "",
     order_city: "",
@@ -33,8 +64,10 @@ const AddUpdateOrder = () => {
     order_pincode: "",
     order_status: "pending",
     shipping_method: "cash on delivery",
-    product_id: "",
+    total_amount: 0,
+    // product_id: "",
     user_id: "",
+    order_items: [{ product_id: "", quantity: "" }],
   };
   const {
     control,
@@ -43,21 +76,64 @@ const AddUpdateOrder = () => {
     reset,
     formState: { errors },
   } = useForm({ defaultValues });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "order_items",
+    rules: {
+      minLength: 1,
+    },
+  });
+  const watchFieldArray = watch("order_items");
+  const controlledFields = fields.map((item, index) => ({
+    ...item,
+    ...watchFieldArray[index],
+  }));
+
   const navigate = useNavigate();
   const { name } = useParams();
   const val = name?.replaceAll("_", " ");
 
   const formValues = watch();
 
+  const handleAddRow = () => {
+    append({
+      product_id: "",
+      quantity: "",
+    });
+  };
+
   const onSubmitError = (values) => {
     console.log(values);
   };
 
   const onSubmitData = (values) => {
+    const productIdArr = values.order_items.map((i) => i.product_id);
+    let product = allProducts.filter((item) =>
+      productIdArr.includes(item.product_id)
+    );
+    product = product.map((item) => {
+      const updated = item;
+      const orderItem = values.order_items.find(
+        (i) => i.product_id === item.product_id
+      );
+      if (orderItem.product_id === item.product_id) {
+        updated.quantity = orderItem.quantity;
+      }
+      return updated;
+    });
+    const totalAmount = parseFloat(
+      product?.reduce(
+        (acc, item) => acc + item.product_price * parseFloat(item.quantity),
+        0
+      )
+    ).toFixed(2);
+
     if (name) {
       axios
-        .put(`${API_URL}/orders/${val}`, {
+        .put(`${API_URL}/orders/update/${val}`, {
           ...values,
+          total_amount: totalAmount,
+          order_items: JSON.stringify(values.order_items),
         })
         .then((response) => {
           if (response.status === 200) {
@@ -74,8 +150,10 @@ const AddUpdateOrder = () => {
         });
     } else {
       axios
-        .post(`${API_URL}/orders/add`, {
+        .post(`${API_URL}/orders/addNew`, {
           ...values,
+          total_amount: totalAmount,
+          order_items: JSON.stringify(values.order_items),
         })
         .then((response) => {
           if (response.status === 200) {
@@ -101,8 +179,18 @@ const AddUpdateOrder = () => {
   useEffect(() => {
     if (name) {
       axios
-        .get(`${API_URL}/orders/${val}`)
+        .get(`${API_URL}/ordersNew/${val}`)
         .then((response) => {
+          const orderItems = response.data.result[0].order_items;
+          response.data.result[0].order_items =
+            !isblank(orderItems) && typeof orderItems === "string"
+              ? JSON.parse(orderItems)
+              : [];
+          response.data.result[0].order_items =
+            response.data.result[0].order_items?.map((item) => ({
+              product_id: item.product_id,
+              quantity: item.quantity,
+            }));
           reset((formValues) => ({
             ...formValues,
             ...response.data.result[0],
@@ -149,7 +237,7 @@ const AddUpdateOrder = () => {
                 <div className="w-full">
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Name
@@ -173,7 +261,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_name && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_name.message}
                     </Typography>
                   )}
@@ -182,7 +270,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Address
@@ -204,7 +292,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_address && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_address.message}
                     </Typography>
                   )}
@@ -213,7 +301,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     City
@@ -236,7 +324,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_city && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_city.message}
                     </Typography>
                   )}
@@ -245,7 +333,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     State
@@ -268,7 +356,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_state && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_state.message}
                     </Typography>
                   )}
@@ -277,7 +365,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Mobile
@@ -311,7 +399,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_mobile && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_mobile.message}
                     </Typography>
                   )}
@@ -320,7 +408,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Email
@@ -350,7 +438,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_email && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_email.message}
                     </Typography>
                   )}
@@ -359,7 +447,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Pincode
@@ -396,7 +484,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_pincode && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_pincode.message}
                     </Typography>
                   )}
@@ -405,7 +493,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Order Status
@@ -431,7 +519,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.order_status && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.order_status.message}
                     </Typography>
                   )}
@@ -440,7 +528,7 @@ const AddUpdateOrder = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Shipping Method
@@ -466,7 +554,7 @@ const AddUpdateOrder = () => {
                     )}
                   />
                   {errors.shipping_method && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.shipping_method.message}
                     </Typography>
                   )}
@@ -475,50 +563,7 @@ const AddUpdateOrder = () => {
                 <div className="w-full mt-2">
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Product
-                  </Typography>
-                  <FormControl sx={{ minWidth: "100%" }}>
-                    <Controller
-                      name="product_id"
-                      control={control}
-                      rules={{ required: "Product is required" }}
-                      render={({ field: { onChange, value } }) => (
-                        <Select
-                          value={value}
-                          onChange={onChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                          fullWidth={true}
-                          sx={{ height: 45 }}
-                        >
-                          {allProducts.map((item, index) => {
-                            return (
-                              <MenuItem
-                                key={item.product_id}
-                                value={item.product_id}
-                              >
-                                {item.product_name}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      )}
-                    />
-                  </FormControl>
-                  {errors.product_id && (
-                    <Typography color="red" className="text-md font-medium">
-                      {errors.product_id.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div className="w-full mt-2">
-                  <Typography
-                    color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Customer
@@ -536,6 +581,7 @@ const AddUpdateOrder = () => {
                           inputProps={{ "aria-label": "Without label" }}
                           fullWidth={true}
                           sx={{ height: 45 }}
+                          error={errors.user_id}
                         >
                           {allUsers.map((item, index) => {
                             return (
@@ -549,10 +595,165 @@ const AddUpdateOrder = () => {
                     />
                   </FormControl>
                   {errors.user_id && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_id.message}
                     </Typography>
                   )}
+                </div>
+
+                <div>
+                  <Typography
+                    color="blue-gray"
+                    className="text-base font-semibold"
+                  >
+                    <span className="text-red-500 font-semibold mr-1">*</span>
+                    Order Items
+                  </Typography>
+                  <Card className="w-full overflow-y-auto">
+                    <table className="w-full text-left">
+                      <thead>
+                        <tr>
+                          {TABLE_HEAD.map((head) => (
+                            <th
+                              key={head.name}
+                              className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                            >
+                              <Typography
+                                variant="small"
+                                color="blue-gray"
+                                className="font-normal leading-none opacity-70"
+                              >
+                                {head.name}
+                              </Typography>
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {controlledFields.map((field, index) => {
+                          const fieldArray = `order_items[${index}]`;
+                          const isLast = index === controlledFields.length - 1;
+                          const classes = isLast
+                            ? "p-4"
+                            : "p-4 border-b border-blue-gray-50";
+
+                          return (
+                            <tr key={field.id}>
+                              <td className={classes}>
+                                <Controller
+                                  name={`${fieldArray}.product_id`}
+                                  control={control}
+                                  rules={{ required: "Product is required" }}
+                                  render={({ field: { onChange, value } }) => (
+                                    <Select
+                                      value={value}
+                                      onChange={onChange}
+                                      displayEmpty
+                                      inputProps={{
+                                        "aria-label": "Without label",
+                                      }}
+                                      fullWidth={true}
+                                      sx={{ height: 45 }}
+                                      error={
+                                        errors?.order_items?.[index]?.product_id
+                                      }
+                                    >
+                                      {allProducts.map((item, index) => {
+                                        return (
+                                          <MenuItem
+                                            key={item.product_id}
+                                            value={item.product_id}
+                                          >
+                                            {item.product_name}
+                                          </MenuItem>
+                                        );
+                                      })}
+                                    </Select>
+                                  )}
+                                />
+                                {errors?.order_items?.[index]?.product_id && (
+                                  <Typography
+                                    color="red"
+                                    className="text-sm font-medium"
+                                  >
+                                    {
+                                      errors?.order_items?.[index]?.product_id
+                                        ?.message
+                                    }
+                                  </Typography>
+                                )}
+                              </td>
+                              <td className={classes} width={20}>
+                                <Controller
+                                  name={`${fieldArray}.quantity`}
+                                  control={control}
+                                  rules={{
+                                    required: "Quantity is required",
+                                    pattern: {
+                                      value: /^[0-9]+$/,
+                                      message: "Quantity must be a number",
+                                    },
+                                  }}
+                                  render={({ field }) => (
+                                    <Input
+                                      size="lg"
+                                      {...field}
+                                      placeholder="Quantity"
+                                      className={borderForField(
+                                        errors?.order_items?.[index]?.quantity
+                                      )}
+                                      labelProps={{
+                                        className:
+                                          "before:content-none after:content-none",
+                                      }}
+                                      error={
+                                        errors?.order_items?.[index]?.quantity
+                                      }
+                                    />
+                                  )}
+                                />
+                                {errors?.order_items?.[index]?.quantity && (
+                                  <Typography
+                                    color="red"
+                                    className="text-sm font-medium"
+                                  >
+                                    {
+                                      errors?.order_items?.[index]?.quantity
+                                        ?.message
+                                    }
+                                  </Typography>
+                                )}
+                              </td>
+                              <td className={classes} width={30}>
+                                <IconButton
+                                  variant="text"
+                                  className="rounded-full"
+                                  onClick={() => remove(index)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colSpan={3}>
+                            <CardFooter className="flex items-center justify-between border-t border-blue-gray-100 p-4">
+                              <Button
+                                variant="outlined"
+                                size="sm"
+                                onClick={handleAddRow}
+                              >
+                                Add Row
+                              </Button>
+                            </CardFooter>
+                          </td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </Card>
                 </div>
               </div>
 

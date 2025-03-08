@@ -30,6 +30,10 @@ const Pagination = ({
     setCurrentPage(currentPage - 1);
   };
 
+  if (data?.length === 0) {
+    return null;
+  }
+
   return (
     <div
       className={`flex ${

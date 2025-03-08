@@ -8,7 +8,7 @@ import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 import Pagination from "../../app/Pagination";
 import AdminLayout from "../AdminLayout";
-import { showLocalString } from "../../lib/commonFunctions";
+import { isblank, showLocalString } from "../../lib/commonFunctions";
 
 const ViewOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -21,7 +21,19 @@ const ViewOrder = () => {
   );
 
   const getOrders = async () => {
-    const response = await axios.get(`${API_URL}/orders`);
+    const response = await axios.get(`${API_URL}/ordersNew`);
+    response.data.result = response.data.result.map((item) => {
+      const order_items =
+        !isblank(item.order_items) && typeof item.order_items === "string"
+          ? JSON.parse(item.order_items)
+          : [];
+      return {
+        ...item,
+        product_name: order_items?.map((i) => i.product_name)?.toString() || "",
+        order_items,
+      };
+    });
+
     setOrders(response.data.result);
   };
   useEffect(() => {
