@@ -859,7 +859,7 @@ const AddUpdateOrder = () => {
                                   className="rounded-full"
                                   onClick={() => remove(index)}
                                 >
-                                  <DeleteIcon />
+                                  <DeleteIcon fontSize="small" />
                                 </IconButton>
                               </TableCell>
                             </TableRow>

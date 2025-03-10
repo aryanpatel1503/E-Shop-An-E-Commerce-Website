@@ -150,13 +150,77 @@ const Checkout = () => {
     });
   };
 
-  const handleConfirmOrder = (e) => {
+  const handleConfirmOrder = async (e) => {
     e.preventDefault();
-    if (user_id) {
+
+    const response = await fetch(`${API_URL}/order`, {
+      method: "POST",
+      body: JSON.stringify({
+        amount: 50000,
+        currency: "INR",
+        receipt: "as",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const order = await response.json();
+    console.log(order);
+
+    var options = {
+      key: "rzp_test_SP8VwXieL6eFC3", // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: order.currency,
+      name: "Acme Corp", //your business name
+      description: "Test Transaction",
+      image: "https://example.com/your_logo",
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: async function (response) {
+        const body = {
+          ...response,
+        };
+
+        const validateRes = await fetch(`${API_URL}/order/validate`, {
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const jsonRes = await validateRes.json();
+        console.log(jsonRes);
+      },
+      prefill: {
+        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        name: "Web Dev Matrix", //your customer's name
+        email: "webdevmatrix@example.com",
+        contact: "9000000000", //Provide the customer's phone number for better conversion rates
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    var rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      alert(response.error.code);
+      alert(response.error.description);
+      alert(response.error.source);
+      alert(response.error.step);
+      alert(response.error.reason);
+      alert("order_id", response.error.metadata.order_id);
+      alert("payment_id", response.error.metadata.payment_id);
+    });
+    rzp1.open();
+    e.preventDefault();
+
+    /* if (user_id) {
       handleSubmit(onSubmit, onSubmitError)();
     } else {
       navigate("/login");
-    }
+    } */
   };
 
   const handleCancelOrder = () => {
@@ -176,7 +240,7 @@ const Checkout = () => {
   return (
     <Layout>
       <div className="my-10 px-4 md:px-0">
-        <form onSubmit={handleConfirmOrder} className="max-w-4xl mx-auto my-8">
+        <form className="max-w-4xl mx-auto my-8">
           <h2 className="text-3xl font-medium text-center">Checkout</h2>
           <hr className="my-8 border-[1.3px] border-gray-300" />
           <div className="sm:flex justify-between items-center mb-4">
@@ -413,9 +477,9 @@ const Checkout = () => {
               Cancel Order
             </Button>
             <Button
-              type="submit"
               size="md"
               className="bg-teal-500 w-full sm:w-auto"
+              onClick={handleConfirmOrder}
             >
               Confirm Order
             </Button>
