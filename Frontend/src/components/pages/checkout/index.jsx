@@ -49,7 +49,10 @@ const Checkout = () => {
     state?.from === "cart"
       ? parseFloat(cart.cartTotalAmount).toFixed(2)
       : parseFloat(
-          productData?.reduce((acc, item) => acc + item.product_price, 0)
+          productData?.reduce(
+            (acc, item) => acc + item.product_price * item.cartQuantity,
+            0
+          )
         ).toFixed(2);
 
   const setCurrentAddress = (response) => {
@@ -87,6 +90,7 @@ const Checkout = () => {
         order_items: JSON.stringify(
           productData.map((item) => ({
             quantity: item.cartQuantity,
+            price: item.product_price,
             product_id: item.product_id,
           }))
         ),
@@ -111,7 +115,7 @@ const Checkout = () => {
     response.data.result = response.data.result.map((item) => {
       return {
         ...item,
-        cartQuantity: 1,
+        cartQuantity: state?.quantity || 1,
       };
     });
     setProductData(response.data.result);

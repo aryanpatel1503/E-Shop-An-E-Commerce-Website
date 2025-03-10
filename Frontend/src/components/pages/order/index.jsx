@@ -99,7 +99,7 @@ const Order = () => {
                     color="blue-gray"
                     className="my-4 text-lg md:text-xl font-medium"
                   >
-                    ₹{item.order_items?.product_price}
+                    ₹{item.order_items?.price}
                   </Typography>
                   <Chip
                     variant="ghost"

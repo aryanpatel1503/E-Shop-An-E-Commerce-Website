@@ -628,7 +628,7 @@ app.get("/getOrdersNew/:id", (req, res) => {
             'product_id', p.product_id,
             'product_name', p.product_name,
             'quantity', oi.quantity,
-            'product_price', p.product_price,
+            'price', oi.price,
             'product_desc', p.product_desc,
             'product_img', p.product_img
         )
@@ -678,7 +678,7 @@ app.get("/ordersNew", (req, res) => {
             'product_id', p.product_id,
             'product_name', p.product_name,
             'quantity', oi.quantity,
-            'product_price', p.product_price,
+            'price', oi.price,
             'product_desc', p.product_desc,
             'product_img', p.product_img
         )
@@ -781,13 +781,14 @@ app.post("/orders/addNew", (req, res) => {
 
         const orderItemsValues = orderItems.map((item) => [
           item.quantity,
+          item.price,
           item.product_id,
           insertedOrderId,
         ]);
 
         // Insert into the second table (e.g., orders table) with a reference to the first table
         const orderItemsSql =
-          "INSERT INTO order_items (quantity, product_id , order_id) VALUES ?";
+          "INSERT INTO order_items (quantity, price, product_id , order_id) VALUES ?";
         con.query(orderItemsSql, [orderItemsValues], (err, orderResults) => {
           if (err) {
             return con.rollback(() => {
@@ -1022,12 +1023,13 @@ app.put("/orders/update/:orderId", (req, res) => {
             // Insert updated order items
             const orderItemsValues = orderItems.map((item) => [
               item.quantity,
+              item.price,
               item.product_id,
               numOrderId,
             ]);
 
             const insertOrderItemsSql =
-              "INSERT INTO order_items (quantity, product_id, order_id) VALUES ?";
+              "INSERT INTO order_items (quantity, price, product_id, order_id) VALUES ?";
             con.query(insertOrderItemsSql, [orderItemsValues], (err) => {
               if (err) {
                 return con.rollback(() => {
@@ -1086,7 +1088,7 @@ app.get("/ordersNew/:id", (req, res) => {
             'product_id', p.product_id,
             'product_name', p.product_name,
             'quantity', oi.quantity,
-            'product_price', p.product_price,
+            'price', oi.price,
             'product_desc', p.product_desc,
             'product_img', p.product_img
         )

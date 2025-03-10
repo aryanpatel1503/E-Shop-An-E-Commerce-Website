@@ -21,7 +21,8 @@ import { API_URL } from "../../lib/constant";
 import axios from "axios";
 import { addToCart } from "../../redux/cartSlice";
 import { useDispatch } from "react-redux";
-import { Avatar } from "@mui/material";
+import { Avatar, IconButton } from "@mui/material";
+import { Remove, Add } from "@mui/icons-material";
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
@@ -61,7 +62,9 @@ const ProductDetail = () => {
 
   const handleBuyNow = () => {
     if (user_id) {
-      navigate("/checkout", { state: { id: productData.product_id } });
+      navigate("/checkout", {
+        state: { id: productData.product_id, quantity },
+      });
     } else {
       navigate("/login");
     }
@@ -144,19 +147,17 @@ const ProductDetail = () => {
 
           <div className="flex flex-wrap items-start gap-3">
             <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
-              <button
-                onClick={decrement}
-                className="text-xl font-semibold px-3 focus:outline-none"
-              >
-                -
-              </button>
-              <span className="px-4">{quantity}</span>
-              <button
-                onClick={increment}
-                className="text-xl font-semibold px-3 focus:outline-none"
-              >
-                +
-              </button>
+              <IconButton onClick={decrement}>
+                <Remove />
+              </IconButton>
+              <input
+                value={quantity}
+                className="text-center w-10 bg-inherit"
+                disabled
+              />
+              <IconButton onClick={increment}>
+                <Add />
+              </IconButton>
             </div>
 
             {/* Add to Cart Button */}

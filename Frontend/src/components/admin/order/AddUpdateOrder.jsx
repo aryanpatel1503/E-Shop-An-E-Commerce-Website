@@ -21,7 +21,20 @@ import {
   isblank,
 } from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import AdminLayout from "../AdminLayout";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,29 +42,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 const AddUpdateOrder = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-
-  const TABLE_HEAD = [
-    {
-      name: "Product",
-      width: "",
-    },
-    {
-      name: "Quantity",
-      width: 50,
-    },
-    {
-      name: "",
-      width: 30,
-    },
-  ];
-
-  const TABLE_ROWS = [
-    {
-      name: "John Michael",
-      job: "Manager",
-      date: "23/04/18",
-    },
-  ];
 
   const defaultValues = {
     // order_id: generateOrderId(),
@@ -67,16 +57,17 @@ const AddUpdateOrder = () => {
     total_amount: 0,
     // product_id: "",
     user_id: "",
-    order_items: [{ product_id: "", quantity: "" }],
+    order_items: [{ product_id: "", quantity: "", price: 0, subtotal: 0 }],
   };
   const {
     control,
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({ defaultValues });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "order_items",
     rules: {
@@ -99,7 +90,77 @@ const AddUpdateOrder = () => {
     append({
       product_id: "",
       quantity: "",
+      price: 0,
+      subtotal: 0,
     });
+  };
+
+  const setTotalAmount = (data) => {
+    const totalAmount = parseFloat(
+      data?.reduce(
+        (acc, item) =>
+          acc +
+          parseFloat(item.price) *
+            parseFloat(!isblank(item.quantity) ? item.quantity : 0),
+        0
+      )
+    ).toFixed(2);
+    setValue("total_amount", totalAmount);
+  };
+
+  const handleProductChange = (val, field, index, onChange) => {
+    onChange(val);
+    const product = allProducts?.find((item) => item.product_id === val);
+    const qty = parseFloat(!isblank(field.quantity) ? field.quantity : 0);
+
+    const orderItems = controlledFields?.map((item, ind) => {
+      const updated = { ...item };
+      if (index === ind) {
+        updated.product_id = val;
+        updated.quantity = qty;
+        updated.price = parseFloat(product?.product_price);
+      }
+      return updated;
+    });
+
+    orderItems.forEach((item, ind) => {
+      if (index === ind) {
+        setValue(
+          `order_items[${index}].price`,
+          parseFloat(product?.product_price)
+        );
+        setValue(
+          `order_items[${index}].subtotal`,
+          parseFloat(product?.product_price) * qty
+        );
+      }
+    });
+
+    setTotalAmount(orderItems);
+  };
+
+  const handleQtyChange = (val, field, index, onChange) => {
+    onChange(val);
+    const qty = parseFloat(!isblank(val) ? val : 0);
+    const price = parseFloat(!isblank(field.price) ? field.price : 0);
+
+    const orderItems = controlledFields?.map((item, ind) => {
+      const updated = { ...item };
+      if (index === ind) {
+        updated.product_id = field.product_id;
+        updated.quantity = qty;
+        updated.price = price;
+      }
+      return updated;
+    });
+
+    orderItems.forEach((item, ind) => {
+      if (index === ind) {
+        setValue(`order_items[${index}].subtotal`, price * qty);
+      }
+    });
+
+    setTotalAmount(orderItems);
   };
 
   const onSubmitError = (values) => {
@@ -190,6 +251,8 @@ const AddUpdateOrder = () => {
             response.data.result[0].order_items?.map((item) => ({
               product_id: item.product_id,
               quantity: item.quantity,
+              price: item.price,
+              subtotal: parseFloat(item.price) * parseFloat(item.quantity),
             }));
           reset((formValues) => ({
             ...formValues,
@@ -609,37 +672,36 @@ const AddUpdateOrder = () => {
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Order Items
                   </Typography>
-                  <Card className="w-full overflow-y-auto">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr>
-                          {TABLE_HEAD.map((head) => (
-                            <th
-                              key={head.name}
-                              className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
-                            >
-                              <Typography
-                                variant="small"
-                                color="blue-gray"
-                                className="font-normal leading-none opacity-70"
-                              >
-                                {head.name}
-                              </Typography>
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
+
+                  <TableContainer component={Paper} className="overflow-hidden">
+                    <Table
+                      sx={{ minWidth: 650 }}
+                      aria-label="simple table"
+                      className="overflow-hidden"
+                    >
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Product</TableCell>
+                          <TableCell width={60}>Quantity</TableCell>
+                          <TableCell width={110}>Price</TableCell>
+                          <TableCell width={110}>Subtotal</TableCell>
+                          <TableCell width={50}></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
                         {controlledFields.map((field, index) => {
                           const fieldArray = `order_items[${index}]`;
-                          const isLast = index === controlledFields.length - 1;
-                          const classes = isLast
-                            ? "p-4"
-                            : "p-4 border-b border-blue-gray-50";
-
                           return (
-                            <tr key={field.id}>
-                              <td className={classes}>
+                            <TableRow
+                              key={field.id}
+                              // sx={{
+                              //   "&:last-child td, &:last-child th": {
+                              //     border: 0,
+                              //   },
+                              // }}
+                            >
+                              <TableCell component="th" scope="row">
+                                {/* <div className="max-w-xs"> */}
                                 <Controller
                                   name={`${fieldArray}.product_id`}
                                   control={control}
@@ -647,13 +709,20 @@ const AddUpdateOrder = () => {
                                   render={({ field: { onChange, value } }) => (
                                     <Select
                                       value={value}
-                                      onChange={onChange}
+                                      onChange={(e) =>
+                                        handleProductChange(
+                                          e.target.value,
+                                          field,
+                                          index,
+                                          onChange
+                                        )
+                                      }
                                       displayEmpty
                                       inputProps={{
                                         "aria-label": "Without label",
                                       }}
                                       fullWidth={true}
-                                      sx={{ height: 45 }}
+                                      sx={{ height: 45, width: 330 }}
                                       error={
                                         errors?.order_items?.[index]?.product_id
                                       }
@@ -682,8 +751,9 @@ const AddUpdateOrder = () => {
                                     }
                                   </Typography>
                                 )}
-                              </td>
-                              <td className={classes} width={20}>
+                                {/* </div> */}
+                              </TableCell>
+                              <TableCell width={60}>
                                 <Controller
                                   name={`${fieldArray}.quantity`}
                                   control={control}
@@ -694,10 +764,18 @@ const AddUpdateOrder = () => {
                                       message: "Quantity must be a number",
                                     },
                                   }}
-                                  render={({ field }) => (
+                                  render={({ field: { value, onChange } }) => (
                                     <Input
                                       size="lg"
-                                      {...field}
+                                      value={value}
+                                      onChange={(e) =>
+                                        handleQtyChange(
+                                          e.target.value,
+                                          field,
+                                          index,
+                                          onChange
+                                        )
+                                      }
                                       placeholder="Quantity"
                                       className={borderForField(
                                         errors?.order_items?.[index]?.quantity
@@ -705,6 +783,9 @@ const AddUpdateOrder = () => {
                                       labelProps={{
                                         className:
                                           "before:content-none after:content-none",
+                                      }}
+                                      containerProps={{
+                                        className: "min-w-[60px]",
                                       }}
                                       error={
                                         errors?.order_items?.[index]?.quantity
@@ -723,8 +804,56 @@ const AddUpdateOrder = () => {
                                     }
                                   </Typography>
                                 )}
-                              </td>
-                              <td className={classes} width={30}>
+                              </TableCell>
+                              <TableCell width={110}>
+                                <Controller
+                                  name={`${fieldArray}.price`}
+                                  control={control}
+                                  rules={{
+                                    required: "Price is required",
+                                    pattern: {
+                                      value: /^[0-9]+$/,
+                                      message: "Price must be a number",
+                                    },
+                                  }}
+                                  render={({ field }) => (
+                                    <Input
+                                      size="md"
+                                      {...field}
+                                      placeholder="Price"
+                                      className={borderForField(
+                                        errors?.order_items?.[index]?.price
+                                      )}
+                                      labelProps={{
+                                        className:
+                                          "before:content-none after:content-none",
+                                      }}
+                                      containerProps={{
+                                        className: "min-w-[110px]",
+                                      }}
+                                      error={
+                                        errors?.order_items?.[index]?.price
+                                      }
+                                      disabled={true}
+                                    />
+                                  )}
+                                />
+                                {errors?.order_items?.[index]?.price && (
+                                  <Typography
+                                    color="red"
+                                    className="text-sm font-medium"
+                                  >
+                                    {
+                                      errors?.order_items?.[index]?.price
+                                        ?.message
+                                    }
+                                  </Typography>
+                                )}
+                              </TableCell>
+                              <TableCell width={110} align="right">
+                                <Typography>{field.subtotal}</Typography>
+                              </TableCell>
+                              <TableCell width={50}>
                                 <IconButton
                                   variant="text"
                                   className="rounded-full"
@@ -732,28 +861,31 @@ const AddUpdateOrder = () => {
                                 >
                                   <DeleteIcon />
                                 </IconButton>
-                              </td>
-                            </tr>
+                              </TableCell>
+                            </TableRow>
                           );
                         })}
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <td colSpan={3}>
-                            <CardFooter className="flex items-center justify-between border-t border-blue-gray-100 p-4">
-                              <Button
-                                variant="outlined"
-                                size="sm"
-                                onClick={handleAddRow}
-                              >
-                                Add Row
-                              </Button>
-                            </CardFooter>
-                          </td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </Card>
+                      </TableBody>
+                      <TableFooter>
+                        <TableRow>
+                          <TableCell colSpan={2}>
+                            <Button
+                              variant="outlined"
+                              size="sm"
+                              onClick={handleAddRow}
+                            >
+                              Add Row
+                            </Button>
+                          </TableCell>
+                          <TableCell colSpan={2} align="right">
+                            <Typography className="text-base font-semibold">
+                              {parseFloat(formValues.total_amount).toFixed(2)}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      </TableFooter>
+                    </Table>
+                  </TableContainer>
                 </div>
               </div>
 
