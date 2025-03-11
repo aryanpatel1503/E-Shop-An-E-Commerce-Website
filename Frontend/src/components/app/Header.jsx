@@ -7,7 +7,6 @@ import {
   AccordionBody,
   AccordionHeader,
   Button,
-  Drawer,
   IconButton,
   Input,
   ListItem,
@@ -25,6 +24,7 @@ import { API_URL } from "../lib/constant";
 import {
   Avatar,
   Collapse,
+  Drawer,
   List,
   ListItemButton,
   ListItemText,
@@ -126,9 +126,9 @@ const Header = () => {
         <span className="flex justify-between items-center w-[100%] md:w-auto">
           <NavLink
             to="/"
-            className="text-3xl flex title-font font-medium items-center text-gray-900 "
+            className="text-2xl flex title-font font-medium items-center text-gray-900 "
           >
-            E-Shop
+            SmartTechStore
           </NavLink>
 
           {/* Mobile Menu Button */}
@@ -303,14 +303,19 @@ const Header = () => {
       </div>
 
       <Drawer
-        placement="right"
+        anchor="right"
+        variant="temporary"
         open={openRight}
         onClose={closeDrawerRight}
-        className="p-4"
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 300, // Set your desired width here (in px, %, or other units)
+          },
+        }}
       >
-        <div className="mb-6 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray">
-            E-Shop
+        <div className="mb-6 flex items-center justify-between px-4">
+          <Typography variant="h6" color="blue-gray">
+            SmartTechStore
           </Typography>
           <IconButton
             variant="text"

@@ -65,47 +65,66 @@ app.get("/", (req, res) => {
 
 // User Registration
 app.post("/register", (req, res) => {
-  const username = req.body.user_name;
-  const user_fullname = req.body.user_fullname;
-  const email = req.body.user_email;
-  const password = req.body.user_password;
-  const mobile = req.body.user_mobile;
-  const user_gender = req.body.user_gender;
-  const permanent_address = req.body.permanent_address;
-  const permanent_city = req.body.permanent_city;
-  const permanent_state = req.body.permanent_state;
-  const permanent_pincode = req.body.permanent_pincode;
-  const current_address = req.body.current_address;
-  const current_city = req.body.current_city;
-  const current_state = req.body.current_state;
-  const current_pincode = req.body.current_pincode;
-
+  const {
+    user_name,
+    user_fullname,
+    user_email,
+    user_password,
+    user_mobile,
+    user_gender,
+    permanent_address,
+    permanent_city,
+    permanent_state,
+    permanent_pincode,
+    current_address,
+    current_city,
+    current_state,
+    current_pincode,
+  } = req.body;
+  // First, check if the user already exists or not
   con.query(
-    "INSERT INTO user_reg (user_name, user_fullname, user_email, user_password, user_mobile, user_gender, permanent_address, permanent_city, permanent_state, permanent_pincode, current_address, current_city, current_state, current_pincode ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ",
-    [
-      username,
-      user_fullname,
-      email,
-      password,
-      mobile,
-      user_gender,
-      permanent_address,
-      permanent_city,
-      permanent_state,
-      permanent_pincode,
-      current_address,
-      current_city,
-      current_state,
-      current_pincode,
-    ],
+    "SELECT * FROM user_reg WHERE user_email = ? OR user_name = ?",
+    [user_email, user_name],
     (err, result) => {
-      if (result) {
-        res.status(200);
-        res.send({ message: "Registration Successfully", result });
-      } else {
+      if (err) {
         console.log(err);
-        res.status(400);
-        res.send({ message: "Enter Correct asked details!" });
+        res.status(500).send({ message: "Database query error" });
+        return;
+      }
+
+      if (result.length > 0) {
+        res.status(400).send({ message: "User already exists" });
+      } else {
+        // If user does not exist, proceed with registration
+        con.query(
+          "INSERT INTO user_reg (user_name, user_fullname, user_email, user_password, user_mobile, user_gender, permanent_address, permanent_city, permanent_state, permanent_pincode, current_address, current_city, current_state, current_pincode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [
+            user_name,
+            user_fullname,
+            user_email,
+            user_password,
+            user_mobile,
+            user_gender,
+            permanent_address,
+            permanent_city,
+            permanent_state,
+            permanent_pincode,
+            current_address,
+            current_city,
+            current_state,
+            current_pincode,
+          ],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              res.status(400).send({ message: "Enter Correct asked details!" });
+            } else {
+              res
+                .status(200)
+                .send({ message: "Registration Successfully", result });
+            }
+          }
+        );
       }
     }
   );

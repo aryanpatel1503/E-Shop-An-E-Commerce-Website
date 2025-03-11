@@ -6,6 +6,7 @@ import { API_URL } from "../../lib/constant";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  Drawer,
   IconButton,
   List,
   ListItem,
@@ -13,7 +14,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
-import { Button, Checkbox, Drawer, Typography } from "@material-tailwind/react";
+import { Button, Checkbox, Typography } from "@material-tailwind/react";
 
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -228,102 +229,109 @@ const Product = () => {
       />
 
       <Drawer
-        placement="right"
         open={openRight}
         onClose={closeDrawerRight}
-        className="p-4"
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: 300, // Set your desired width here (in px, %, or other units)
+          },
+        }}
       >
-        <div className="mb-6 flex items-center justify-between">
-          <Typography variant="h5" color="blue-gray">
-            Filter
-          </Typography>
-          <IconButton
-            variant="text"
-            color="blue-gray"
-            onClick={closeDrawerRight}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-5 w-5"
+        <div className="px-4 pt-2">
+          <div className="mb-6 flex items-center justify-between">
+            <Typography variant="h5" color="blue-gray">
+              Filter
+            </Typography>
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              onClick={closeDrawerRight}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </IconButton>
-        </div>
-        <hr />
-        <div className="flex flex-col py-4 h-full overflow-auto">
-          <>
-            <div>
-              <h6 className="text-xl">Categories</h6>
-              <List dense>
-                {category.map((item, index) => {
-                  return (
-                    <ListItem
-                      key={index}
-                      secondaryAction={
-                        <IconButton
-                          edge="end"
-                          aria-label="comments"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </IconButton>
+          </div>
+          <hr />
+          <div className="flex flex-col py-4 h-full overflow-auto">
+            <>
+              <div>
+                <h6 className="text-xl">Categories</h6>
+                <List dense>
+                  {category.map((item, index) => {
+                    return (
+                      <ListItem
+                        key={index}
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            aria-label="comments"
+                            onClick={() => handleCatgeoryClick(item)}
+                          >
+                            <ChevronRight />
+                          </IconButton>
+                        }
+                        disablePadding
+                      >
+                        <ListItemButton
                           onClick={() => handleCatgeoryClick(item)}
                         >
-                          <ChevronRight />
-                        </IconButton>
-                      }
-                      disablePadding
-                    >
-                      <ListItemButton onClick={() => handleCatgeoryClick(item)}>
-                        <ListItemText primary={item.category} />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </div>
-
-            <hr className="my-3" />
-
-            <div>
-              <h6 className="text-xl">Brand</h6>
-              <div className="flex flex-col">
-                {brandData.map((item, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      label={item}
-                      value={item}
-                      onChange={(e) => handleFilterClick(e, "brand")}
-                    />
-                  );
-                })}
+                          <ListItemText primary={item.category} />
+                        </ListItemButton>
+                      </ListItem>
+                    );
+                  })}
+                </List>
               </div>
-            </div>
 
-            <hr className="my-3" />
+              <hr className="my-3" />
 
-            <div>
-              <h6 className="text-xl">Color</h6>
-              <div className="flex flex-col mb-9">
-                {colorData.map((item, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      label={item}
-                      value={item}
-                      onChange={(e) => handleFilterClick(e, "color")}
-                    />
-                  );
-                })}
+              <div>
+                <h6 className="text-xl">Brand</h6>
+                <div className="flex flex-col">
+                  {brandData.map((item, index) => {
+                    return (
+                      <Checkbox
+                        key={index}
+                        label={item}
+                        value={item}
+                        onChange={(e) => handleFilterClick(e, "brand")}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </>
+
+              <hr className="my-3" />
+
+              <div>
+                <h6 className="text-xl">Color</h6>
+                <div className="flex flex-col mb-9">
+                  {colorData.map((item, index) => {
+                    return (
+                      <Checkbox
+                        key={index}
+                        label={item}
+                        value={item}
+                        onChange={(e) => handleFilterClick(e, "color")}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          </div>
         </div>
       </Drawer>
     </Layout>

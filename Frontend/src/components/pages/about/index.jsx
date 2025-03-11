@@ -59,9 +59,9 @@ const About = () => {
       </div>
 
       <div className="text-center my-16">
-        <h4 className="text-5xl mb-4">E-Shop</h4>
+        <h4 className="text-5xl mb-4">SmartTechStore</h4>
         <p className="text-xl text-gray-700">
-          At E-Shop, We are provide best ecommerce services to the user.
+          At SmartTechStore, We are provide best ecommerce services to the user.
         </p>
       </div>
     </Layout>
