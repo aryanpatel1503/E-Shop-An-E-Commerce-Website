@@ -269,7 +269,7 @@ const Header = () => {
               </Menu>
             </>
           ) : (
-            <>
+            <span className="flex flex-wrap items-center gap-4">
               <Button
                 variant="outlined"
                 className="flex items-center gap-1 text-[#F7931E] border border-[#F7931E] hover:bg-[#F7931E] hover:text-white hover:border-none"
@@ -283,7 +283,7 @@ const Header = () => {
               >
                 Register
               </Button>
-            </>
+            </span>
           )}
 
           <div

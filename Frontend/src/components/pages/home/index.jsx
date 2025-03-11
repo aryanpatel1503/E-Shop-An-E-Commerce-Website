@@ -159,12 +159,15 @@ const Home = () => {
       >
         {heroData.map((item, index) => {
           return (
-            <div className="grid grid-cols-2 gap-4 h-[90vh]" key={index}>
-              <div className="flex justify-center flex-col">
-                <p className="text-5xl font-medium leading-tight">
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 md:h-[90vh] mx-4 md:mx-0"
+              key={index}
+            >
+              <div className="flex justify-center flex-col order-2 md:order-1">
+                <p className="text-3xl md:text-5xl font-medium leading-tight">
                   {item.title}
                 </p>
-                <p className="text-xl my-5">{item.subtitle}</p>
+                <p className="text-lg md:text-xl my-5">{item.subtitle}</p>
                 <h3 className="text-3xl"></h3>
 
                 <Button
@@ -192,7 +195,7 @@ const Home = () => {
               <img
                 src={item.imgUrl}
                 alt="image 1"
-                className="h-full w-full object-contain"
+                className="justify-self-center h-[150px] md:h-full w-[80%] md:w-full object-contain order-1 md:order-2"
               />
             </div>
           );

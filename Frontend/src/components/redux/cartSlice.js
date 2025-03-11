@@ -21,9 +21,6 @@ const cartSlice = createSlice({
 
       if (itemIndex >= 0) {
         state.cartItems[itemIndex].cartQuantity += 1;
-        // alert(
-        //   `increased ${state.cartItems[itemIndex].product_name} cart quantity`
-        // );
         toast.info(
           `increased ${state.cartItems[itemIndex].product_name} cart quantity`,
           {
@@ -33,7 +30,6 @@ const cartSlice = createSlice({
       } else {
         const tempProduct = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(tempProduct);
-        // alert(`${action.payload.product_name} added to cart`);
         toast.success(`${action.payload.product_name} added to cart`, {
           position: "top-right",
         });
@@ -47,7 +43,6 @@ const cartSlice = createSlice({
       );
       state.cartItems = nextCartItems;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-      // alert(`${action.payload.product_name} removed from cart`);
       toast.error(`${action.payload.product_name} removed from cart`, {
         position: "top-right",
       });
@@ -59,7 +54,6 @@ const cartSlice = createSlice({
 
       if (state.cartItems[itemsIndex].cartQuantity > 1) {
         state.cartItems[itemsIndex].cartQuantity -= 1;
-        // alert(`Decreased ${action.payload.product_name} cart quantity`);
         // toast.info(`Decreased ${action.payload.product_name} cart quantity`, {
         //   position: "top-right",
         // });
@@ -69,16 +63,14 @@ const cartSlice = createSlice({
         );
         state.cartItems = nextCartItems;
 
-        alert(`${action.payload.product_name} removed from cart`);
-        // toast.error(`${action.payload.product_name} removed from cart`, {
-        //   position: "top-right",
-        // });
+        toast.error(`${action.payload.product_name} removed from cart`, {
+          position: "top-right",
+        });
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     clearCart(state, action) {
       state.cartItems = [];
-      // alert(`Cart cleared`);
       toast.error(`Cart cleared`, {
         position: "top-right",
       });

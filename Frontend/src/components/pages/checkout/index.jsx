@@ -6,12 +6,17 @@ import { useForm, Controller } from "react-hook-form";
 import { Input, Button, Select, Option, Radio } from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
-import { generateOrderId, getFormattedDate } from "../../lib/commonFunctions";
+import {
+  generateOrderId,
+  getFormattedDate,
+  isblank,
+} from "../../lib/commonFunctions";
 import { useSelector } from "react-redux";
 
 const Checkout = () => {
   const [productData, setProductData] = useState([]);
   const [userData, setUserData] = useState({});
+  const [paymentData, setPaymentData] = useState({});
   const [selectedValue, setSelectedValue] = useState("current");
   const cart = useSelector((state) => state.cart);
   // const { id } = useParams();
@@ -156,7 +161,7 @@ const Checkout = () => {
     const response = await fetch(`${API_URL}/order`, {
       method: "POST",
       body: JSON.stringify({
-        amount: 50000,
+        amount: Number(totalAmount) * 100,
         currency: "INR",
         receipt: "as",
       }),
@@ -165,13 +170,12 @@ const Checkout = () => {
       },
     });
     const order = await response.json();
-    console.log(order);
 
     var options = {
       key: "rzp_test_SP8VwXieL6eFC3", // Enter the Key ID generated from the Dashboard
       amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       currency: order.currency,
-      name: "Acme Corp", //your business name
+      name: "SmartTechStore", //your business name
       description: "Test Transaction",
       image: "https://example.com/your_logo",
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
@@ -188,12 +192,12 @@ const Checkout = () => {
           },
         });
         const jsonRes = await validateRes.json();
-        console.log(jsonRes);
+        setPaymentData(jsonRes);
       },
       prefill: {
         //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: "Web Dev Matrix", //your customer's name
-        email: "webdevmatrix@example.com",
+        name: "SmartTechStore", //your customer's name
+        email: "smarttechstore@gmail.com",
         contact: "9000000000", //Provide the customer's phone number for better conversion rates
       },
       notes: {
@@ -205,22 +209,12 @@ const Checkout = () => {
     };
     var rzp1 = new window.Razorpay(options);
     rzp1.on("payment.failed", function (response) {
-      alert(response.error.code);
-      alert(response.error.description);
-      alert(response.error.source);
-      alert(response.error.step);
-      alert(response.error.reason);
-      alert("order_id", response.error.metadata.order_id);
-      alert("payment_id", response.error.metadata.payment_id);
+      toast.error("Payment failed", {
+        position: "top-center",
+      });
     });
     rzp1.open();
     e.preventDefault();
-
-    /* if (user_id) {
-      handleSubmit(onSubmit, onSubmitError)();
-    } else {
-      navigate("/login");
-    } */
   };
 
   const handleCancelOrder = () => {
@@ -236,6 +230,16 @@ const Checkout = () => {
     }
     setSelectedValue(event.target.value);
   };
+
+  useEffect(() => {
+    if (paymentData.msg === "success" && !isblank(paymentData.paymentId)) {
+      if (user_id) {
+        handleSubmit(onSubmit, onSubmitError)();
+      } else {
+        navigate("/login");
+      }
+    }
+  }, [paymentData]);
 
   return (
     <Layout>

@@ -829,7 +829,7 @@ const AddUpdateOrder = () => {
                                           "before:content-none after:content-none",
                                       }}
                                       containerProps={{
-                                        className: "min-w-[110px]",
+                                        className: "!min-w-[110px]",
                                       }}
                                       error={
                                         errors?.order_items?.[index]?.price

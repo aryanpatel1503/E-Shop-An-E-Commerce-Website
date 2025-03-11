@@ -52,10 +52,11 @@ const ProductCard = ({ item, cardClassName }) => {
           ₹{item.product_price}
         </Typography>
       </CardBody>
-      <CardFooter className="pt-2 flex justify-between">
+      <CardFooter className="pt-2 flex flex-wrap justify-center md:justify-between items-center gap-4">
         <Button
+          variant="filled"
           size="sm"
-          className="bg-[#F7931E]"
+          className="bg-[#F7931E] w-full md:w-auto"
           onClick={() => handleBuyNow(item)}
         >
           Buy Now
@@ -63,7 +64,7 @@ const ProductCard = ({ item, cardClassName }) => {
         <Button
           variant="outlined"
           size="sm"
-          className="text-[#F7931E] border-[#F7931E]"
+          className="text-[#F7931E] border-[#F7931E] w-full md:w-auto"
           onClick={() => addItem(item)}
         >
           Add To Cart
