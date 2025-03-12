@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 export const borderForField = (error) => {
   if (error) {
     return `!border-t-red-600 focus:!border-[#5479F7] `;
@@ -91,4 +93,14 @@ export const isblank = (value) => {
     return true;
   }
   return false;
+};
+
+const secretKey = "aqwrsdfarqedfsafds";
+export const encryptData = (data) => {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
+};
+
+export const decryptData = (encryptedData) => {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 };

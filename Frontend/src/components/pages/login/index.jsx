@@ -10,7 +10,12 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { borderForField, isblank } from "../../lib/commonFunctions";
+import {
+  borderForField,
+  decryptData,
+  encryptData,
+  isblank,
+} from "../../lib/commonFunctions";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 
@@ -47,7 +52,7 @@ const Login = () => {
           if (values.remember_me) {
             localStorage.setItem(
               "remember_me",
-              JSON.stringify({
+              encryptData({
                 user_name: response.data.result[0].user_name,
                 user_password: response.data.result[0].user_password,
               })
@@ -72,11 +77,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    let rememberMeData = localStorage.getItem("remember_me");
+    const rememberMeData = localStorage.getItem("remember_me");
     if (!isblank(rememberMeData)) {
-      rememberMeData = JSON.parse(rememberMeData);
-      setValue("user_name", rememberMeData.user_name);
-      setValue("user_password", rememberMeData.user_password);
+      const decryptedData = decryptData(rememberMeData);
+      setValue("user_name", decryptedData.user_name);
+      setValue("user_password", decryptedData.user_password);
     }
   }, []);
 
