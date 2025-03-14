@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const { sendEmail } = require("./EmailService");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 // const path = require("path");
 
 const app = express();
@@ -49,6 +50,7 @@ const con = mysql.createConnection({
   password: "",
   database: "e_shop_2024",
 });
+const JWT_SECRET = "alkfwerdbshadd";
 
 // for session
 app.get("/", (req, res) => {
@@ -158,6 +160,63 @@ app.post("/login", (req, res) => {
       }
     }
   );
+});
+
+// User Login (new)
+app.post("/loginNew", (req, res) => {
+  const username = req.body.user_name;
+  const password = req.body.user_password;
+
+  con.query(
+    "SELECT * FROM user_reg WHERE user_name = ? AND user_password = ?",
+    [username, password],
+    (err, result) => {
+      if (err) {
+        req.setEncoding({ err: err });
+      } else {
+        if (result.length > 0) {
+          const token = jwt.sign({ id: result[0].user_id }, JWT_SECRET, {
+            expiresIn: "3h",
+          });
+          console.log("token", token);
+          return res
+            .status(200)
+            .send({ token: token, message: "Login Successfully", result });
+          // .json({ token: token })
+        } else {
+          res.status(400);
+          res.send({ message: "Wrong Username or Password!", Login: false });
+        }
+      }
+    }
+  );
+});
+
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"];
+
+  if (!token) {
+    return res
+      .status(403)
+      .json({ message: "No token provided. Access denied." });
+  }
+  const newToken = token.split(" ")[1];
+  console.log("newToken", newToken);
+
+  jwt.verify(newToken, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid or expired token." });
+    }
+
+    req.user = decoded;
+    next();
+  });
+};
+
+app.get("/protected", verifyToken, (req, res) => {
+  // req.user contains the decoded token data (e.g., user id, username, etc.)
+  res.json({ message: "Welcome to the protected route!", user: req.user });
 });
 
 // forget password

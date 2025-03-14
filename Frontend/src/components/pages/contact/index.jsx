@@ -85,6 +85,9 @@ const Contact = () => {
                     label="Name"
                     value={value}
                     onChange={onChange}
+                    containerProps={{
+                      className: "min-w-0",
+                    }}
                   />
                 )}
               />
@@ -106,6 +109,9 @@ const Contact = () => {
                     label="Email"
                     value={value}
                     onChange={onChange}
+                    containerProps={{
+                      className: "min-w-0",
+                    }}
                   />
                 )}
               />
@@ -120,6 +126,9 @@ const Contact = () => {
                   label="Subject"
                   value={value}
                   onChange={onChange}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -135,6 +144,9 @@ const Contact = () => {
                   label="Message"
                   value={value}
                   onChange={onChange}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />

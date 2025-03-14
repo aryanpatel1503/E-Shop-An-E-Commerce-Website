@@ -3,7 +3,14 @@ import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Layout from "../../app/Layout";
 import { useForm, Controller } from "react-hook-form";
-import { Input, Button, Select, Option, Radio } from "@material-tailwind/react";
+import {
+  Input,
+  Button,
+  Select,
+  Option,
+  Radio,
+  Textarea,
+} from "@material-tailwind/react";
 import { API_URL } from "../../lib/constant";
 import { toast } from "react-toastify";
 import {
@@ -266,17 +273,17 @@ const Checkout = () => {
                   />
                   {/* </div> */}
                   {/* <div className="flex items-center"> */}
-                  <h3 className="text-md sm:text-lg md:text-xl font-semibold">
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold">
                     {item.product_name}
                   </h3>
                   {/* </div> */}
                   {/* <div className="flex items-center justify-center"> */}
-                  <h3 className="text-md sm:text-lg md:text-xl font-semibold text-center">
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-center">
                     {item.cartQuantity}
                   </h3>
                   {/* </div> */}
                   <div className="flex items-center justify-end">
-                    <p className="text-md sm:text-lg md:text-xl">
+                    <p className="text-base sm:text-lg md:text-xl">
                       ₹{item.product_price}
                     </p>
                   </div>
@@ -303,7 +310,7 @@ const Checkout = () => {
               onChange={handleRadioChange}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 self-auto items-center">
             <Controller
               name="order_name"
               control={control}
@@ -314,6 +321,9 @@ const Checkout = () => {
                   label="Ship to name"
                   error={errors.name && errors.name.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -323,11 +333,14 @@ const Checkout = () => {
               control={control}
               rules={{ required: "Address is required" }}
               render={({ field }) => (
-                <Input
+                <Textarea
                   size="lg"
                   label="Address"
                   error={errors.address && errors.address.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -342,6 +355,9 @@ const Checkout = () => {
                   label="State"
                   error={errors.state && errors.state.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -356,6 +372,9 @@ const Checkout = () => {
                   label="City"
                   error={errors.city && errors.city.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -381,6 +400,9 @@ const Checkout = () => {
                   label="Mobile No."
                   error={errors.mobile && errors.mobile.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -401,6 +423,9 @@ const Checkout = () => {
                   label="Email"
                   error={errors.email && errors.email.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -429,6 +454,9 @@ const Checkout = () => {
                   label="Pincode"
                   error={errors.pincode && errors.pincode.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 />
               )}
             />
@@ -442,6 +470,9 @@ const Checkout = () => {
                   label="Payment method"
                   error={errors.paymentMethod && errors.paymentMethod.message}
                   {...field}
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
                 >
                   <Option value="cash on delivery">Cash on delivery</Option>
                 </Select>

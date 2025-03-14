@@ -174,7 +174,10 @@ const AddUpdateProduct = () => {
           <div className="w-8/12 bg-white rounded-md flex flex-col items-center">
             <form className="w-11/12 flex flex-col items-center justify-center mt-1 mb-10 space-y-4">
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Product name
                 </Typography>
@@ -192,19 +195,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_name}
                     />
                   )}
                 />
                 {errors.product_name && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_name.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Description
                 </Typography>
@@ -220,19 +229,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_desc}
                     />
                   )}
                 />
                 {errors.product_desc && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_desc.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Image
                 </Typography>
@@ -246,20 +261,25 @@ const AddUpdateProduct = () => {
                       name="product_img"
                       onChange={(e) => imgUpload(e, onChange)}
                       placeholder="Image"
-                      className="w-full px-3 py-3 border rounded-md"
+                      className={`w-full px-3 py-3 border rounded-md ${
+                        errors.product_img ? "border-red-600" : ""
+                      } `}
                       required
                     />
                   )}
                 />
                 {errors.product_img && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_img.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Price
                 </Typography>
@@ -276,19 +296,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_price}
                     />
                   )}
                 />
                 {errors.product_price && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_price.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Color
                 </Typography>
@@ -305,19 +331,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_color}
                     />
                   )}
                 />
                 {errors.product_color && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_color.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Size
                 </Typography>
@@ -334,19 +366,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_size}
                     />
                   )}
                 />
                 {errors.product_size && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_size.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Storage
                 </Typography>
@@ -363,19 +401,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_storage}
                     />
                   )}
                 />
                 {errors.product_storage && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_storage.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Brand
                 </Typography>
@@ -392,19 +436,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_brand}
                     />
                   )}
                 />
                 {errors.product_brand && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_brand.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Special Features
                 </Typography>
@@ -423,19 +473,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_special_features}
                     />
                   )}
                 />
                 {errors.product_special_features && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_special_features.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Weight
                 </Typography>
@@ -452,19 +508,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_weight}
                     />
                   )}
                 />
                 {errors.product_weight && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_weight.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Height
                 </Typography>
@@ -481,19 +543,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_height}
                     />
                   )}
                 />
                 {errors.product_height && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_height.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Warranty
                 </Typography>
@@ -510,19 +578,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_warranty}
                     />
                   )}
                 />
                 {errors.product_warranty && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_warranty.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Guarantee
                 </Typography>
@@ -539,19 +613,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_guarantee}
                     />
                   )}
                 />
                 {errors.product_guarantee && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_guarantee.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Info
                 </Typography>
@@ -568,19 +648,25 @@ const AddUpdateProduct = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.product_info}
                     />
                   )}
                 />
                 {errors.product_info && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.product_info.message}
                   </Typography>
                 )}
               </div>
 
               <div className="w-full mt-2">
-                <Typography color="blue-gray" className="text-md font-semibold">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
                   <span className="text-red-500 font-semibold mr-1">*</span>
                   Category
                 </Typography>
@@ -646,7 +732,7 @@ const AddUpdateProduct = () => {
                   />
                 </FormControl>
                 {errors.category_id && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.category_id.message}
                   </Typography>
                 )}
@@ -655,7 +741,7 @@ const AddUpdateProduct = () => {
               <Button
                 variant="filled"
                 className="mt-6 bg-green-500 text-white 
-               text-md font-medium rounded-md hover:bg-green-600 capitalize"
+               text-base font-medium rounded-md hover:bg-green-600 capitalize"
                 fullWidth
                 type="submit"
                 onClick={handleAddProduct}

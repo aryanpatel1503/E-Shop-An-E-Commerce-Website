@@ -91,7 +91,7 @@ const ResetPassword = () => {
           <form className="mt-5 mb-2 w-full flex flex-col self-center">
             <div className="mb-1 flex flex-col space-y-[1px] w-full">
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Email
                 </Typography>
                 <Controller
@@ -114,6 +114,9 @@ const ResetPassword = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_email}
                     />
                   )}
@@ -124,7 +127,7 @@ const ResetPassword = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Password
                 </Typography>
                 <Controller
@@ -141,6 +144,9 @@ const ResetPassword = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_password}
                     />
                   )}
@@ -153,7 +159,7 @@ const ResetPassword = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Confirm Password
                 </Typography>
                 <Controller
@@ -172,6 +178,9 @@ const ResetPassword = () => {
                       className={borderForField(errors.user_conf_password)}
                       labelProps={{
                         className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "min-w-0",
                       }}
                       error={errors.user_conf_password}
                     />

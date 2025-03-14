@@ -108,7 +108,7 @@ const Login = () => {
           <form className="mt-5 mb-2 w-full flex flex-col self-center">
             <div className="mb-1 flex flex-col space-y-[1px] w-full">
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Username
                 </Typography>
                 <Controller
@@ -125,6 +125,9 @@ const Login = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_name}
                     />
                   )}
@@ -136,7 +139,7 @@ const Login = () => {
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Password
                 </Typography>
                 <Controller
@@ -153,6 +156,9 @@ const Login = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_password}
                     />
                   )}
@@ -162,6 +168,7 @@ const Login = () => {
                     ? errors.user_password.message
                     : "\u00A0"}
                 </Typography>
+
                 <div className="flex flex-wrap justify-between items-center md:gap-2">
                   <Controller
                     name="remember_me"
@@ -193,7 +200,7 @@ const Login = () => {
 
             <Button
               variant="filled"
-              className="mt-3 bg-[#5479F7] tracking-wide"
+              className="mt-3 bg-[#5479F7] tracking-widest"
               fullWidth
               type="submit"
               onClick={handleSignIn}

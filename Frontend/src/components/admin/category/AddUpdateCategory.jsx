@@ -125,7 +125,7 @@ const AddUpdateCategory = () => {
                 <div className="w-full">
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Category Name
@@ -144,12 +144,15 @@ const AddUpdateCategory = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.category}
                       />
                     )}
                   />
                   {errors.category && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.category.message}
                     </Typography>
                   )}
@@ -158,7 +161,7 @@ const AddUpdateCategory = () => {
                 <div className="w-full">
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Image
@@ -179,7 +182,7 @@ const AddUpdateCategory = () => {
                     )}
                   />
                   {errors.category_img && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.category_img.message}
                     </Typography>
                   )}
@@ -188,7 +191,7 @@ const AddUpdateCategory = () => {
                 <Button
                   variant="filled"
                   className="mt-8 bg-green-500 text-white 
-               text-md font-medium rounded-md hover:bg-green-600 capitalize"
+               text-base font-medium rounded-md hover:bg-green-600 capitalize"
                   fullWidth
                   type="submit"
                   onClick={handleAddCategory}

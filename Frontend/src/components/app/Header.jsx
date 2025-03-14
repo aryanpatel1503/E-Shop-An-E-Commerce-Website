@@ -151,6 +151,9 @@ const Header = () => {
             labelProps={{
               className: "hidden",
             }}
+            containerProps={{
+              className: "min-w-0",
+            }}
             className="pr-20 !border !border-blue-gray-200 bg-white text-gray-900 placeholder:text-gray-500 placeholder:opacity-100 "
           />
           <Menu placement="bottom-end">
@@ -367,7 +370,7 @@ const Header = () => {
                   onClick={() => handleOpen(1)}
                   className="border-b-0 py-0"
                 >
-                  <Typography color="" className="mr-auto text-lg font-normal">
+                  <Typography color="" className="mr-auto text-lg">
                     Products
                   </Typography>
                 </AccordionHeader>

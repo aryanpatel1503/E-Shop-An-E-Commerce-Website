@@ -94,7 +94,7 @@ const SignUp = () => {
           <form className="mt-5 mb-2 w-full flex flex-col self-center">
             <div className="mb-1 flex flex-col gap-4">
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Username
                 </Typography>
                 <Controller
@@ -111,19 +111,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_name}
                     />
                   )}
                 />
                 {errors.user_name && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_name.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Full Name
                 </Typography>
                 <Controller
@@ -139,19 +142,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_fullname}
                     />
                   )}
                 />
                 {errors.user_fullname && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_fullname.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Mobile
                 </Typography>
                 <Controller
@@ -178,19 +184,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_mobile}
                     />
                   )}
                 />
                 {errors.user_mobile && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_mobile.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Email
                 </Typography>
                 <Controller
@@ -213,19 +222,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_email}
                     />
                   )}
                 />
                 {errors.user_email && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_email.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Password
                 </Typography>
                 <Controller
@@ -242,19 +254,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.user_password}
                     />
                   )}
                 />
                 {errors.user_password && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_password.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Gender
                 </Typography>
                 <Controller
@@ -262,7 +277,7 @@ const SignUp = () => {
                   control={control}
                   rules={{ required: "Gender is required" }}
                   render={({ field: { onChange, value } }) => (
-                    <div className="flex gap-10">
+                    <div className="flex flex-wrap">
                       <Radio
                         name="user_gender"
                         label="Male"
@@ -283,14 +298,14 @@ const SignUp = () => {
                   )}
                 />
                 {errors.user_gender && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.user_gender.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Permenent Address
                 </Typography>
                 <Controller
@@ -305,19 +320,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.permanent_address}
                     />
                   )}
                 />
                 {errors.permanent_address && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.permanent_address.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Permenent City
                 </Typography>
                 <Controller
@@ -333,19 +351,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.permanent_city}
                     />
                   )}
                 />
                 {errors.permanent_city && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.permanent_city.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Permenent State
                 </Typography>
                 <Controller
@@ -361,19 +382,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.permanent_state}
                     />
                   )}
                 />
                 {errors.permanent_state && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.permanent_state.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Permenent Pincode
                 </Typography>
                 <Controller
@@ -403,19 +427,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.permanent_pincode}
                     />
                   )}
                 />
                 {errors.permanent_pincode && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.permanent_pincode.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Current Address
                 </Typography>
                 <Controller
@@ -431,19 +458,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.current_address}
                     />
                   )}
                 />
                 {errors.current_address && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.current_address.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Current City
                 </Typography>
                 <Controller
@@ -459,19 +489,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.current_city}
                     />
                   )}
                 />
                 {errors.current_city && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.current_city.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Current State
                 </Typography>
                 <Controller
@@ -487,19 +520,22 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.current_state}
                     />
                   )}
                 />
                 {errors.current_state && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.current_state.message}
                   </Typography>
                 )}
               </div>
 
               <div>
-                <Typography color="blue-gray" className="text-md font-medium">
+                <Typography color="blue-gray" className="text-base font-medium">
                   Current Pincode
                 </Typography>
                 <Controller
@@ -529,12 +565,15 @@ const SignUp = () => {
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }}
+                      containerProps={{
+                        className: "min-w-0",
+                      }}
                       error={errors.current_pincode}
                     />
                   )}
                 />
                 {errors.current_pincode && (
-                  <Typography color="red" className="text-md font-medium">
+                  <Typography color="red" className="text-sm font-medium">
                     {errors.current_pincode.message}
                   </Typography>
                 )}
@@ -543,7 +582,7 @@ const SignUp = () => {
 
             <Button
               variant="filled"
-              className="mt-6 bg-[#5479F7]"
+              className="mt-6 bg-[#5479F7] tracking-widest"
               fullWidth
               type="submit"
               onClick={handleSignUp}

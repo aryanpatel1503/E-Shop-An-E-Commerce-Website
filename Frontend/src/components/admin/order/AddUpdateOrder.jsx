@@ -319,6 +319,9 @@ const AddUpdateOrder = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.order_name}
                       />
                     )}
@@ -349,6 +352,9 @@ const AddUpdateOrder = () => {
                         className={`${borderForField(errors.order_address)}`}
                         labelProps={{
                           className: "before:content-none after:content-none",
+                        }}
+                        containerProps={{
+                          className: "min-w-0",
                         }}
                         error={errors.order_address}
                       />
@@ -382,6 +388,9 @@ const AddUpdateOrder = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.order_city}
                       />
                     )}
@@ -413,6 +422,9 @@ const AddUpdateOrder = () => {
                         className={borderForField(errors.order_state)}
                         labelProps={{
                           className: "before:content-none after:content-none",
+                        }}
+                        containerProps={{
+                          className: "min-w-0",
                         }}
                         error={errors.order_state}
                       />
@@ -457,6 +469,9 @@ const AddUpdateOrder = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.order_mobile}
                       />
                     )}
@@ -495,6 +510,9 @@ const AddUpdateOrder = () => {
                         className={borderForField(errors.order_email)}
                         labelProps={{
                           className: "before:content-none after:content-none",
+                        }}
+                        containerProps={{
+                          className: "min-w-0",
                         }}
                         error={errors.order_email}
                       />
@@ -541,6 +559,9 @@ const AddUpdateOrder = () => {
                         className={borderForField(errors.order_pincode)}
                         labelProps={{
                           className: "before:content-none after:content-none",
+                        }}
+                        containerProps={{
+                          className: "min-w-0",
                         }}
                         error={errors.order_pincode}
                       />
@@ -892,7 +913,7 @@ const AddUpdateOrder = () => {
               <Button
                 variant="filled"
                 className="mt-6 bg-green-500 text-white 
-               text-md font-medium rounded-md hover:bg-green-600 capitalize"
+               text-base font-medium rounded-md hover:bg-green-600 capitalize"
                 fullWidth
                 type="submit"
                 onClick={handleAddOrder}

@@ -131,7 +131,7 @@ const AddUpdateCustomer = () => {
                 <div className="w-full">
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Username
@@ -150,12 +150,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.user_name}
                       />
                     )}
                   />
                   {errors.user_name && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_name.message}
                     </Typography>
                   )}
@@ -164,7 +167,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Full Name
@@ -182,12 +185,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.user_fullname}
                       />
                     )}
                   />
                   {errors.user_fullname && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_fullname.message}
                     </Typography>
                   )}
@@ -196,7 +202,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Mobile
@@ -225,12 +231,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.user_mobile}
                       />
                     )}
                   />
                   {errors.user_mobile && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_mobile.message}
                     </Typography>
                   )}
@@ -239,7 +248,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Email
@@ -264,12 +273,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.user_email}
                       />
                     )}
                   />
                   {errors.user_email && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_email.message}
                     </Typography>
                   )}
@@ -278,7 +290,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Password
@@ -297,12 +309,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.user_password}
                       />
                     )}
                   />
                   {errors.user_password && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_password.message}
                     </Typography>
                   )}
@@ -311,7 +326,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Gender
@@ -321,7 +336,7 @@ const AddUpdateCustomer = () => {
                     control={control}
                     rules={{ required: "Gender is required" }}
                     render={({ field: { onChange, value } }) => (
-                      <div className="flex gap-10">
+                      <div className="flex flex-wrap gap-10">
                         <Radio
                           name="user_gender"
                           label="Male"
@@ -342,7 +357,7 @@ const AddUpdateCustomer = () => {
                     )}
                   />
                   {errors.user_gender && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.user_gender.message}
                     </Typography>
                   )}
@@ -351,7 +366,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Permenent Address
@@ -370,12 +385,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.permanent_address}
                       />
                     )}
                   />
                   {errors.permanent_address && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.permanent_address.message}
                     </Typography>
                   )}
@@ -384,7 +402,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Permenent City
@@ -402,12 +420,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.permanent_city}
                       />
                     )}
                   />
                   {errors.permanent_city && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.permanent_city.message}
                     </Typography>
                   )}
@@ -416,7 +437,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Permenent State
@@ -434,12 +455,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.permanent_state}
                       />
                     )}
                   />
                   {errors.permanent_state && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.permanent_state.message}
                     </Typography>
                   )}
@@ -448,7 +472,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Permenent Pincode
@@ -480,12 +504,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.permanent_pincode}
                       />
                     )}
                   />
                   {errors.permanent_pincode && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.permanent_pincode.message}
                     </Typography>
                   )}
@@ -494,7 +521,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Current Address
@@ -512,12 +539,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.current_address}
                       />
                     )}
                   />
                   {errors.current_address && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.current_address.message}
                     </Typography>
                   )}
@@ -526,7 +556,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Current City
@@ -544,12 +574,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.current_city}
                       />
                     )}
                   />
                   {errors.current_city && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.current_city.message}
                     </Typography>
                   )}
@@ -558,7 +591,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Current State
@@ -576,12 +609,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.current_state}
                       />
                     )}
                   />
                   {errors.current_state && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.current_state.message}
                     </Typography>
                   )}
@@ -590,7 +626,7 @@ const AddUpdateCustomer = () => {
                 <div>
                   <Typography
                     color="blue-gray"
-                    className="text-md font-semibold"
+                    className="text-base font-semibold"
                   >
                     <span className="text-red-500 font-semibold mr-1">*</span>
                     Current Pincode
@@ -622,12 +658,15 @@ const AddUpdateCustomer = () => {
                         labelProps={{
                           className: "before:content-none after:content-none",
                         }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
                         error={errors.current_pincode}
                       />
                     )}
                   />
                   {errors.current_pincode && (
-                    <Typography color="red" className="text-md font-medium">
+                    <Typography color="red" className="text-sm font-medium">
                       {errors.current_pincode.message}
                     </Typography>
                   )}
@@ -637,7 +676,7 @@ const AddUpdateCustomer = () => {
               <Button
                 variant="filled"
                 className="mt-6 bg-green-500 text-white 
-               text-md font-medium rounded-md hover:bg-green-600 capitalize"
+               text-sm font-medium rounded-md hover:bg-green-600 capitalize"
                 fullWidth
                 type="submit"
                 onClick={handleAddUser}

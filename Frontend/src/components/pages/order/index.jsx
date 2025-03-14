@@ -88,11 +88,11 @@ const Order = () => {
                     >
                       {item.order_items?.product_name}
                     </Typography>
-                    <Typography color="gray" className="text-md font-normal">
+                    <Typography color="gray" className="text-base font-normal">
                       {item.order_id}
                     </Typography>
                   </div>
-                  <Typography color="gray" className="text-md font-normal">
+                  <Typography color="gray" className="text-base font-normal">
                     {item.order_items?.product_desc}
                   </Typography>
                   <Typography
