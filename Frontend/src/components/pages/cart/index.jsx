@@ -11,6 +11,8 @@ import {
   removeFromCart,
 } from "../../redux/cartSlice";
 import Layout from "../../app/Layout";
+import { toast } from "react-toastify";
+import ProductListComponent from "../../app/ProductListComponent";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -20,10 +22,16 @@ const Cart = () => {
   const currency = "₹";
 
   const handleCheckout = () => {
-    // navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
-    navigate("/checkout", {
-      state: { from: "cart" },
-    });
+    if (cart.cartItems.length > 0) {
+      // navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
+      navigate("/checkout", {
+        state: { from: "cart" },
+      });
+    } else {
+      toast.error("There are no items in the cart.", {
+        position: "top-center",
+      });
+    }
   };
 
   useEffect(() => {
@@ -50,114 +58,23 @@ const Cart = () => {
     <>
       <Layout>
         <div className="md:mx-container my-10 md:my-16 bg-white">
-          <section className="">
+          <section className="px-4">
             <h3 className="text-3xl mb-7 text-center">Cart</h3>
 
-            <div className="mb-7 w-full overflow-auto px-4">
-              <table className="w-full border-collapse border border-orange-200 overflow-auto">
-                <thead className="bg-orange-50 text-gray-600">
-                  <tr className="grid grid-cols-5 ">
-                    <th className="py-3"></th>
-                    <th className="py-3">Product</th>
-                    <th className="py-3">Price</th>
-                    <th className="py-3">Quantity</th>
-                    <th className="py-3">Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody className="border border-orange-200 text-gray-600 max-h-96 overflow-auto">
-                  {/* <Scrollbars> */}
-                  {cart.cartItems.length === 0 ? (
-                    <div className="cart_empty flex flex-col justify-center items-center h-48">
-                      <h4 className="text-center mb-3">
-                        Your cart is currently empty.
-                      </h4>
-                      <NavLink
-                        to="/products/laptop"
-                        className="outline outline-1 outline-[#F7931E] text-[#F7931E] hover:bg-[#F7931E] hover:text-white px-5 py-3 bg-violet-600  rounded hover:bg-violet-700 "
-                      >
-                        {/* <i className="bi bi-arrow-left"></i> */}
-                        <span className="ms-2">Start Shopping</span>
-                      </NavLink>
-                    </div>
-                  ) : (
-                    cart.cartItems?.map((cartItem, index) => {
-                      return (
-                        <tr
-                          key={index}
-                          className="grid grid-cols-5 justify-center items-center text-center border-b-[1px] "
-                        >
-                          <td className="py-3 flex items-center justify-evenly">
-                            <HighlightOffIcon
-                              className="text-gray-400 hover:text-red-500 "
-                              onClick={() => handleRemoveFromCart(cartItem)}
-                            />
-                            <img src={cartItem.product_img} alt="" width={70} />
-                          </td>
-                          <td className="py-3 flex justify-around">
-                            <p>{cartItem.product_name}</p>
-                          </td>
-                          <td className=" py-3">
-                            {currency}
-                            {cartItem.product_price}
-                          </td>
-                          <td className="text-center py-3 flex justify-center items-center">
-                            {/* <input
-                        type="number"
-                        name=""
-                        className="px-2 py-3 w-3/12 border"
-                        defaultValue={1}
-                      /> */}
-                            <span className="flex items-center">
-                              <button
-                                className="w-14 py-2 bg-[#F7931E] text-white rounded hover:bg-[#ea942f]"
-                                onClick={() => handleDecreaseCart(cartItem)}
-                              >
-                                -
-                              </button>
-                              <p className="quantity_count px-4">
-                                {cartItem.cartQuantity}
-                              </p>
-                              <button
-                                className="w-14 py-2 bg-[#F7931E] text-white rounded hover:bg-[#ea942f]"
-                                onClick={() => handleIncreaseCart(cartItem)}
-                              >
-                                +
-                              </button>
-                            </span>
-                          </td>
-                          <td className=" py-3">
-                            {currency}
-                            {cartItem.product_price * cartItem.cartQuantity}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  )}
+            <ProductListComponent
+              data={cart.cartItems}
+              handleIncreaseItem={handleIncreaseCart}
+              handleDecreaseItem={handleDecreaseCart}
+              handleRemoveItem={handleRemoveFromCart}
+              handleClearItems={handleClearCart}
+              from="cart"
+            />
 
-                  <tr className="border border-orange-200">
-                    <td className="p-3 flex justify-between">
-                      <React.Fragment>
-                        <button
-                          className="px-5 py-3 bg-red-500 hover:bg-red-600 rounded text-white flex self-end"
-                          onClick={handleClearCart}
-                        >
-                          <DeleteIcon className="mr-2" />
-                          Clear Cart
-                        </button>
-                      </React.Fragment>
-                    </td>
-                  </tr>
-                </tbody>
-
-                {/* </Scrollbars> */}
-              </table>
-            </div>
-
-            <div className="flex justify-end px-4">
+            <div className="flex justify-end">
               <div className="w-full md:w-5/12 lg:w-4/12">
-                <div className="border border-orange-200 ">
-                  <h6 className="text-xl font-medium p-4 border-b bg-orange-50">
-                    Cart totals
+                <div className="border border-orange-200">
+                  <h6 className="text-xl font-medium p-4 border border-b-orange-200 bg-orange-50">
+                    Cart Totals
                   </h6>
 
                   <div className="px-5 py-8">

@@ -19,6 +19,7 @@ import {
   isblank,
 } from "../../lib/commonFunctions";
 import { useSelector } from "react-redux";
+import ProductListComponent from "../../app/ProductListComponent";
 
 const Checkout = () => {
   const [productData, setProductData] = useState([]);
@@ -57,15 +58,12 @@ const Checkout = () => {
   } = useForm({ defaultValues });
   const formValues = watch();
 
-  const totalAmount =
-    state?.from === "cart"
-      ? parseFloat(cart.cartTotalAmount).toFixed(2)
-      : parseFloat(
-          productData?.reduce(
-            (acc, item) => acc + item.product_price * item.cartQuantity,
-            0
-          )
-        ).toFixed(2);
+  const totalAmount = parseFloat(
+    productData?.reduce(
+      (acc, item) => acc + item.product_price * item.cartQuantity,
+      0
+    )
+  ).toFixed(2);
 
   const setCurrentAddress = (response) => {
     response = response || userData;
@@ -163,64 +161,70 @@ const Checkout = () => {
   };
 
   const handleConfirmOrder = async (e) => {
-    e.preventDefault();
+    if (productData.length > 0) {
+      e.preventDefault();
 
-    const response = await fetch(`${API_URL}/order`, {
-      method: "POST",
-      body: JSON.stringify({
-        amount: Number(totalAmount) * 100,
-        currency: "INR",
-        receipt: "as",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const order = await response.json();
+      const response = await fetch(`${API_URL}/order`, {
+        method: "POST",
+        body: JSON.stringify({
+          amount: Number(totalAmount) * 100,
+          currency: "INR",
+          receipt: "as",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const order = await response.json();
 
-    var options = {
-      key: "rzp_test_SP8VwXieL6eFC3", // Enter the Key ID generated from the Dashboard
-      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      currency: order.currency,
-      name: "SmartTechStore", //your business name
-      description: "Test Transaction",
-      image: "https://example.com/your_logo",
-      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      handler: async function (response) {
-        const body = {
-          ...response,
-        };
+      var options = {
+        key: "rzp_test_SP8VwXieL6eFC3", // Enter the Key ID generated from the Dashboard
+        amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: order.currency,
+        name: "SmartTechStore", //your business name
+        description: "Test Transaction",
+        image: "https://example.com/your_logo",
+        order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        handler: async function (response) {
+          const body = {
+            ...response,
+          };
 
-        const validateRes = await fetch(`${API_URL}/order/validate`, {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          const validateRes = await fetch(`${API_URL}/order/validate`, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const jsonRes = await validateRes.json();
+          setPaymentData(jsonRes);
+        },
+        prefill: {
+          //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+          name: "SmartTechStore", //your customer's name
+          email: "smarttechstore@gmail.com",
+          contact: "9000000000", //Provide the customer's phone number for better conversion rates
+        },
+        notes: {
+          address: "Razorpay Corporate Office",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      var rzp1 = new window.Razorpay(options);
+      rzp1.on("payment.failed", function (response) {
+        toast.error("Payment failed", {
+          position: "top-center",
         });
-        const jsonRes = await validateRes.json();
-        setPaymentData(jsonRes);
-      },
-      prefill: {
-        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-        name: "SmartTechStore", //your customer's name
-        email: "smarttechstore@gmail.com",
-        contact: "9000000000", //Provide the customer's phone number for better conversion rates
-      },
-      notes: {
-        address: "Razorpay Corporate Office",
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-    var rzp1 = new window.Razorpay(options);
-    rzp1.on("payment.failed", function (response) {
-      toast.error("Payment failed", {
+      });
+      rzp1.open();
+    } else {
+      toast.error("There are no items found.", {
         position: "top-center",
       });
-    });
-    rzp1.open();
+    }
     e.preventDefault();
   };
 
@@ -248,6 +252,39 @@ const Checkout = () => {
     }
   }, [paymentData]);
 
+  const handleIncreaseItem = (item) => {
+    const filteredData = productData.map((product) => {
+      const updated = { ...product };
+      if (product.product_id === item.product_id) {
+        updated.cartQuantity += 1;
+      }
+      return updated;
+    });
+    setProductData(filteredData);
+  };
+
+  const handleDecreaseItem = (item) => {
+    if (item.cartQuantity === 1) {
+      handleRemoveItem(item);
+    } else {
+      const filteredData = productData.map((product) => {
+        const updated = { ...product };
+        if (product.product_id === item.product_id) {
+          updated.cartQuantity -= 1;
+        }
+        return updated;
+      });
+      setProductData(filteredData);
+    }
+  };
+
+  const handleRemoveItem = (item) => {
+    const filteredData = productData.filter(
+      (product) => product.product_id !== item.product_id
+    );
+    setProductData(filteredData);
+  };
+
   return (
     <Layout>
       <div className="my-10 px-4 md:px-0">
@@ -261,36 +298,13 @@ const Checkout = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-center gap-4 mb-6">
-            {productData.map((item, index) => {
-              return (
-                <React.Fragment key={index}>
-                  {/* <div className="flex items-center"> */}
-                  <img
-                    src={item.product_img}
-                    alt="product image"
-                    className="mr-4 w-28"
-                  />
-                  {/* </div> */}
-                  {/* <div className="flex items-center"> */}
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold">
-                    {item.product_name}
-                  </h3>
-                  {/* </div> */}
-                  {/* <div className="flex items-center justify-center"> */}
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-center">
-                    {item.cartQuantity}
-                  </h3>
-                  {/* </div> */}
-                  <div className="flex items-center justify-end">
-                    <p className="text-base sm:text-lg md:text-xl">
-                      ₹{item.product_price}
-                    </p>
-                  </div>
-                </React.Fragment>
-              );
-            })}
-          </div>
+          <ProductListComponent
+            data={productData}
+            handleIncreaseItem={handleIncreaseItem}
+            handleDecreaseItem={handleDecreaseItem}
+            handleRemoveItem={handleRemoveItem}
+            from="checkout"
+          />
 
           <hr className="my-8 border-[1.3px] border-gray-300" />
           <h2 className="text-2xl font-bold">Shipping Information</h2>
