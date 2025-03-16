@@ -152,7 +152,7 @@ const Header = () => {
               className: "hidden",
             }}
             containerProps={{
-              className: "min-w-0",
+              className: "!min-w-0",
             }}
             className="pr-20 !border !border-blue-gray-200 bg-white text-gray-900 placeholder:text-gray-500 placeholder:opacity-100 "
           />

@@ -58,15 +58,15 @@ const Contact = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col md:flex-row my-14">
-        <div className="md:w-5/12 w-full h-[300px] md:h-auto">
+      <div className="flex flex-col md:flex-row items-center md:items-stretch my-14">
+        <div className="w-11/12 md:w-5/12 h-[300px] md:h-auto">
           <img
             src={contactImg}
-            className="object-cover w-full h-full md:rounded-tl-md md:rounded-bl-md"
+            className="object-cover w-full h-full rounded-tl-md md:rounded-bl-md rounded-tr-md md:rounded-tr-none"
             alt="Contact Image"
           />
         </div>
-        <div className="md:w-7/12 w-full px-5 py-3 bg-[#f2f2f2] md:rounded-tr-md md:rounded-br-md">
+        <div className="w-11/12 md:w-7/12 px-5 py-3 bg-[#f2f2f2] md:rounded-tr-md rounded-bl-md md:rounded-bl-none rounded-br-md">
           <h3 className="text-2xl font-medium">Get In Touch</h3>
           <p className="text-lg py-2">
             Your Gateway to Excellence: Contact Us and Unlock a World of
@@ -86,7 +86,7 @@ const Contact = () => {
                     value={value}
                     onChange={onChange}
                     containerProps={{
-                      className: "min-w-0",
+                      className: "!min-w-0",
                     }}
                   />
                 )}
@@ -110,7 +110,7 @@ const Contact = () => {
                     value={value}
                     onChange={onChange}
                     containerProps={{
-                      className: "min-w-0",
+                      className: "!min-w-0",
                     }}
                   />
                 )}
@@ -127,7 +127,7 @@ const Contact = () => {
                   value={value}
                   onChange={onChange}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -145,7 +145,7 @@ const Contact = () => {
                   value={value}
                   onChange={onChange}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}

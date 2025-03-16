@@ -326,7 +326,7 @@ const Checkout = () => {
               onChange={handleRadioChange}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 self-auto items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 self-auto">
             <Controller
               name="order_name"
               control={control}
@@ -338,7 +338,7 @@ const Checkout = () => {
                   error={errors.name && errors.name.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -355,7 +355,7 @@ const Checkout = () => {
                   error={errors.address && errors.address.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -372,7 +372,7 @@ const Checkout = () => {
                   error={errors.state && errors.state.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -389,7 +389,7 @@ const Checkout = () => {
                   error={errors.city && errors.city.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -417,7 +417,7 @@ const Checkout = () => {
                   error={errors.mobile && errors.mobile.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -440,7 +440,7 @@ const Checkout = () => {
                   error={errors.email && errors.email.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -471,7 +471,7 @@ const Checkout = () => {
                   error={errors.pincode && errors.pincode.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 />
               )}
@@ -487,7 +487,7 @@ const Checkout = () => {
                   error={errors.paymentMethod && errors.paymentMethod.message}
                   {...field}
                   containerProps={{
-                    className: "min-w-0",
+                    className: "!min-w-0",
                   }}
                 >
                   <Option value="cash on delivery">Cash on Delivery</Option>

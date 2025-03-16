@@ -108,7 +108,7 @@ const AdminLogin = ({ setLogin }) => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.admin_name}
                     />
@@ -140,7 +140,7 @@ const AdminLogin = ({ setLogin }) => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.admin_password}
                     />

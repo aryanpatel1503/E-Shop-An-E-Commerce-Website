@@ -82,7 +82,7 @@ const SignUp = () => {
         <img
           src={loginimg}
           alt="login"
-          className="object-contain h-[95%] md:h-[85%] rounded-lg"
+          className="object-contain h-[95%] md:h-[70%] rounded-lg"
         />
       </div>
       <div className="w-full sm:w-2/3 lg:w-1/3 h-[90%] overflow-y-auto bg-[#f5f5f5] shadow-lg md:rounded-tr-lg rounded-br-lg rounded-bl-lg md:rounded-bl-none px-4 md:px-7 py-4">
@@ -112,7 +112,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_name}
                     />
@@ -143,7 +143,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_fullname}
                     />
@@ -185,7 +185,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_mobile}
                     />
@@ -223,7 +223,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_email}
                     />
@@ -255,7 +255,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_password}
                     />
@@ -321,7 +321,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.permanent_address}
                     />
@@ -352,7 +352,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.permanent_city}
                     />
@@ -383,7 +383,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.permanent_state}
                     />
@@ -428,7 +428,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.permanent_pincode}
                     />
@@ -459,7 +459,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.current_address}
                     />
@@ -490,7 +490,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.current_city}
                     />
@@ -521,7 +521,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.current_state}
                     />
@@ -566,7 +566,7 @@ const SignUp = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.current_pincode}
                     />

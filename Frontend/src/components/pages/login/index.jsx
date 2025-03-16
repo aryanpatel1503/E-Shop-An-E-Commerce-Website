@@ -126,7 +126,7 @@ const Login = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_name}
                     />
@@ -157,7 +157,7 @@ const Login = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_password}
                     />

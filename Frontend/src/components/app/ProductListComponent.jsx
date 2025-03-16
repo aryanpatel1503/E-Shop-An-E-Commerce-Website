@@ -71,15 +71,17 @@ const ProductListComponent = ({
                 >
                   <td className="min-w-[120px] py-3">
                     <span className="flex items-center justify-evenly">
-                      <HighlightOff
-                        className="text-gray-400 hover:text-red-500 "
+                      <IconButton
                         onClick={() => handleRemoveItem(cartItem)}
-                      />
+                        className="group"
+                      >
+                        <HighlightOff className="text-gray-400 group-hover:text-red-500" />
+                      </IconButton>
                       <NavLink to={`/product/${cartItem.product_id}`}>
                         <img
                           src={cartItem.product_img}
                           alt="Product image"
-                          width={70}
+                          width={90}
                         />
                       </NavLink>
                     </span>

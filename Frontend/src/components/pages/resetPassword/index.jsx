@@ -115,7 +115,7 @@ const ResetPassword = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_email}
                     />
@@ -145,7 +145,7 @@ const ResetPassword = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_password}
                     />
@@ -180,7 +180,7 @@ const ResetPassword = () => {
                         className: "before:content-none after:content-none",
                       }}
                       containerProps={{
-                        className: "min-w-0",
+                        className: "!min-w-0",
                       }}
                       error={errors.user_conf_password}
                     />

@@ -110,581 +110,569 @@ const AddUpdateCustomer = () => {
   }, [name]);
 
   return (
-    <AdminLayout>
-      <div className="">
-        <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
-          <h3 className="text-2xl font-medium font-serif text-blue-500">
-            {name ? "Edit Customer" : "Add Customer"}
-          </h3>
-          <NavLink
-            to="/admin/viewuser"
-            className="px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            <ArrowBackRoundedIcon className="mr-1" />
-            Back
-          </NavLink>
-        </div>
-        <div className="flex justify-center">
-          <div className="w-8/12 bg-white rounded-md flex flex-col items-center">
-            <form className="w-11/12 flex flex-col items-center justify-center my-10">
-              <div className="mb-1 flex flex-col gap-4 w-full">
-                <div className="w-full">
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Username
-                  </Typography>
-                  <Controller
-                    name="user_name"
-                    control={control}
-                    rules={{ required: "Username is required" }}
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        size="lg"
-                        placeholder="username"
-                        onChange={onChange}
-                        value={value}
-                        className={borderForField(errors.user_name)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.user_name}
-                      />
-                    )}
-                  />
-                  {errors.user_name && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_name.message}
-                    </Typography>
+    <AdminLayout
+      title={name ? "Edit Customer" : "Add Customer"}
+      actionName="Back"
+      actionPath="/admin/viewuser"
+    >
+      <div className="flex justify-center">
+        <div className="w-11/12 md:w-8/12 bg-white rounded-md flex flex-col items-center">
+          <form className="w-11/12 flex flex-col items-center justify-center my-10">
+            <div className="mb-1 flex flex-col gap-4 w-full">
+              <div className="w-full">
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Username
+                </Typography>
+                <Controller
+                  name="user_name"
+                  control={control}
+                  rules={{ required: "Username is required" }}
+                  render={({ field: { onChange, value } }) => (
+                    <Input
+                      size="lg"
+                      placeholder="username"
+                      onChange={onChange}
+                      value={value}
+                      className={borderForField(errors.user_name)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.user_name}
+                    />
                   )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Full Name
+                />
+                {errors.user_name && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_name.message}
                   </Typography>
-                  <Controller
-                    name="user_fullname"
-                    control={control}
-                    rules={{ required: "Full Name is required" }}
-                    render={({ field }) => (
-                      <Input
-                        size="lg"
-                        {...field}
-                        placeholder="fullname"
-                        className={borderForField(errors.user_fullname)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.user_fullname}
-                      />
-                    )}
-                  />
-                  {errors.user_fullname && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_fullname.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Mobile
-                  </Typography>
-                  <Controller
-                    name="user_mobile"
-                    control={control}
-                    rules={{
-                      required: "Mobile number is required",
-                      maxLength: {
-                        value: 10,
-                        message: "Mobile number must be 10 digits",
-                      },
-                      pattern: {
-                        value: /^[0-9]{10}$/,
-                        message:
-                          "Invalid mobile number. It must contain only digits.",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Input
-                        size="lg"
-                        {...field}
-                        placeholder="mobile"
-                        className={borderForField(errors.user_mobile)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.user_mobile}
-                      />
-                    )}
-                  />
-                  {errors.user_mobile && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_mobile.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Email
-                  </Typography>
-                  <Controller
-                    name="user_email"
-                    control={control}
-                    rules={{
-                      required: "Email is required",
-                      pattern: {
-                        value:
-                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                        message: "Enter a valid email address",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="name@mail.com"
-                        className={borderForField(errors.user_email)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.user_email}
-                      />
-                    )}
-                  />
-                  {errors.user_email && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_email.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Password
-                  </Typography>
-                  <Controller
-                    name="user_password"
-                    control={control}
-                    rules={{ required: "Password is required" }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        type="password"
-                        size="lg"
-                        placeholder="********"
-                        className={borderForField(errors.user_password)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.user_password}
-                      />
-                    )}
-                  />
-                  {errors.user_password && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_password.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Gender
-                  </Typography>
-                  <Controller
-                    name="user_gender"
-                    control={control}
-                    rules={{ required: "Gender is required" }}
-                    render={({ field: { onChange, value } }) => (
-                      <div className="flex flex-wrap gap-10">
-                        <Radio
-                          name="user_gender"
-                          label="Male"
-                          value="male"
-                          checked={value === "male"}
-                          onChange={onChange}
-                          error={errors.user_gender}
-                        />
-                        <Radio
-                          name="user_gender"
-                          label="Female"
-                          value="female"
-                          checked={value === "female"}
-                          onChange={onChange}
-                          error={errors.user_gender}
-                        />
-                      </div>
-                    )}
-                  />
-                  {errors.user_gender && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.user_gender.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Permenent Address
-                  </Typography>
-                  <Controller
-                    name="permanent_address"
-                    control={control}
-                    rules={{ required: "Permenent Address is required" }}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        size="lg"
-                        className={`${borderForField(
-                          errors.permanent_address
-                        )}`}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.permanent_address}
-                      />
-                    )}
-                  />
-                  {errors.permanent_address && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.permanent_address.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Permenent City
-                  </Typography>
-                  <Controller
-                    name="permanent_city"
-                    control={control}
-                    rules={{ required: "Permenent City is required" }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="permanent city"
-                        className={borderForField(errors.permanent_city)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.permanent_city}
-                      />
-                    )}
-                  />
-                  {errors.permanent_city && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.permanent_city.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Permenent State
-                  </Typography>
-                  <Controller
-                    name="permanent_state"
-                    control={control}
-                    rules={{ required: "Permenent State is required" }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="permanent state"
-                        className={borderForField(errors.permanent_state)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.permanent_state}
-                      />
-                    )}
-                  />
-                  {errors.permanent_state && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.permanent_state.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Permenent Pincode
-                  </Typography>
-                  <Controller
-                    name="permanent_pincode"
-                    control={control}
-                    rules={{
-                      required: "Permenent Pincode is required",
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: "Pincode must contain only digits",
-                      },
-                      minLength: {
-                        value: 6,
-                        message: "Pincode must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 6,
-                        message: "Pincode must be exactly 6 digits",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="permanent pincode"
-                        className={borderForField(errors.permanent_pincode)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.permanent_pincode}
-                      />
-                    )}
-                  />
-                  {errors.permanent_pincode && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.permanent_pincode.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Current Address
-                  </Typography>
-                  <Controller
-                    name="current_address"
-                    control={control}
-                    rules={{ required: "Current Address is required" }}
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        size="lg"
-                        rows="1"
-                        className={borderForField(errors.current_address)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.current_address}
-                      />
-                    )}
-                  />
-                  {errors.current_address && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.current_address.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Current City
-                  </Typography>
-                  <Controller
-                    name="current_city"
-                    control={control}
-                    rules={{ required: "Current City is required" }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="current city"
-                        className={borderForField(errors.current_city)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.current_city}
-                      />
-                    )}
-                  />
-                  {errors.current_city && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.current_city.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Current State
-                  </Typography>
-                  <Controller
-                    name="current_state"
-                    control={control}
-                    rules={{ required: "Current State is required" }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="current state"
-                        className={borderForField(errors.current_state)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.current_state}
-                      />
-                    )}
-                  />
-                  {errors.current_state && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.current_state.message}
-                    </Typography>
-                  )}
-                </div>
-
-                <div>
-                  <Typography
-                    color="blue-gray"
-                    className="text-base font-semibold"
-                  >
-                    <span className="text-red-500 font-semibold mr-1">*</span>
-                    Current Pincode
-                  </Typography>
-                  <Controller
-                    name="current_pincode"
-                    control={control}
-                    rules={{
-                      required: "Current Pincode is required",
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: "Pincode must contain only digits",
-                      },
-                      minLength: {
-                        value: 6,
-                        message: "Pincode must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 6,
-                        message: "Pincode must be exactly 6 digits",
-                      },
-                    }}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        size="lg"
-                        placeholder="current pincode"
-                        className={borderForField(errors.current_pincode)}
-                        labelProps={{
-                          className: "before:content-none after:content-none",
-                        }}
-                        containerProps={{
-                          className: "min-w-0",
-                        }}
-                        error={errors.current_pincode}
-                      />
-                    )}
-                  />
-                  {errors.current_pincode && (
-                    <Typography color="red" className="text-sm font-medium">
-                      {errors.current_pincode.message}
-                    </Typography>
-                  )}
-                </div>
+                )}
               </div>
 
-              <Button
-                variant="filled"
-                className="mt-6 bg-green-500 text-white 
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Full Name
+                </Typography>
+                <Controller
+                  name="user_fullname"
+                  control={control}
+                  rules={{ required: "Full Name is required" }}
+                  render={({ field }) => (
+                    <Input
+                      size="lg"
+                      {...field}
+                      placeholder="fullname"
+                      className={borderForField(errors.user_fullname)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.user_fullname}
+                    />
+                  )}
+                />
+                {errors.user_fullname && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_fullname.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Mobile
+                </Typography>
+                <Controller
+                  name="user_mobile"
+                  control={control}
+                  rules={{
+                    required: "Mobile number is required",
+                    maxLength: {
+                      value: 10,
+                      message: "Mobile number must be 10 digits",
+                    },
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message:
+                        "Invalid mobile number. It must contain only digits.",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      size="lg"
+                      {...field}
+                      placeholder="mobile"
+                      className={borderForField(errors.user_mobile)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.user_mobile}
+                    />
+                  )}
+                />
+                {errors.user_mobile && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_mobile.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Email
+                </Typography>
+                <Controller
+                  name="user_email"
+                  control={control}
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: "Enter a valid email address",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="name@mail.com"
+                      className={borderForField(errors.user_email)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.user_email}
+                    />
+                  )}
+                />
+                {errors.user_email && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_email.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Password
+                </Typography>
+                <Controller
+                  name="user_password"
+                  control={control}
+                  rules={{ required: "Password is required" }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="password"
+                      size="lg"
+                      placeholder="********"
+                      className={borderForField(errors.user_password)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.user_password}
+                    />
+                  )}
+                />
+                {errors.user_password && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_password.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Gender
+                </Typography>
+                <Controller
+                  name="user_gender"
+                  control={control}
+                  rules={{ required: "Gender is required" }}
+                  render={({ field: { onChange, value } }) => (
+                    <div className="flex flex-wrap gap-10">
+                      <Radio
+                        name="user_gender"
+                        label="Male"
+                        value="male"
+                        checked={value === "male"}
+                        onChange={onChange}
+                        error={errors.user_gender}
+                      />
+                      <Radio
+                        name="user_gender"
+                        label="Female"
+                        value="female"
+                        checked={value === "female"}
+                        onChange={onChange}
+                        error={errors.user_gender}
+                      />
+                    </div>
+                  )}
+                />
+                {errors.user_gender && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.user_gender.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Permenent Address
+                </Typography>
+                <Controller
+                  name="permanent_address"
+                  control={control}
+                  rules={{ required: "Permenent Address is required" }}
+                  render={({ field }) => (
+                    <Textarea
+                      {...field}
+                      size="lg"
+                      className={`${borderForField(errors.permanent_address)}`}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.permanent_address}
+                    />
+                  )}
+                />
+                {errors.permanent_address && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.permanent_address.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Permenent City
+                </Typography>
+                <Controller
+                  name="permanent_city"
+                  control={control}
+                  rules={{ required: "Permenent City is required" }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="permanent city"
+                      className={borderForField(errors.permanent_city)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.permanent_city}
+                    />
+                  )}
+                />
+                {errors.permanent_city && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.permanent_city.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Permenent State
+                </Typography>
+                <Controller
+                  name="permanent_state"
+                  control={control}
+                  rules={{ required: "Permenent State is required" }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="permanent state"
+                      className={borderForField(errors.permanent_state)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.permanent_state}
+                    />
+                  )}
+                />
+                {errors.permanent_state && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.permanent_state.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Permenent Pincode
+                </Typography>
+                <Controller
+                  name="permanent_pincode"
+                  control={control}
+                  rules={{
+                    required: "Permenent Pincode is required",
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "Pincode must contain only digits",
+                    },
+                    minLength: {
+                      value: 6,
+                      message: "Pincode must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 6,
+                      message: "Pincode must be exactly 6 digits",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="permanent pincode"
+                      className={borderForField(errors.permanent_pincode)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.permanent_pincode}
+                    />
+                  )}
+                />
+                {errors.permanent_pincode && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.permanent_pincode.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Current Address
+                </Typography>
+                <Controller
+                  name="current_address"
+                  control={control}
+                  rules={{ required: "Current Address is required" }}
+                  render={({ field }) => (
+                    <Textarea
+                      {...field}
+                      size="lg"
+                      rows="1"
+                      className={borderForField(errors.current_address)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.current_address}
+                    />
+                  )}
+                />
+                {errors.current_address && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.current_address.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Current City
+                </Typography>
+                <Controller
+                  name="current_city"
+                  control={control}
+                  rules={{ required: "Current City is required" }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="current city"
+                      className={borderForField(errors.current_city)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.current_city}
+                    />
+                  )}
+                />
+                {errors.current_city && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.current_city.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Current State
+                </Typography>
+                <Controller
+                  name="current_state"
+                  control={control}
+                  rules={{ required: "Current State is required" }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="current state"
+                      className={borderForField(errors.current_state)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.current_state}
+                    />
+                  )}
+                />
+                {errors.current_state && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.current_state.message}
+                  </Typography>
+                )}
+              </div>
+
+              <div>
+                <Typography
+                  color="blue-gray"
+                  className="text-base font-semibold"
+                >
+                  <span className="text-red-500 font-semibold mr-1">*</span>
+                  Current Pincode
+                </Typography>
+                <Controller
+                  name="current_pincode"
+                  control={control}
+                  rules={{
+                    required: "Current Pincode is required",
+                    pattern: {
+                      value: /^[0-9]+$/,
+                      message: "Pincode must contain only digits",
+                    },
+                    minLength: {
+                      value: 6,
+                      message: "Pincode must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 6,
+                      message: "Pincode must be exactly 6 digits",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      size="lg"
+                      placeholder="current pincode"
+                      className={borderForField(errors.current_pincode)}
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }}
+                      containerProps={{
+                        className: "!min-w-0",
+                      }}
+                      error={errors.current_pincode}
+                    />
+                  )}
+                />
+                {errors.current_pincode && (
+                  <Typography color="red" className="text-sm font-medium">
+                    {errors.current_pincode.message}
+                  </Typography>
+                )}
+              </div>
+            </div>
+
+            <Button
+              variant="filled"
+              className="mt-6 bg-green-500 text-white 
                text-sm font-medium rounded-md hover:bg-green-600 capitalize"
-                fullWidth
-                type="submit"
-                onClick={handleAddUser}
-              >
-                {name ? "Update Customer" : "Add Customer"}
-              </Button>
-            </form>
-          </div>
+              fullWidth
+              type="submit"
+              onClick={handleAddUser}
+            >
+              {name ? "Update Customer" : "Add Customer"}
+            </Button>
+          </form>
         </div>
       </div>
     </AdminLayout>

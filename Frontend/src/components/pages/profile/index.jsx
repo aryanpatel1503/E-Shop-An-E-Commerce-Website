@@ -161,7 +161,7 @@ const Profile = () => {
                                 "before:content-none after:content-none",
                             }}
                             containerProps={{
-                              className: "min-w-0",
+                              className: "!min-w-0",
                             }}
                             error={errors.user_name}
                           />
@@ -196,7 +196,7 @@ const Profile = () => {
                                 "before:content-none after:content-none",
                             }}
                             containerProps={{
-                              className: "min-w-0",
+                              className: "!min-w-0",
                             }}
                             error={errors.user_fullname}
                           />
@@ -242,7 +242,7 @@ const Profile = () => {
                                 "before:content-none after:content-none",
                             }}
                             containerProps={{
-                              className: "min-w-0",
+                              className: "!min-w-0",
                             }}
                             error={errors.user_mobile}
                           />
@@ -284,7 +284,7 @@ const Profile = () => {
                                 "before:content-none after:content-none",
                             }}
                             containerProps={{
-                              className: "min-w-0",
+                              className: "!min-w-0",
                             }}
                             error={errors.user_email}
                           />
@@ -320,7 +320,7 @@ const Profile = () => {
                                 "before:content-none after:content-none",
                             }}
                             containerProps={{
-                              className: "min-w-0",
+                              className: "!min-w-0",
                             }}
                             error={errors.user_password}
                           />
@@ -396,7 +396,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.permanent_address}
                         />
@@ -430,7 +430,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.permanent_city}
                         />
@@ -464,7 +464,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.permanent_state}
                         />
@@ -512,7 +512,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.permanent_pincode}
                         />
@@ -546,7 +546,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.current_address}
                         />
@@ -580,7 +580,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.current_city}
                         />
@@ -614,7 +614,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.current_state}
                         />
@@ -662,7 +662,7 @@ const Profile = () => {
                             className: "before:content-none after:content-none",
                           }}
                           containerProps={{
-                            className: "min-w-0",
+                            className: "!min-w-0",
                           }}
                           error={errors.current_pincode}
                         />

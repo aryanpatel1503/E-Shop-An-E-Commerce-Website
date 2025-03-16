@@ -25,16 +25,11 @@ const ViewFeedback = () => {
   }, []);
 
   return (
-    <AdminLayout>
-      <div className="">
-        <div className="h-20 flex justify-between items-center mb-2 px-4 bg-blue-100">
-          <h3 className="text-2xl font-medium font-serif text-blue-500">
-            Feedback Details
-          </h3>
-        </div>
-        <div className="flex justify-center bg-white py-4">
-          <table className="w-[98%] text-left rounded-lg ">
-            <thead className="border-b-[2px] ">
+    <AdminLayout title="Feedback Details">
+      <div className="bg-white py-4 flex flex-col items-center">
+        <div className="overflow-x-auto h-[80%] w-[98%]">
+          <table className="text-left rounded-lg w-full">
+            <thead className="border-b-[2px]">
               <tr className="">
                 <th className=" px-3 py-4">ID</th>
                 <th className=" px-3 py-4">Username</th>
