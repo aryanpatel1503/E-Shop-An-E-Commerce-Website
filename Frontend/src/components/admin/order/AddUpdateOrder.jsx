@@ -53,7 +53,7 @@ const AddUpdateOrder = () => {
     order_email: "",
     order_pincode: "",
     order_status: "pending",
-    shipping_method: "cash on delivery",
+    shipping_method: "online payment",
     total_amount: 0,
     // product_id: "",
     user_id: "",
@@ -590,6 +590,7 @@ const AddUpdateOrder = () => {
                       <MenuItem value="pending">Pending</MenuItem>
                       <MenuItem value="shipped">Shipped</MenuItem>
                       <MenuItem value="delivered">Delivered</MenuItem>
+                      <MenuItem value="cancelled">Cancelled</MenuItem>
                     </Select>
                   )}
                 />
@@ -622,6 +623,7 @@ const AddUpdateOrder = () => {
                       sx={{ height: 45 }}
                       error={errors.shipping_method}
                     >
+                      <MenuItem value="online payment">Online Payment</MenuItem>
                       <MenuItem value="cash on delivery">
                         Cash on Delivery
                       </MenuItem>

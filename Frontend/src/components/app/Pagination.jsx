@@ -36,8 +36,8 @@ const Pagination = ({
 
   return (
     <div
-      className={`flex ${
-        alignRight ? "justify-end" : "justify-center"
+      className={`flex flex-wrap ${
+        alignRight ? "justify-center xs:justify-end" : "justify-center"
       } items-center gap-4 my-4`}
     >
       <Button
@@ -49,7 +49,7 @@ const Pagination = ({
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
         {buttonName && "Previous"}
       </Button>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {Array.from({ length: totalPages }, (_, i) => {
           return (
             <IconButton {...getItemProps(i + 1)} key={i}>

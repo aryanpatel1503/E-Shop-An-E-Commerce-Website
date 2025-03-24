@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     marginBottom: 10,
+    textAlign: "center",
   },
   table: {
     display: "table",
@@ -61,10 +62,14 @@ const styles = StyleSheet.create({
 });
 
 // Define the main Invoice component
-const Invoice = ({ item }) => {
+const Invoice = ({ item, ordersRawData }) => {
   // console.log(item);
   // const currency = "\u20B9";
   const currency = "";
+  const orderItems = ordersRawData
+    .filter((order) => order.order_id === item.order_id)
+    .map((order) => order.order_items)
+    .flat();
 
   // Define the InvoiceDocument component
   const InvoiceDocument = () => (
@@ -107,27 +112,31 @@ const Invoice = ({ item }) => {
               </View>
             </View>
             {/* Table Data */}
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.product_name}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>1</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {currency}
-                  {amountFormat(item.product_price)}
-                </Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {currency}
-                  {amountFormat(item.product_price)}
-                </Text>
-              </View>
-            </View>
 
+            {orderItems.map((order, index) => {
+              return (
+                <View style={styles.tableRow} key={index}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{order.product_name}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>{order.quantity}</Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>
+                      {currency}
+                      {amountFormat(order.price)}
+                    </Text>
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.tableCell}>
+                      {currency}
+                      {amountFormat(order.price * order.quantity)}
+                    </Text>
+                  </View>
+                </View>
+              );
+            })}
             <View style={styles.tableRow}>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>Shipping Charges</Text>
@@ -153,7 +162,7 @@ const Invoice = ({ item }) => {
 
         <Text style={styles.grandTotal}>
           Grand Total: {currency}
-          {amountFormat(item.product_price)}
+          {amountFormat(item.total_amount)}
         </Text>
       </Page>
     </Document>
@@ -163,7 +172,7 @@ const Invoice = ({ item }) => {
     <div>
       <PDFDownloadLink
         document={<InvoiceDocument />}
-        fileName={`order-${item.order_id}.pdf`}
+        fileName={`order-${item.order_id}-${Date.now()}.pdf`}
         style={{
           backgroundColor: "#167269",
           color: "white",

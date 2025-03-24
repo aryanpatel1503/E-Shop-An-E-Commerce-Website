@@ -145,7 +145,10 @@ const Product = () => {
                       }
                       disablePadding
                     >
-                      <ListItemButton onClick={() => handleCatgeoryClick(item)}>
+                      <ListItemButton
+                        onClick={() => handleCatgeoryClick(item)}
+                        selected={name === item.category}
+                      >
                         <ListItemText primary={item.category} />
                       </ListItemButton>
                     </ListItem>

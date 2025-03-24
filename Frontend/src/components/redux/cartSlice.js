@@ -21,12 +21,12 @@ const cartSlice = createSlice({
 
       if (itemIndex >= 0) {
         state.cartItems[itemIndex].cartQuantity += 1;
-        toast.info(
+        /* toast.info(
           `increased ${state.cartItems[itemIndex].product_name} cart quantity`,
           {
             position: "top-right",
           }
-        );
+        ); */
       } else {
         const tempProduct = { ...action.payload, cartQuantity: 1 };
         state.cartItems.push(tempProduct);

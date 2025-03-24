@@ -160,7 +160,7 @@ const Home = () => {
         {heroData.map((item, index) => {
           return (
             <div
-              className="grid grid-cols-1 md:grid-cols-2 gap-4 md:h-[90vh] mx-4 md:mx-0 pb-10"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 md:h-[70vh] mx-4 md:mx-0 pb-10"
               key={index}
             >
               <div className="flex justify-center flex-col order-2 md:order-1">
@@ -202,7 +202,7 @@ const Home = () => {
         })}
       </Carousel>
 
-      <div className="my-20">
+      <div className="my-14">
         <h3 className="text-3xl font-medium text-center mb-7">
           Trending Collection
         </h3>

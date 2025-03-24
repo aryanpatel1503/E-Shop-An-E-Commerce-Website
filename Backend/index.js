@@ -48,7 +48,7 @@ const con = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "e_shop_2024",
+  database: "smarttechstore",
 });
 const JWT_SECRET = "alkfwerdbshadd";
 
@@ -972,6 +972,70 @@ app.delete("/orders/:id", (req, res) => {
   });
 });
 
+// Delete Order (New)
+app.delete("/orders/delete/:id", (req, res) => {
+  const { id } = req.params;
+
+  con.beginTransaction((err) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send({ message: "Transaction start failed" });
+    }
+
+    // Check if the order exists
+    const checkOrderSql = "SELECT * FROM orders WHERE order_id = ?";
+    con.query(checkOrderSql, [id], (err, orderResults) => {
+      if (err || orderResults.length === 0) {
+        return con.rollback(() => {
+          console.log("Order not found or query failed:", err);
+          return res.status(404).send({ message: "Order not found" });
+        });
+      }
+
+      // Delete the order items first
+      const deleteOrderItemsSql = "DELETE FROM order_items WHERE order_id = ?";
+      con.query(deleteOrderItemsSql, [id], (err) => {
+        if (err) {
+          return con.rollback(() => {
+            console.log("Error deleting order items:", err);
+            return res
+              .status(500)
+              .send({ message: "Failed to delete order items" });
+          });
+        }
+
+        // After deleting order items, delete the order
+        const deleteOrderSql = "DELETE FROM orders WHERE order_id = ?";
+        con.query(deleteOrderSql, [id], (err) => {
+          if (err) {
+            return con.rollback(() => {
+              console.log("Error deleting order:", err);
+              return res
+                .status(500)
+                .send({ message: "Failed to delete order" });
+            });
+          }
+
+          // Commit the transaction if both deletions succeed
+          con.commit((err) => {
+            if (err) {
+              return con.rollback(() => {
+                console.log("Transaction commit failed:", err);
+                return res
+                  .status(500)
+                  .send({ message: "Transaction commit failed" });
+              });
+            }
+
+            console.log("Order and items deleted successfully!");
+            res.status(200).send({ message: "Order deleted successfully" });
+          });
+        });
+      });
+    });
+  });
+});
+
 // Edit Order
 app.put("/orders/:id", (req, res) => {
   const id = req.params.id;
@@ -1183,6 +1247,25 @@ app.get("/ordersNew/:id", (req, res) => {
       } else {
         res.status(200);
         res.send({ message: "Order get successfully", result });
+      }
+    }
+  );
+});
+
+// Cancel Order
+app.put("/orders/cancel/:id", (req, res) => {
+  const { id } = req.params;
+  con.query(
+    "UPDATE orders SET order_status = 'cancelled' WHERE order_id = ? ",
+    [id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(400);
+        res.send({ message: "Enter Correct asked details!" });
+      } else {
+        res.status(200);
+        res.send({ message: "Order cancelled successfully", result });
       }
     }
   );

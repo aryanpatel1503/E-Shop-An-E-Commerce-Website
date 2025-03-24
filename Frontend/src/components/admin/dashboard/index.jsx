@@ -18,7 +18,7 @@ const Dashboard = () => {
   return (
     <>
       <AdminLayout title="Dashboard">
-        <div className="bg-blue-gray-50 md:h-screen">
+        <div className="bg-blue-gray-50 md:h-[80vh]">
           <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center justify-between px-5 md:px-10 rounded bg-white h-28 dark:bg-gray-800 shadow-md">
               <div>

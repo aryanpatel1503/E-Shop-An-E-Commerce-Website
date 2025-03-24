@@ -16,21 +16,25 @@ import ProductListComponent from "../../app/ProductListComponent";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currency = "₹";
+  const islogin = localStorage.getItem("user_id");
 
   const handleCheckout = () => {
-    if (cart.cartItems.length > 0) {
-      // navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
-      navigate("/checkout", {
-        state: { from: "cart" },
-      });
+    if (islogin) {
+      if (cart.cartItems.length > 0) {
+        // navigate("/checkout", { state: { id: cart.cartItems[0].product_id } });
+        navigate("/checkout", {
+          state: { from: "cart" },
+        });
+      } else {
+        toast.error("There are no items in the cart.", {
+          position: "top-center",
+        });
+      }
     } else {
-      toast.error("There are no items in the cart.", {
-        position: "top-center",
-      });
+      navigate("/login");
     }
   };
 

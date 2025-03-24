@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import {
   Accordion,
   AccordionBody,
@@ -9,36 +6,28 @@ import {
   Button,
   IconButton,
   Input,
-  ListItem,
   ListItemPrefix,
   Menu,
   MenuHandler,
   MenuItem,
   MenuList,
-  Tooltip,
 } from "@material-tailwind/react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { API_URL } from "../lib/constant";
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import {
-  Avatar,
-  Collapse,
   Drawer,
   List,
   ListItemButton,
   ListItemText,
-  Popover,
   Typography,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import MenuIcon from "@mui/icons-material/Menu";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-  PresentationChartBarIcon,
-} from "@heroicons/react/24/outline";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { API_URL } from "../lib/constant";
 
 const Header = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -49,12 +38,10 @@ const Header = () => {
   const location = useLocation();
   const { cartItems: list } = useSelector((state) => state.cart);
   const user_id = localStorage.getItem("user_id");
-  const [anchorEl, setAnchorEl] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [openRight, setOpenRight] = useState(false);
   const [openAccordion, setOpenAccordion] = useState(0);
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const [openMenu, setOpenMenu] = useState(false);
 
   const closeDrawerRight = () => {
     setOpenRight(false);
@@ -68,16 +55,7 @@ const Header = () => {
     };
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleCatgeoryClick = (item) => {
-    handleClose();
     navigate(`/products/${item.category}`);
   };
 
@@ -416,32 +394,48 @@ const Header = () => {
       <nav
         className={`md:ml-auto md:mr-auto hidden md:flex flex-wrap items-center text-lg justify-center`}
       >
-        <NavLink
-          to="/"
-          style={navLinkStyle}
-          className="mr-5 hover:text-gray-900"
-        >
+        <NavLink to="/" style={navLinkStyle} className="hover:text-gray-900">
           Home
         </NavLink>
 
-        <NavLink
-          to=""
-          style={{
-            color: "black",
-            fontWeight: location.pathname.startsWith("/products") ? "bold" : "",
-          }}
-          onClick={handleClick}
-          className="mr-5 hover:text-gray-900"
-        >
-          Products{" "}
-          <span>
-            {open ? (
-              <ExpandLessIcon fontSize="small" />
-            ) : (
-              <ExpandMoreIcon fontSize="small" />
-            )}
-          </span>
-        </NavLink>
+        <Menu open={openMenu} handler={setOpenMenu} allowHover animate={true}>
+          <MenuHandler>
+            <Button
+              variant="text"
+              className="flex items-center gap-3 text-base font-normal capitalize tracking-normal hover:bg-none !bg-transparent border-0 outline-none"
+              style={{
+                color: "black",
+                fontWeight: location.pathname.startsWith("/products")
+                  ? "bold"
+                  : "",
+              }}
+              // style={{ backgroundColor: "transparent", boxShadow: "none" }}
+            >
+              Products{" "}
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`h-3.5 w-3.5 transition-transform ${
+                  openMenu ? "rotate-180" : ""
+                }`}
+              />
+            </Button>
+          </MenuHandler>
+          <MenuList className="">
+            {categoryData?.map((item, index) => (
+              <MenuItem
+                key={index}
+                onClick={() => handleCatgeoryClick(item)}
+                className={`${
+                  location.pathname === `/products/${item.category}`
+                    ? "bg-blue-50"
+                    : "hover:bg-gray-200"
+                }`}
+              >
+                {item.category}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
 
         <NavLink
           to="/contact"
@@ -458,33 +452,6 @@ const Header = () => {
           About
         </NavLink>
       </nav>
-
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-      >
-        <List disablePadding sx={{ minWidth: 150 }} dense>
-          {categoryData?.map((item, index) => (
-            <ListItemButton
-              key={index}
-              selected={location.pathname === `/products/${item.category}`}
-              onClick={() => handleCatgeoryClick(item)}
-            >
-              <ListItemText primary={item.category} />
-            </ListItemButton>
-          ))}
-        </List>
-      </Popover>
     </header>
   );
 };

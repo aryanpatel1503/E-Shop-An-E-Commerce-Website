@@ -43,7 +43,7 @@ const ViewOrder = () => {
   const handleDeleteOrder = async (id) => {
     try {
       if (window.confirm("Are you Sure you want to delete this record? ")) {
-        const response = await axios.delete(`${API_URL}/orders/${id}`);
+        const response = await axios.delete(`${API_URL}/orders/delete/${id}`);
 
         if (response.status === 200) {
           toast.success(
@@ -70,7 +70,7 @@ const ViewOrder = () => {
     >
       <div className="bg-white py-4 flex flex-col items-center">
         <div className="overflow-x-auto h-[80%] w-[98%]">
-          <table className="text-left rounded-lg ">
+          <table className="text-left rounded-lg w-full">
             <thead className="border-b-[2px] ">
               <tr className="">
                 <th className=" px-3 py-4">ID</th>

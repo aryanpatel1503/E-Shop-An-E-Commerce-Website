@@ -13,9 +13,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import Invoice from "./InvoiceDocument";
 import { isblank } from "../../lib/commonFunctions";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
+  const [ordersRawData, setOrdersRawData] = useState([]);
   const navigate = useNavigate();
   const user_id = localStorage.getItem("user_id");
 
@@ -24,8 +26,31 @@ const Order = () => {
       return "green";
     } else if (status === "shipped") {
       return "cyan";
+    } else if (status === "cancelled") {
+      return "red";
     }
     return "yellow";
+  };
+
+  const handleCancelOrder = async (id) => {
+    try {
+      if (window.confirm("Are you sure you want to cancel this order?")) {
+        const response = await axios.put(`${API_URL}/orders/cancel/${id}`);
+        if (response.status === 200) {
+          toast.success(
+            response.data.message || "Order cancelled successfully!",
+            {
+              position: "top-center",
+            }
+          );
+          getOrders();
+        }
+      }
+    } catch (error) {
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
+    }
   };
 
   const getOrders = async () => {
@@ -41,6 +66,7 @@ const Order = () => {
         order_items,
       };
     });
+    setOrdersRawData(response.data.result);
 
     const newOrderArray = response.data.result.flatMap((order) =>
       order.order_items.map((item) => ({
@@ -88,9 +114,9 @@ const Order = () => {
                     >
                       {item.order_items?.product_name}
                     </Typography>
-                    <Typography color="gray" className="text-base font-normal">
+                    {/* <Typography color="gray" className="text-base font-normal">
                       {item.order_id}
-                    </Typography>
+                    </Typography> */}
                   </div>
                   <Typography color="gray" className="text-base font-normal">
                     {item.order_items?.product_desc}
@@ -108,9 +134,21 @@ const Order = () => {
                     value={item.order_status}
                     className="self-start"
                   />
+                  {item.order_status === "pending" && (
+                    <div className="mt-4">
+                      <Button
+                        variant="outlined"
+                        size="sm"
+                        color="red"
+                        onClick={() => handleCancelOrder(item.order_id)}
+                      >
+                        Cancel Order
+                      </Button>
+                    </div>
+                  )}
                   {item.order_status === "delivered" && (
                     <div className="mt-4">
-                      <Invoice item={item} />
+                      <Invoice item={item} ordersRawData={ordersRawData} />
                     </div>
                   )}
                 </CardBody>
